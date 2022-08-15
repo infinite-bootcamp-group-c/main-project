@@ -15,6 +15,12 @@ services:
       - ./docker/mysql/data:/var/lib/mysql
     networks:
       - main-network
+  composer_installation:
+    container_name: composer_installation
+    image: composer
+    volumes:
+      - ./:/app
+    command: composer install --ignore-platform-reqs
   app:
     container_name: main-app
     build:
@@ -23,6 +29,7 @@ services:
       - .:/var/www/main
     depends_on:
       - database
+      - composer_installation
     networks:
       - main-network
   web:

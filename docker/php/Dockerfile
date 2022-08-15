@@ -23,7 +23,3 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash
 RUN mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
 COPY composer.* symfony.* ./
-RUN set -eux; \
-    if [ -f composer.json ]; then \
-		composer install; \
-    fi \
