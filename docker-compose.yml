@@ -19,11 +19,6 @@ services:
     container_name: main-app
     build:
       context: ./docker/php
-      args:
-        USER_ID: ${UID}
-        GROUP_ID: ${GID}
-        USER_NAME: ${USER}
-        EMAIL: ${EMAIL}
     volumes:
       - .:/var/www/main
     depends_on:

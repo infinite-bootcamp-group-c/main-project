@@ -16,15 +16,3 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 RUN mv /root/.symfony/bin/symfony /usr/local/bin/symfony
-
-ARG USER_ID
-ARG GROUP_ID
-ARG USER_NAME
-ARG EMAIL
-
-RUN addgroup --gid $GROUP_ID $USER_NAME
-RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID $USER_NAME
-USER $USER_NAME
-
-RUN git config --global user.email $EMAIL \
-    && git config --global user.name $USER_NAME

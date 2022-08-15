@@ -1,15 +1,5 @@
 # Infinite Bootcamp Group C Main Project
 
-## Setup
-
-for running the project use the following command:
-
-```
-export UID=${UID}
-export GID=${GID}
-export USER_NAME=<your-git-user-name>
-export EMAIL=<your-git-email>
-```
 
 ## Running the project
 
