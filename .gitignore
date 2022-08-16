@@ -21,3 +21,4 @@
 # ide and other tools
 .idea
 .vscode
+.DS_Store
