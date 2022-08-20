@@ -53,6 +53,14 @@ class User
         $this->addresses = new ArrayCollection();
     }
 
+    /**
+     * @return Collection<int, Shop>
+     */
+    public function getShops(): Collection
+    {
+        return $this->shops;
+    }
+
     public function addShop(Shop $shop): self
     {
         if (!$this->shops->contains($shop)) {
@@ -73,6 +81,14 @@ class User
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, CreditInfo>
+     */
+    public function getCreditInfos(): Collection
+    {
+        return $this->creditInfos;
     }
 
     public function addCreditInfo(CreditInfo $creditInfo): self

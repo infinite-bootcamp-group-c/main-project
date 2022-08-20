@@ -22,4 +22,33 @@ class Photo
 
     #[ORM\Column(length: 255)]
     private ?string $path = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getProductId(): ?Product
+    {
+        return $this->productId;
+    }
+
+    public function setProductId(?Product $productId): self
+    {
+        $this->productId = $productId;
+
+        return $this;
+    }
+
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
+    }
 }

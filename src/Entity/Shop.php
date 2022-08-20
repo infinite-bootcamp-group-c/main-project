@@ -43,6 +43,84 @@ class Shop
     #[ORM\InverseJoinColumn(name: 'address_id', referencedColumnName: 'id', unique: true)]
     private $addresses;
 
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getUserID(): ?User
+    {
+        return $this->userID;
+    }
+
+    public function setUserID(?User $userID): self
+    {
+        $this->userID = $userID;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getIgUsername(): ?string
+    {
+        return $this->igUsername;
+    }
+
+    public function setIgUsername(?string $igUsername): self
+    {
+        $this->igUsername = $igUsername;
+
+        return $this;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(?string $logo): self
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
     public function addCategory(Category $category): self
     {
         if (!$this->categories->contains($category)) {
