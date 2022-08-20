@@ -34,12 +34,6 @@ class User
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $password = null;
 
-    #[ORM\Column]
-    private ?DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column]
-    private ?DateTimeImmutable $updatedAt = null;
-
     #[ORM\OneToMany(mappedBy: 'userID', targetEntity: Shop::class, orphanRemoval: true)]
     private Collection $shops;
 
