@@ -19,7 +19,7 @@ class Token
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $userID = null;
+    private ?User $user = null;
 
     #[ORM\Column]
     private ?bool $isActive = null;
@@ -30,7 +30,6 @@ class Token
     #[ORM\Column(length: 255)]
     private ?string $token = null;
 
-    // TODO:: ADD ENUM
     #[ORM\Column(type: 'string', columnDefinition: "ENUM('refresh_token', 'otp')")]
     private ?string $type = null;
 
@@ -39,14 +38,14 @@ class Token
         return $this->id;
     }
 
-    public function getUserID(): ?User
+    public function getUser(): ?User
     {
-        return $this->userID;
+        return $this->user;
     }
 
-    public function setUserID(?User $userID): self
+    public function setUser(?User $user): self
     {
-        $this->userID = $userID;
+        $this->user = $user;
 
         return $this;
     }
@@ -87,7 +86,7 @@ class Token
         return $this;
     }
 
-    public function getType(): ?object
+    public function getType(): string
     {
         return $this->type;
     }

@@ -24,19 +24,19 @@ class Order
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $userId = null;
+    private ?User $user = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $totalPrice = null;
 
-    #[ORM\OneToMany(mappedBy: 'orderId', targetEntity: OrderItem::class)]
+    #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderItem::class)]
     private Collection $items;
 
     #[ORM\ManyToMany(targetEntity: 'Address')]
     #[ORM\JoinTable(name: 'orders_addresses')]
     #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'address_id', referencedColumnName: 'id', unique: true)]
-    private $addresses;
+    private ArrayCollection $addresses;
 
     public function __construct()
     {
@@ -48,7 +48,7 @@ class Order
         return $this->id;
     }
 
-    public function getStatus(): ?object
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -60,14 +60,14 @@ class Order
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(?User $userId): self
+    public function setUser(?User $user): self
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
@@ -96,7 +96,7 @@ class Order
     {
         if (!$this->items->contains($item)) {
             $this->items->add($item);
-            $item->setOrderId($this);
+            $item->setOrder($this);
         }
 
         return $this;
@@ -106,8 +106,8 @@ class Order
     {
         if ($this->items->removeElement($item)) {
             // set the owning side to null (unless already changed)
-            if ($item->getOrderId() === $this) {
-                $item->setOrderId(null);
+            if ($item->getOrder() === $this) {
+                $item->setOrder(null);
             }
         }
 

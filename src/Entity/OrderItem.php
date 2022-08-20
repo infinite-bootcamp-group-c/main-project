@@ -18,14 +18,14 @@ class OrderItem
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Product $productId = null;
+    private ?Product $product = null;
 
     #[ORM\Column]
     private ?int $quantity = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Order $orderId = null;
+    private ?Order $order = null;
 
     #[ORM\Column]
     private ?int $unitPrice = null;
@@ -35,14 +35,14 @@ class OrderItem
         return $this->id;
     }
 
-    public function getProductId(): ?Product
+    public function getProduct(): ?Product
     {
-        return $this->productId;
+        return $this->product;
     }
 
-    public function setProductId(?Product $productId): self
+    public function setProduct(?Product $product): self
     {
-        $this->productId = $productId;
+        $this->product = $product;
 
         return $this;
     }
@@ -59,14 +59,14 @@ class OrderItem
         return $this;
     }
 
-    public function getOrderId(): ?Order
+    public function getOrder(): ?Order
     {
-        return $this->orderId;
+        return $this->order;
     }
 
-    public function setOrderId(?Order $orderId): self
+    public function setOrder(?Order $order): self
     {
-        $this->orderId = $orderId;
+        $this->order = $order;
 
         return $this;
     }

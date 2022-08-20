@@ -28,7 +28,7 @@ class CreditInfo
 
     #[ORM\ManyToOne(inversedBy: 'creditInfos')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $userId = null;
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -71,14 +71,14 @@ class CreditInfo
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(?User $userId): self
+    public function setUser(?User $user): self
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }

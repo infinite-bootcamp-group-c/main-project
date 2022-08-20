@@ -18,11 +18,11 @@ class OrderTransaction
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?ShopDeposit $shopDepositId = null;
+    private ?ShopDeposit $shopDeposit = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Order $orderId = null;
+    private ?Order $order = null;
 
     #[ORM\Column]
     private ?int $amount = null;
@@ -34,33 +34,33 @@ class OrderTransaction
     private ?string $status = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $payementVerificationCode = null;
+    private ?string $paymentVerificationCode = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getShopDepositId(): ?ShopDeposit
+    public function getShopDeposit(): ?ShopDeposit
     {
-        return $this->shopDepositId;
+        return $this->shopDeposit;
     }
 
-    public function setShopDepositId(?ShopDeposit $shopDepositId): self
+    public function setShopDeposit(?ShopDeposit $shopDeposit): self
     {
-        $this->shopDepositId = $shopDepositId;
+        $this->shopDeposit = $shopDeposit;
 
         return $this;
     }
 
-    public function getOrderId(): ?Order
+    public function getOrder(): ?Order
     {
-        return $this->orderId;
+        return $this->order;
     }
 
-    public function setOrderId(Order $orderId): self
+    public function setOrder(Order $order): self
     {
-        $this->orderId = $orderId;
+        $this->order = $order;
 
         return $this;
     }
@@ -101,14 +101,14 @@ class OrderTransaction
         return $this;
     }
 
-    public function getPayementVerificationCode(): ?string
+    public function getPaymentVerificationCode(): ?string
     {
-        return $this->payementVerificationCode;
+        return $this->paymentVerificationCode;
     }
 
-    public function setPayementVerificationCode(?string $payementVerificationCode): self
+    public function setPaymentVerificationCode(?string $paymentVerificationCode): self
     {
-        $this->payementVerificationCode = $payementVerificationCode;
+        $this->paymentVerificationCode = $paymentVerificationCode;
 
         return $this;
     }

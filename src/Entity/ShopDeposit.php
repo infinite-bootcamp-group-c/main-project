@@ -19,7 +19,7 @@ class ShopDeposit
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Shop $shopId = null;
+    private ?Shop $shop = null;
 
     #[ORM\Column]
     private ?int $amount = null;
@@ -35,14 +35,14 @@ class ShopDeposit
         return $this->id;
     }
 
-    public function getShopId(): ?Shop
+    public function getShop(): ?Shop
     {
-        return $this->shopId;
+        return $this->shop;
     }
 
-    public function setShopId(?Shop $shopId): self
+    public function setShop(?Shop $shop): self
     {
-        $this->shopId = $shopId;
+        $this->shop = $shop;
 
         return $this;
     }

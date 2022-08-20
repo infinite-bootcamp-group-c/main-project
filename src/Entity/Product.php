@@ -21,7 +21,7 @@ class Product
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Category $categoryID = null;
+    private ?Category $category = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -35,7 +35,7 @@ class Product
     #[ORM\Column(length: 1000, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'productId', targetEntity: Photo::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Photo::class, orphanRemoval: true)]
     private Collection $photos;
 
     public function __construct()
@@ -48,14 +48,14 @@ class Product
         return $this->id;
     }
 
-    public function getCategoryID(): ?Category
+    public function getCategory(): ?Category
     {
-        return $this->categoryID;
+        return $this->category;
     }
 
-    public function setCategoryID(?Category $categoryID): self
+    public function setCategory(?Category $category): self
     {
-        $this->categoryID = $categoryID;
+        $this->category = $category;
 
         return $this;
     }
@@ -120,7 +120,7 @@ class Product
     {
         if (!$this->photos->contains($photo)) {
             $this->photos->add($photo);
-            $photo->setProductId($this);
+            $photo->setProduct($this);
         }
 
         return $this;
@@ -130,8 +130,8 @@ class Product
     {
         if ($this->photos->removeElement($photo)) {
             // set the owning side to null (unless already changed)
-            if ($photo->getProductId() === $this) {
-                $photo->setProductId(null);
+            if ($photo->getProduct() === $this) {
+                $photo->setProduct(null);
             }
         }
 

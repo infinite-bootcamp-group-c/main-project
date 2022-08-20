@@ -20,12 +20,12 @@ class Category
 
     #[ORM\ManyToOne(inversedBy: 'categories')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Shop $shopId = null;
+    private ?Shop $shop = null;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\OneToMany(mappedBy: 'categoryID', targetEntity: Product::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class, orphanRemoval: true)]
     private Collection $products;
 
     public function __construct()
@@ -45,7 +45,7 @@ class Category
     {
         if (!$this->products->contains($product)) {
             $this->products->add($product);
-            $product->setCategoryID($this);
+            $product->setCategory($this);
         }
 
         return $this;
@@ -55,11 +55,27 @@ class Category
     {
         if ($this->products->removeElement($product)) {
             // set the owning side to null (unless already changed)
-            if ($product->getCategoryID() === $this) {
-                $product->setCategoryID(null);
+            if ($product->getCategory() === $this) {
+                $product->setCategory(null);
             }
         }
 
         return $this;
+    }
+
+    /**
+     * @return Shop|null
+     */
+    public function getShop(): ?Shop
+    {
+        return $this->shop;
+    }
+
+    /**
+     * @param Shop|null $shop
+     */
+    public function setShop(?Shop $shop): void
+    {
+        $this->shop = $shop;
     }
 }

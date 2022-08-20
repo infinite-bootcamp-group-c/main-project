@@ -20,7 +20,7 @@ class Shop
 
     #[ORM\ManyToOne(inversedBy: 'shops')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $userID = null;
+    private ?User $user = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -34,14 +34,14 @@ class Shop
     #[ORM\Column(length: 1000, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'shopId', targetEntity: Category::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'shop', targetEntity: Category::class, orphanRemoval: true)]
     private Collection $categories;
 
     #[ORM\ManyToMany(targetEntity: 'Address')]
     #[ORM\JoinTable(name: 'shops_addresses')]
     #[ORM\JoinColumn(name: 'shop_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'address_id', referencedColumnName: 'id', unique: true)]
-    private $addresses;
+    private ArrayCollection $addresses;
 
     public function __construct()
     {
@@ -53,14 +53,14 @@ class Shop
         return $this->id;
     }
 
-    public function getUserID(): ?User
+    public function getUser(): ?User
     {
-        return $this->userID;
+        return $this->user;
     }
 
-    public function setUserID(?User $userID): self
+    public function setUser(?User $user): self
     {
-        $this->userID = $userID;
+        $this->user = $user;
 
         return $this;
     }
@@ -125,7 +125,7 @@ class Shop
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
-            $category->setShopId($this);
+            $category->setShop($this);
         }
 
         return $this;
@@ -135,8 +135,8 @@ class Shop
     {
         if ($this->categories->removeElement($category)) {
             // set the owning side to null (unless already changed)
-            if ($category->getShopId() === $this) {
-                $category->setShopId(null);
+            if ($category->getShop() === $this) {
+                $category->setShop(null);
             }
         }
 

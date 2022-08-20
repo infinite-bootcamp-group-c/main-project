@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Entity\Traits\Timestampable;
 use App\Repository\UserRepository;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -34,17 +33,17 @@ class User
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'userID', targetEntity: Shop::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Shop::class, orphanRemoval: true)]
     private Collection $shops;
 
-    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: CreditInfo::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CreditInfo::class, orphanRemoval: true)]
     private Collection $creditInfos;
 
     #[ORM\ManyToMany(targetEntity: 'Address')]
     #[ORM\JoinTable(name: 'users_addresses')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'address_id', referencedColumnName: 'id', unique: true)]
-    private $addresses;
+    private ArrayCollection $addresses;
 
     public function __construct()
     {
@@ -65,7 +64,7 @@ class User
     {
         if (!$this->shops->contains($shop)) {
             $this->shops->add($shop);
-            $shop->setUserID($this);
+            $shop->setUser($this);
         }
 
         return $this;
@@ -75,8 +74,8 @@ class User
     {
         if ($this->shops->removeElement($shop)) {
             // set the owning side to null (unless already changed)
-            if ($shop->getUserID() === $this) {
-                $shop->setUserID(null);
+            if ($shop->getUser() === $this) {
+                $shop->setUser(null);
             }
         }
 
@@ -95,7 +94,7 @@ class User
     {
         if (!$this->creditInfos->contains($creditInfo)) {
             $this->creditInfos->add($creditInfo);
-            $creditInfo->setUserId($this);
+            $creditInfo->setUser($this);
         }
 
         return $this;
@@ -105,8 +104,8 @@ class User
     {
         if ($this->creditInfos->removeElement($creditInfo)) {
             // set the owning side to null (unless already changed)
-            if ($creditInfo->getUserId() === $this) {
-                $creditInfo->setUserId(null);
+            if ($creditInfo->getUser() === $this) {
+                $creditInfo->setUser(null);
             }
         }
 
