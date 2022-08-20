@@ -27,7 +27,7 @@ class OrderTransaction
     #[ORM\Column(length: 32, nullable: true)]
     private ?string $paymentMethod = null;
 
-    #[ORM\Column(length: 32)]
+    #[ORM\Column(type: 'string', columnDefinition: "ENUM('success', 'failed', 'waiting')")]
     private ?string $status = null;
 
     #[ORM\Column(length: 255, nullable: true)]

@@ -28,8 +28,8 @@ class Token
     private ?string $token = null;
 
     // TODO:: ADD ENUM
-    #[ORM\Column(type: Types::OBJECT)]
-    private ?object $type = null;
+    #[ORM\Column(type: 'string', columnDefinition: "ENUM('refresh_token', 'otp')")]
+    private ?string $type = null;
 
     public function getId(): ?int
     {

@@ -17,8 +17,8 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::OBJECT)]
-    private ?object $status = null;
+    #[ORM\Column(type: 'string', columnDefinition: "ENUM('open', 'waiting', 'paid', 'sent', 'received')")]
+    private ?string $status = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
