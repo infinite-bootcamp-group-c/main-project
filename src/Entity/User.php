@@ -44,10 +44,17 @@ class User
     #[ORM\OneToMany(mappedBy: 'userId', targetEntity: CreditInfo::class, orphanRemoval: true)]
     private Collection $creditInfos;
 
+    #[ORM\ManyToMany(targetEntity: 'Address')]
+    #[ORM\JoinTable(name: 'users_addresses')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'address_id', referencedColumnName: 'id', unique: true)]
+    private $addresses;
+
     public function __construct()
     {
         $this->shops = new ArrayCollection();
         $this->creditInfos = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
     }
 
     /**
