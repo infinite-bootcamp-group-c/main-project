@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\Timestampable;
 use App\Repository\ShopDepositRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ShopDepositRepository::class)]
 class ShopDeposit
 {
+    use Timestampable;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -24,7 +28,7 @@ class ShopDeposit
     private ?string $receipt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $paidAt = null;
+    private ?DateTimeImmutable $paidAt = null;
 
     public function getId(): ?int
     {
@@ -67,12 +71,12 @@ class ShopDeposit
         return $this;
     }
 
-    public function getPaidAt(): ?\DateTimeImmutable
+    public function getPaidAt(): ?DateTimeImmutable
     {
         return $this->paidAt;
     }
 
-    public function setPaidAt(\DateTimeImmutable $paidAt): self
+    public function setPaidAt(DateTimeImmutable $paidAt): self
     {
         $this->paidAt = $paidAt;
 
