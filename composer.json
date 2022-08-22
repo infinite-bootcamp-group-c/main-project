@@ -77,6 +77,7 @@
     "symfony/polyfill-php81": "*"
   },
   "scripts": {
+    "format": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src",
     "auto-scripts": {
       "cache:clear": "symfony-cmd",
       "assets:install %PUBLIC_DIR%": "symfony-cmd"
