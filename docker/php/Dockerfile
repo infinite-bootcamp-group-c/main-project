@@ -9,7 +9,8 @@ RUN apt update \
     && docker-php-ext-enable apcu \
     && docker-php-ext-configure zip \
     && docker-php-ext-install zip \
-    && echo 'alias sf="php bin/console"' >> ~/.bashrc
+    && echo 'alias sf="php bin/console"' >> ~/.bashrc \
+    && echo 'alias symfony="php bin/console"' >> ~/.bashrc
 
 
 RUN apt install bash
