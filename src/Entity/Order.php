@@ -36,7 +36,7 @@ class Order
     #[ORM\JoinTable(name: 'orders_addresses')]
     #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'address_id', referencedColumnName: 'id', unique: true)]
-    private ArrayCollection $addresses;
+    private Collection $addresses;
 
     public function __construct()
     {
