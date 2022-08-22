@@ -8,7 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 trait Timestampable
 {
-    use HasUpdatedAt, HasCreatedAt;
+    use HasUpdatedAt;
+    use HasCreatedAt;
 
     #[ORM\PrePersist]
     public function onPrePersist(): void

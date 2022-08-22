@@ -1,6 +1,5 @@
 # Infinite Bootcamp Group C Main Project
 
-
 ## Running the project
 
 * Builds the Docker images `make build`

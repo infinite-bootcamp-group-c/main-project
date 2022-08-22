@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 trait HasUpdatedAt
 {
-
     #[ORM\Column(name: "updated_at", type: "datetime")]
     private DateTime $updatedAt;
 
