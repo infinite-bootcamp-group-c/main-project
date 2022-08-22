@@ -25,7 +25,7 @@ class UserTest extends KernelTestCase
     public function testFirstName(User $user): User
     {
         $user->setFirstName("User_FirstName");
-        $this->assertSame("User_FirstName",$user->geFirstName());
+        $this->assertSame("User_FirstName",$user->getFirstName());
         return $user;
     }
 
@@ -37,7 +37,7 @@ class UserTest extends KernelTestCase
     public function testLastName(User $user): User
     {
         $user->setLastName("User_LastName");
-        $this->assertsame("User_LastName",$user->LastName());
+        $this->assertsame("User_LastName",$user->getLastName());
         return $user;
     }
 
@@ -61,7 +61,7 @@ class UserTest extends KernelTestCase
     public function testPhoneNumber(User $user): User
     {
         $user->setPhoneNumber("+989124525612");
-        $this->assertSame("+989124525612",$user->getPhoneNumber);
+        $this->assertSame("+989124525612",$user->getPhoneNumber());
         return $user;
     }
 
