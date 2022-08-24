@@ -57,12 +57,12 @@ abstract class ABaseForm
 
     public static function getParams(Request $request): array
     {
-        return array_merge(
-            self::getQueryParams($request),
-            self::getBodyParams($request),
-            self::getRouteParams($request)
-        );
+        return [
+            'body' => self::getBodyParams($request),
+            'query' => self::getQueryParams($request),
+            'route' => self::getRouteParams($request)
+        ];
     }
 
-    public abstract function execute(): void;
+    public abstract function execute(Request $request): void;
 }

@@ -4,6 +4,7 @@ namespace App\Form\Product;
 
 use App\Lib\Form\ABaseForm;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\Request;
 
 class CreateProductForm extends ABaseForm
 {
@@ -45,7 +46,7 @@ class CreateProductForm extends ABaseForm
         ];
     }
 
-    public function execute(): void
+    public function execute(Request $request): void
     {
         // TODO: Implement execute() method.
     }
