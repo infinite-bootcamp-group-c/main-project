@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Form\Product\Category;
+namespace App\Form\Category;
 
 use App\Lib\Form\ABaseForm;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateCategoryForm extends ABaseForm
 {
