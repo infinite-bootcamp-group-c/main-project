@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\OrderTransactionStatus;
 use App\Entity\Traits\Timestampable;
 use App\Repository\OrderTransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,8 +31,8 @@ class OrderTransaction
     #[ORM\Column(length: 32, nullable: true)]
     private ?string $paymentMethod = null;
 
-    #[ORM\Column(type: 'string', columnDefinition: "ENUM('success', 'failed', 'waiting')")]
-    private ?string $status = null;
+    #[ORM\Column(type: 'smallint', enumType: OrderTransactionStatus::class)]
+    private ?OrderTransactionStatus $status = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $paymentVerificationCode = null;
