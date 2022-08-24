@@ -12,7 +12,7 @@ class CreateProductForm extends ABaseForm
     {
         return [
             'body' => [
-                'categoryID' => [
+                'category_id' => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
                     new Assert\Positive(),
