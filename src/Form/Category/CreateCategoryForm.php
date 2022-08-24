@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Form\Product\Category;
+namespace App\Form\Category;
 
 use App\Lib\Form\ABaseForm;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateCategoryForm extends ABaseForm
@@ -28,11 +29,8 @@ class CreateCategoryForm extends ABaseForm
         ];
     }
 
-    public function execute(): void
+    public function execute(Request $request): void
     {
         // TODO: Implement execute() method.
     }
-}
-{
-
 }
