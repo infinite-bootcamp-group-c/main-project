@@ -39,8 +39,6 @@ class CreateProductView extends ACreateView
         $product->setCategory($form["body"]["category"]);
         $product->setDescription($form["body"]["description"]);
         $product->setQuantity($form["body"]["quantity"]);
-        $product->setCreatedAt(new DateTime());
-        $product->setUpdatedAt(new DateTime());
     }
 
     public function createResponse(array $responseArray): JsonResponse
