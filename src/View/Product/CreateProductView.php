@@ -34,12 +34,11 @@ class CreateProductView extends ACreateView
          * TODO: add product photos
          */
 
-        $product->setName($form["body"]["createdAt"]);
+        $product->setName($form["body"]["name"]);
         $product->setPrice($form["body"]["price"]);
         $product->setCategory($form["body"]["category"]);
         $product->setDescription($form["body"]["description"]);
         $product->setQuantity($form["body"]["quantity"]);
-        $product->setName($form["body"]["name"]);
         $product->setCreatedAt(new DateTime());
         $product->setUpdatedAt(new DateTime());
     }
