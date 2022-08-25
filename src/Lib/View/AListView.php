@@ -8,5 +8,5 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class AListView implements IBaseView
 {
     abstract protected function getData(array $form): array;
-    abstract public function execute(array $params): static;
+    abstract public static function execute(array $params): void;
 }
