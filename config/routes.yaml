@@ -1,8 +1,13 @@
+api_refresh_token:
+  path: /api/token/refresh
+
 api_login_check:
   path: /api/login_check
+
 controllers:
   resource: ../src/Controller/
   type: attribute
+
 app.swagger_ui:
   path: /api/doc
   methods: GET

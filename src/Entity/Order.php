@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\OrderStatus;
 use App\Entity\Traits\Timestampable;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,8 +20,8 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', columnDefinition: "ENUM('open', 'waiting', 'paid', 'sent', 'received')")]
-    private ?string $status = null;
+    #[ORM\Column(type: 'smallint', enumType: OrderStatus::class)]
+    private ?OrderStatus $status = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -41,6 +42,7 @@ class Order
     public function __construct()
     {
         $this->items = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,6 +112,30 @@ class Order
                 $item->setOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Address>
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    public function addAddress(Address $address): self
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses->add($address);
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): self
+    {
+        $this->addresses->removeElement($address);
 
         return $this;
     }
