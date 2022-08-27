@@ -32,4 +32,14 @@ abstract class ABaseRepository extends ServiceEntityRepository implements IBaseR
         }
     }
 
+    public function removeById($id, bool $flush = true): void
+    {
+        $this->remove($this->find($id), $flush);
+    }
+
+    public function flush(): void
+    {
+        $this->getEntityManager()->flush();
+    }
+
 }
