@@ -3,13 +3,17 @@
 namespace App\Lib\Form;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 abstract class ABaseForm implements IBaseForm
 {
-    public function __construct(private readonly ValidatorInterface $validator)
+    public function __construct(
+        private readonly ValidatorInterface $validator,
+        private readonly TokenStorageInterface $tokenStorage,
+    )
     {
     }
 
@@ -64,6 +68,11 @@ abstract class ABaseForm implements IBaseForm
             'query' => self::getQueryParams($request),
             'route' => self::getRouteParams($request)
         ];
+    }
+
+    public function getUser()
+    {
+        return $this->tokenStorage->getToken()->getUser();
     }
 
     public abstract function execute(Request $request);
