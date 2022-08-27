@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\OrderStatus;
 use App\Entity\Traits\Timestampable;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,8 +20,8 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', columnDefinition: "ENUM('open', 'waiting', 'paid', 'sent', 'received')")]
-    private ?string $status = null;
+    #[ORM\Column(type: 'smallint', enumType: OrderStatus::class)]
+    private ?OrderStatus $status = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
