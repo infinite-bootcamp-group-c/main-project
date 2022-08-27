@@ -3,14 +3,15 @@
 namespace App\Entity;
 
 use App\Entity\Enums\OrderTransactionStatus;
-use App\Entity\Traits\Timestampable;
+use App\Entity\Traits\HasTimestamp;
 use App\Repository\OrderTransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderTransactionRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class OrderTransaction
 {
-    use Timestampable;
+    use HasTimestamp;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

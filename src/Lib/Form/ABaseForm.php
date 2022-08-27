@@ -9,17 +9,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class ABaseForm implements IBaseForm
 {
+    public function __construct(private readonly ValidatorInterface $validator)
+    {
+    }
+
     public abstract function constraints();
 
-    /**
-     * @throws \Exception
-     */
-    public function validate(Request $request, ValidatorInterface $validator): void
+    public function validate(Request $request): array
     {
         $input = [
             'body' => self::getBodyParams($request),
             'query' => self::getQueryParams($request),
-            'route' => self::getRouteParams($request)
+            'route' => self::getRouteParams($request),
         ];
 
         $constraints = new Assert\Collection([
@@ -28,31 +29,32 @@ abstract class ABaseForm implements IBaseForm
             'route' => new Assert\Collection($this->constraints()['route'] ?? []),
         ]);
 
-        $errors = $validator->validate($input, $constraints);
+        $errors = $this->validator->validate($input, $constraints);
 
         if ($errors->count()) {
             $messages = [];
             foreach ($errors as $error) {
                 $messages[] = $error->getMessage();
             }
-            throw new \Exception;
+            return $messages;
         }
+        return [];
 
     }
 
     public static function getQueryParams(Request $request): array
     {
-        return $request->query->all();
+        return $request->query->all() ?? [];
     }
 
     public static function getBodyParams(Request $request): array
     {
-        return $request->toArray();
+        return json_decode($request->getContent(), true) ?? [];
     }
 
     public static function getRouteParams(Request $request): array
     {
-        return $request->attributes->get('_route_params');
+        return $request->attributes->get('_route_params') ?? [];
     }
 
     public static function getParams(Request $request): array
@@ -64,5 +66,5 @@ abstract class ABaseForm implements IBaseForm
         ];
     }
 
-    public abstract function execute(Request $request): void;
+    public abstract function execute(Request $request);
 }
