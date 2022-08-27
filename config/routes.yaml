@@ -5,8 +5,9 @@ api_login_check:
   path: /api/login_check
 
 controllers:
-  resource: ../src/Controller/
+  resource: ../src/Controller/Api
   type: attribute
+  prefix: api
 
 app.swagger_ui:
   path: /api/doc

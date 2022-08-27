@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
 use App\Form\Product\ICreateProductForm;
 use App\Form\Product\IDeleteProductForm;
