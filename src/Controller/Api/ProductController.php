@@ -8,14 +8,17 @@ use App\Form\Product\IGetProductForm;
 use App\Form\Product\IGetProductListForm;
 use App\Form\Product\IUpdateProductForm;
 use App\Lib\Controller\BaseController;
+use OpenApi\Attributes\Tag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/products')]
+#[Tag(name: 'Product', description: 'Product operations')]
 class ProductController extends BaseController
 {
     #[Route('/', name: 'create_product', methods: ['POST'])]
+
     public function new(Request $request, ICreateProductForm $createProductForm): JsonResponse
     {
         return $this->makeResponse($createProductForm, $request);

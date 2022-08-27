@@ -22,8 +22,8 @@ class CreateCategoryForm extends ABaseForm
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
                     new Assert\Length(min: 4, max: 255),
-                    new Assert\Regex(pattern : '/^\w+/'
-                        , message : 'Category name must contain only letters, numbers and underscores'),
+                    new Assert\Regex(pattern: '/^\w+/'
+                        , message: 'Category name must contain only letters, numbers and underscores'),
                 ],
             ],
         ];

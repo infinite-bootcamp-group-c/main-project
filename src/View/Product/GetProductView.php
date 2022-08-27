@@ -13,6 +13,12 @@ class GetProductView extends AListView implements IGetProductView
     {
     }
 
+    public function execute(array $params): array
+    {
+        $product = $this->getData($params);
+        return $this->createResponse($product);
+    }
+
     public function getData(array $form): Product
     {
         return $this->productRepository->find($form['route']['id']);
@@ -28,11 +34,5 @@ class GetProductView extends AListView implements IGetProductView
             'created_at' => $product->getCreatedAt(),
             'updated_at' => $product->getUpdatedAt(),
         ];
-    }
-
-    public function execute(array $params): array
-    {
-        $product = $this->getData($params);
-        return $this->createResponse($product);
     }
 }

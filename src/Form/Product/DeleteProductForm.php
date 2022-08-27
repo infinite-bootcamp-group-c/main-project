@@ -5,15 +5,21 @@ namespace App\Form\Product;
 use App\Lib\Form\ABaseForm;
 use App\View\Product\IDeleteProductView;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DeleteProductForm extends ABaseForm implements IDeleteProductForm
 {
 
-    public function __construct(private readonly IDeleteProductView $deleteProductView, private readonly ValidatorInterface $validator)
+    public function __construct(
+        private readonly IDeleteProductView    $deleteProductView,
+        private readonly ValidatorInterface    $validator,
+        private readonly TokenStorageInterface $tokenStorage,
+
+    )
     {
-        parent::__construct($this->validator);
+        parent::__construct($this->validator, $this->tokenStorage);
     }
 
     public function constraints(): array

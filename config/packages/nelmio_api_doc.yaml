@@ -6,6 +6,8 @@ nelmio_api_doc:
     paths: # an array of paths to document (document all routes under /api)
       /api/auth/login:
         post:
+          tags:
+            - Auth
           summary: Login and Generate a new token .
           description: This endpoints takes user credentials to validate generate a new `token` and `refresh_token`.
           requestBody:
@@ -49,6 +51,8 @@ nelmio_api_doc:
 
       /api/auth/token/refresh:
         post:
+          tags:
+            - Auth
           summary: Get a new token by usage of the long living `refresh_token`.
           description: THis endpoints takes a refresh token to generate a new `token` and return it with the still valid `refresh_token`.
           requestBody:

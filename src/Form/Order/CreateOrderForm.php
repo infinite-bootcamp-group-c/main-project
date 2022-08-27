@@ -3,8 +3,8 @@
 namespace App\Form\Order;
 
 use App\Lib\Form\ABaseForm;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateOrderForm extends ABaseForm
 {

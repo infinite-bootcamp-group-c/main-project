@@ -29,8 +29,8 @@ class CreateAddressForm extends ABaseForm
                 'postal_code' => [
                     new Assert\NotBlank(),
                     new Assert\Length(min: 4, max: 255),
-                    new Assert\Regex(pattern : '^(?!(\d)\1{3})[13-9]{4}[1346-9][ -]?[013-9]{5}$|^$'
-                        , message : 'Postal code must be a valid postal code'),
+                    new Assert\Regex(pattern: '^(?!(\d)\1{3})[13-9]{4}[1346-9][ -]?[013-9]{5}$|^$'
+                        , message: 'Postal code must be a valid postal code'),
                 ],
                 'country' => [
                     new Assert\NotBlank(),
@@ -39,8 +39,8 @@ class CreateAddressForm extends ABaseForm
                 'address_detail' => [
                     new Assert\NotBlank(),
                     new Assert\Length(min: 4, max: 255),
-                    new Assert\Regex(pattern : '/^\w+/'
-                        , message : 'Shop name must start with word character'),
+                    new Assert\Regex(pattern: '/^\w+/'
+                        , message: 'Shop name must start with word character'),
                 ],
                 'latitude' => [
                     new Assert\NotBlank(),

@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Token;
 use App\Lib\Repository\ABaseRepository;
 use App\Lib\Repository\IBaseRepository;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class TokenRepository extends ABaseRepository implements IBaseRepository
