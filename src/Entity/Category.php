@@ -2,16 +2,17 @@
 
 namespace App\Entity;
 
-use App\Entity\Traits\Timestampable;
+use App\Entity\Traits\HasTimestamp;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Category
 {
-    use Timestampable;
+    use HasTimestamp;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

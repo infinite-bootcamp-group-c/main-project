@@ -5,8 +5,7 @@ namespace App\Entity\Traits;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\HasLifecycleCallbacks]
-trait Timestampable
+trait HasTimestamp
 {
     use HasUpdatedAt;
     use HasCreatedAt;
@@ -17,4 +16,11 @@ trait Timestampable
         $this->createdAt = new DateTime();
         $this->updatedAt = new DateTime();
     }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updatedAt = new DateTime();
+    }
+
 }

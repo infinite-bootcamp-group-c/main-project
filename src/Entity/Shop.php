@@ -2,16 +2,17 @@
 
 namespace App\Entity;
 
-use App\Entity\Traits\Timestampable;
+use App\Entity\Traits\HasTimestamp;
 use App\Repository\ShopRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ShopRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Shop
 {
-    use Timestampable;
+    use HasTimestamp;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

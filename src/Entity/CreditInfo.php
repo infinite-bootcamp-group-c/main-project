@@ -2,15 +2,16 @@
 
 namespace App\Entity;
 
-use App\Entity\Traits\Timestampable;
+use App\Entity\Traits\HasTimestamp;
 use App\Repository\CreditInfoRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CreditInfoRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class CreditInfo
 {
-    use Timestampable;
+    use HasTimestamp;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

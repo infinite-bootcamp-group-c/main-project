@@ -1,9 +1,105 @@
 nelmio_api_doc:
-    documentation:
-        info:
-            title: My App
-            description: This is an awesome app!
-            version: 1.0.0
-    areas: # to filter documented areas
-        path_patterns:
-            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+  areas:
+    path_patterns: # an array of regexps (document only routes under /api, except /api/doc)
+      - ^/api(?!(/doc)|(/doc.json)$)
+  documentation:
+    paths: # an array of paths to document (document all routes under /api)
+      /api/auth/login:
+        post:
+          tags:
+            - Auth
+          summary: Login and Generate a new token .
+          description: This endpoints takes user credentials to validate generate a new `token` and `refresh_token`.
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    phoneNumber:
+                      type: string
+                    password:
+                      type: string
+          responses:
+            '200':
+              description: successful token refresh
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                      refresh_token:
+                        type: string
+            '401':
+              description: invalid `refresh_token`
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      code:
+                        type: int
+                      message:
+                        type: string
+                  examples:
+                    invalid_refresh_token:
+                      summary: Invalid refresh token
+                      value: { "code": 401, "message": "JWT Refresh Token Not Found" }
+
+      /api/auth/token/refresh:
+        post:
+          tags:
+            - Auth
+          summary: Get a new token by usage of the long living `refresh_token`.
+          description: THis endpoints takes a refresh token to generate a new `token` and return it with the still valid `refresh_token`.
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    refresh_token:
+                      type: string
+          responses:
+            '200':
+              description: successful token refresh
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                      refresh_token:
+                        type: string
+            '401':
+              description: invalid `refresh_token`
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      code:
+                        type: int
+                      message:
+                        type: string
+                  examples:
+                    invalid_refresh_token:
+                      summary: Invalid refresh token
+                      value: { "code": 401, "message": "JWT Refresh Token Not Found" }
+    info:
+      title: Infinite Bootcamp Group C API
+      description: This is an awesome app!
+      version: 1.0.0
+    components:
+      securitySchemes:
+        Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+    security:
+      - Bearer: [ ]
