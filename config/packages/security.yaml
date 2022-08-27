@@ -22,7 +22,16 @@ security:
     api:
       pattern: ^/api
       stateless: true
+      entry_point: jwt
+      json_login:
+        check_path: /api/login # or, if you have defined a route for your login path, the route name you used
+        success_handler: lexik_jwt_authentication.handler.authentication_success
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        username_path: phoneNumber
       jwt: ~
+      refresh_jwt:
+        check_path: /api/token/refresh # or, you may use the `api_refresh_token` route name
+
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
@@ -40,7 +49,7 @@ security:
   # Note: Only the *first* access control that matches will be used
   access_control:
     - { path: ^/api/doc, roles: PUBLIC_ACCESS }
-    - { path: ^/api/login, roles: PUBLIC_ACCESS }
+    - { path: ^/api/(login|token/refresh), roles: PUBLIC_ACCESS }
     - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
     # - { path: ^/admin, roles: ROLE_ADMIN }
     # - { path: ^/profile, roles: ROLE_USER }
