@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enums\TokenType;
 use App\Entity\Traits\Timestampable;
 use App\Repository\TokenRepository;
 use DateTimeImmutable;
@@ -30,8 +31,8 @@ class Token
     #[ORM\Column(length: 255)]
     private ?string $token = null;
 
-    #[ORM\Column(type: 'string', columnDefinition: "ENUM('refresh_token', 'otp')")]
-    private ?string $type = null;
+    #[ORM\Column(type: 'smallint', enumType: TokenType::class)]
+    private ?TokenType $type = null;
 
     public function getId(): ?int
     {
