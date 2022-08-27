@@ -2,7 +2,8 @@
 
 namespace App\Entity\Enums;
 
-enum TokenType: int {
+enum TokenType: int
+{
     case OPEN = 0;
     case WAITING = 1;
     case PAID = 2;

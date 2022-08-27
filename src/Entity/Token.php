@@ -3,15 +3,16 @@
 namespace App\Entity;
 
 use App\Entity\Enums\TokenType;
-use App\Entity\Traits\Timestampable;
+use App\Entity\Traits\HasTimestamp;
 use App\Repository\TokenRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TokenRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Token
 {
-    use Timestampable;
+    use HasTimestamp;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -1,12 +1,13 @@
 api_refresh_token:
-  path: /api/token/refresh
+  path: /api/auth/token/refresh
 
 api_login_check:
-  path: /api/login_check
+  path: /api/auth/login
 
 controllers:
-  resource: ../src/Controller/
+  resource: ../src/Controller/Api
   type: attribute
+  prefix: api
 
 app.swagger_ui:
   path: /api/doc

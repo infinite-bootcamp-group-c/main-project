@@ -3,40 +3,15 @@
 namespace App\Repository;
 
 use App\Entity\ShopDeposit;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Lib\Repository\ABaseRepository;
+use App\Lib\Repository\IBaseRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<ShopDeposit>
- *
- * @method ShopDeposit|null find($id, $lockMode = null, $lockVersion = null)
- * @method ShopDeposit|null findOneBy(array $criteria, array $orderBy = null)
- * @method ShopDeposit[]    findAll()
- * @method ShopDeposit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
-class ShopDepositRepository extends ServiceEntityRepository
+class ShopDepositRepository extends ABaseRepository implements IBaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ShopDeposit::class);
-    }
-
-    public function add(ShopDeposit $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(ShopDeposit $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
     }
 
 //    /**
