@@ -12,13 +12,13 @@ class DeleteProductView extends AListView implements IDeleteProductView
     {
     }
 
-    public function getData(array $form): void
-    {
-        $this->productRepository->removeById($form['route']['id']);
-    }
-
     public function execute(array $params)
     {
         $this->getData($params);
+    }
+
+    public function getData(array $form): void
+    {
+        $this->productRepository->removeById($form['route']['id']);
     }
 }

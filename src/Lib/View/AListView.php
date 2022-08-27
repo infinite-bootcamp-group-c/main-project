@@ -1,9 +1,6 @@
 <?php
-namespace App\Lib\View;
 
-use App\Entity\User;
-use App\Lib\View\IBaseView;
-use Symfony\Component\HttpFoundation\Request;
+namespace App\Lib\View;
 
 abstract class AListView implements IBaseView
 {

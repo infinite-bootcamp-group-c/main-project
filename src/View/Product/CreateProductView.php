@@ -12,6 +12,11 @@ class CreateProductView extends AListView implements ICreateProductView
     {
     }
 
+    public function execute(Product $product): array
+    {
+        return $this->getData($product);
+    }
+
     public function getData(Product $product): array
     {
         return [
@@ -20,10 +25,5 @@ class CreateProductView extends AListView implements ICreateProductView
             'price' => $product->getPrice(),
             'description' => $product->getDescription(),
         ];
-    }
-
-    public function execute(Product $product): array
-    {
-        return $this->getData($product);
     }
 }

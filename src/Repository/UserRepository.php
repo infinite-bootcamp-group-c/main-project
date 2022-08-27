@@ -5,11 +5,11 @@ namespace App\Repository;
 use App\Entity\User;
 use App\Lib\Repository\ABaseRepository;
 use App\Lib\Repository\IBaseRepository;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use function get_class;
 
 class UserRepository extends ABaseRepository implements IBaseRepository, PasswordUpgraderInterface
 {
@@ -24,7 +24,7 @@ class UserRepository extends ABaseRepository implements IBaseRepository, Passwor
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
         $user->setPassword($newHashedPassword);

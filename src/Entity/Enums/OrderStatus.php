@@ -2,7 +2,8 @@
 
 namespace App\Entity\Enums;
 
-enum OrderStatus: int {
+enum OrderStatus: int
+{
     case OPEN = 0;
     case WAITING = 1;
     case PAID = 2;

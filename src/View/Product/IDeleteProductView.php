@@ -2,7 +2,6 @@
 
 namespace App\View\Product;
 
-use App\Entity\Product;
 use App\Lib\View\IBaseView;
 
 interface IDeleteProductView extends IBaseView

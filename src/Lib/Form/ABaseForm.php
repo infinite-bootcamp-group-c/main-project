@@ -11,13 +11,20 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 abstract class ABaseForm implements IBaseForm
 {
     public function __construct(
-        private readonly ValidatorInterface $validator,
+        private readonly ValidatorInterface    $validator,
         private readonly TokenStorageInterface $tokenStorage,
     )
     {
     }
 
-    public abstract function constraints();
+    public static function getParams(Request $request): array
+    {
+        return [
+            'body' => self::getBodyParams($request),
+            'query' => self::getQueryParams($request),
+            'route' => self::getRouteParams($request)
+        ];
+    }
 
     public function validate(Request $request): array
     {
@@ -46,14 +53,14 @@ abstract class ABaseForm implements IBaseForm
 
     }
 
-    public static function getQueryParams(Request $request): array
-    {
-        return $request->query->all() ?? [];
-    }
-
     public static function getBodyParams(Request $request): array
     {
         return json_decode($request->getContent(), true) ?? [];
+    }
+
+    public static function getQueryParams(Request $request): array
+    {
+        return $request->query->all() ?? [];
     }
 
     public static function getRouteParams(Request $request): array
@@ -61,14 +68,7 @@ abstract class ABaseForm implements IBaseForm
         return $request->attributes->get('_route_params') ?? [];
     }
 
-    public static function getParams(Request $request): array
-    {
-        return [
-            'body' => self::getBodyParams($request),
-            'query' => self::getQueryParams($request),
-            'route' => self::getRouteParams($request)
-        ];
-    }
+    public abstract function constraints();
 
     public function getUser()
     {

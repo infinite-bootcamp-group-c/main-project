@@ -8,6 +8,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\View\Product\ICreateProductView;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -15,13 +16,14 @@ class CreateProductForm extends ABaseForm implements ICreateProductForm
 {
 
     public function __construct(
-        private readonly ICreateProductView $createProductView,
-        private readonly ValidatorInterface $validator,
-        private readonly ProductRepository $productRepository,
-        private readonly CategoryRepository $categoryRepository,
+        private readonly ICreateProductView    $createProductView,
+        private readonly ValidatorInterface    $validator,
+        private readonly ProductRepository     $productRepository,
+        private readonly CategoryRepository    $categoryRepository,
+        private readonly TokenStorageInterface $tokenStorage,
     )
     {
-        parent::__construct($this->validator);
+        parent::__construct($this->validator, $this->tokenStorage);
     }
 
     public function constraints(): array
