@@ -5,6 +5,10 @@ api_login_check:
   path: /api/auth/login
 
 controllers:
+  resource: ../src/Controller
+  type: attribute
+
+api_controllers:
   resource: ../src/Controller/Api
   type: attribute
   prefix: api
