@@ -43,6 +43,13 @@ services:
       - database
     networks:
       - main-network
+  redis:
+    image: redis:alpine
+    container_name: main-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - main-network
 networks:
   main-network:
     driver: bridge
