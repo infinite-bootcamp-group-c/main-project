@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Form\Product;
+namespace App\Form\Product\Get;
 
 use App\Lib\Form\ABaseForm;
-use App\View\Product\IDeleteProductView;
+use App\View\Product\Get\IGetProductView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class DeleteProductForm extends ABaseForm implements IDeleteProductForm
+class GetProductForm extends ABaseForm implements IGetProductForm
 {
 
     public function __construct(
-        private readonly IDeleteProductView    $deleteProductView,
+        private readonly IGetProductView       $getProductView,
         private readonly ValidatorInterface    $validator,
         private readonly TokenStorageInterface $tokenStorage,
-
     )
     {
         parent::__construct($this->validator, $this->tokenStorage);
@@ -36,8 +35,8 @@ class DeleteProductForm extends ABaseForm implements IDeleteProductForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(Request $request): array
     {
-        return $this->deleteProductView->execute(self::getParams($request));
+        return $this->getProductView->execute(self::getParams($request));
     }
 }

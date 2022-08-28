@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Form\Product;
+namespace App\Form\Product\GetList;
 
 use App\Lib\Form\ABaseForm;
-use App\View\Product\IGetProductListView;
+use App\View\Product\GetList\IGetProductListView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

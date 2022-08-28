@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Product;
+namespace App\View\Product\Get;
 
 use App\Entity\Product;
 use App\Lib\View\IBaseView;

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Form\Product;
+namespace App\Form\Product\Update;
 
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
-use App\View\Product\ICreateProductView;
+use App\View\Product\Update\IUpdateProductView;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -14,13 +15,14 @@ class UpdateProductForm extends ABaseForm implements IUpdateProductForm
 {
 
     public function __construct(
-        private readonly ICreateProductView $createProductView,
-        private readonly ValidatorInterface $validator,
-        private readonly ProductRepository  $productRepository,
-        private readonly CategoryRepository $categoryRepository,
+        private readonly IUpdateProductView    $updateProductView,
+        private readonly ValidatorInterface    $validator,
+        private readonly ProductRepository     $productRepository,
+        private readonly CategoryRepository    $categoryRepository,
+        private readonly TokenStorageInterface $tokenStorage,
     )
     {
-        parent::__construct($this->validator);
+        parent::__construct($this->validator, $this->tokenStorage);
     }
 
     public function constraints(): array
@@ -76,6 +78,6 @@ class UpdateProductForm extends ABaseForm implements IUpdateProductForm
 
         $this->productRepository->flush();
 
-        return $this->createProductView->execute($product);
+        return $this->updateProductView->execute($product);
     }
 }
