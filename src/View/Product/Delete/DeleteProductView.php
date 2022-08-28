@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Product;
+namespace App\View\Product\Delete;
 
-use App\Lib\View\AListView;
+use App\Lib\View\ABaseView;
 use App\Repository\ProductRepository;
 
 
-class DeleteProductView extends AListView implements IDeleteProductView
+class DeleteProductView extends ABaseView implements IDeleteProductView
 {
     public function __construct(private readonly ProductRepository $productRepository)
     {

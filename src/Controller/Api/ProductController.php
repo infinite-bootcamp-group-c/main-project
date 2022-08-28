@@ -2,11 +2,11 @@
 
 namespace App\Controller\Api;
 
-use App\Form\Product\ICreateProductForm;
-use App\Form\Product\IDeleteProductForm;
-use App\Form\Product\IGetProductForm;
-use App\Form\Product\IGetProductListForm;
-use App\Form\Product\IUpdateProductForm;
+use App\Form\Product\Create\ICreateProductForm;
+use App\Form\Product\Delete\IDeleteProductForm;
+use App\Form\Product\Get\IGetProductForm;
+use App\Form\Product\GetList\IGetProductListForm;
+use App\Form\Product\Update\IUpdateProductForm;
 use App\Lib\Controller\BaseController;
 use OpenApi\Attributes\Tag;
 use Symfony\Component\HttpFoundation\JsonResponse;

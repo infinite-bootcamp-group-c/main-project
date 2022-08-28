@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Form\Product;
+namespace App\Form\Product\Create;
 
 use App\Entity\Product;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
-use App\View\Product\ICreateProductView;
+use App\View\Product\Create\ICreateProductView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;

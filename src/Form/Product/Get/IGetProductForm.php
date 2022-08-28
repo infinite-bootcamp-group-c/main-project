@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Product;
+namespace App\Form\Product\Get;
 
 use App\Lib\Form\IBaseForm;
 
