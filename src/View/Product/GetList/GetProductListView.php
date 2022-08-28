@@ -1,13 +1,13 @@
 <?php
 
-namespace App\View\Product;
+namespace App\View\Product\GetList;
 
 use App\Entity\Product;
-use App\Lib\View\AListView;
+use App\Lib\View\ABaseView;
 use App\Repository\ProductRepository;
 
 
-class GetProductListView extends AListView implements IGetProductListView
+class GetProductListView extends ABaseView implements IGetProductListView
 {
     public function __construct(private readonly ProductRepository $productRepository)
     {

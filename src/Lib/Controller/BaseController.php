@@ -17,5 +17,4 @@ class BaseController extends AbstractController
         $jsonResult = $form->execute($request);
         return $this->json($jsonResult);
     }
-
 }

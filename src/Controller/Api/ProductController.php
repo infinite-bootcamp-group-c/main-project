@@ -2,13 +2,14 @@
 
 namespace App\Controller\Api;
 
-use App\Form\Product\ICreateProductForm;
-use App\Form\Product\IDeleteProductForm;
-use App\Form\Product\IGetProductForm;
-use App\Form\Product\IGetProductListForm;
-use App\Form\Product\IUpdateProductForm;
+use App\Form\Product\Create\ICreateProductForm;
+use App\Form\Product\Delete\IDeleteProductForm;
+use App\Form\Product\Get\IGetProductForm;
+use App\Form\Product\GetList\IGetProductListForm;
+use App\Form\Product\Update\IUpdateProductForm;
 use App\Lib\Controller\BaseController;
 use OpenApi\Attributes\Tag;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,8 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Tag(name: 'Product', description: 'Product operations')]
 class ProductController extends BaseController
 {
-    #[Route('/', name: 'create_product', methods: ['POST'])]
+    public function __construct(
+        /*private readonly CacheItemPoolInterface $cache*/
+    )
+    {
+    }
 
+    #[Route('/', name: 'create_product', methods: ['POST'])]
     public function new(Request $request, ICreateProductForm $createProductForm): JsonResponse
     {
         return $this->makeResponse($createProductForm, $request);
@@ -34,6 +40,16 @@ class ProductController extends BaseController
     public function get(Request $request, IGetProductForm $getProductForm): JsonResponse
     {
         return $this->makeResponse($getProductForm, $request);
+        /*$cacheKey = 'product_' . $request->get('id');
+        $item = $this->cache->getItem($cacheKey);
+        if (!$item->isHit()) {
+            $cached = false;
+            $product = $this->makeResponse($getProductForm, $request);
+            $item->set($product);
+            $item->expiresAfter(30);
+            $this->cache->save($item);
+        }
+        return $item->get();*/
     }
 
     #[Route('/', name: 'get_product_list', methods: ['GET'])]
