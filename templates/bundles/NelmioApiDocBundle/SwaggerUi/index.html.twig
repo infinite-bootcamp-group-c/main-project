@@ -33,7 +33,13 @@
     <script type="text/javascript">
         (function () {
             var swaggerUI = {{ swagger_ui_config|json_encode(65)|raw }};
-            window.onload = loadSwaggerUI(swaggerUI);
+            window.onload = loadSwaggerUI({
+                ...swaggerUI, ...{
+                    layout: 'BaseLayout',
+                    persistAuthorization: true,
+                    dom_id: '#swagger-ui',
+                }
+            });
         })();
     </script>
 {% endblock swagger_initialization %}
