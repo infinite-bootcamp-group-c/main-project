@@ -93,7 +93,7 @@ nelmio_api_doc:
                       value: { "code": 401, "message": "JWT Refresh Token Not Found" }
     info:
       title: Infinite Bootcamp Group C API
-      description: This is an awesome app!
+      description: Export JSON documentation of the API at <a href="/api/doc.json">/api/doc.json</a>
       version: 1.0.0
     components:
       securitySchemes:
