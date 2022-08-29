@@ -13,6 +13,8 @@ use App\View\Product\Delete\IDeleteProductView;
 use App\View\Product\Get\IGetProductView;
 use App\View\Product\GetList\IGetProductListView;
 use App\View\Product\Update\IUpdateProductView;
+use OpenApi\Attributes as OA;
+use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Tag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,26 +24,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Tag(name: 'Product', description: 'Product operations')]
 class ProductController extends BaseController
 {
-
-    #[Route('/', name: 'create_product', methods: ['POST'])]
-    public function new(
-        Request            $request,
-        ICreateProductForm $createProductForm,
-        ICreateProductView $createProductView
-    ): JsonResponse
-    {
-        return $createProductForm->makeResponse($request, $createProductView);
-    }
-
-    #[Route('/{id}', name: 'delete_product', methods: ['DELETE'])]
-    public function delete(
-        Request            $request,
-        IDeleteProductForm $deleteProductForm,
-        IDeleteProductView $deleteProductView
-    ): JsonResponse
-    {
-        return $deleteProductForm->makeResponse($request, $deleteProductView);
-    }
 
     #[Route('/{id}', name: 'get_product', methods: ['GET'])]
     public function get(
@@ -63,7 +45,19 @@ class ProductController extends BaseController
         return $getProductListForm->makeResponse($request, $getProductListView);
     }
 
+    #[Route('/', name: 'create_product', methods: ['POST'])]
+    #[RequestBody(content: new OA\JsonContent())]
+    public function new(
+        Request            $request,
+        ICreateProductForm $createProductForm,
+        ICreateProductView $createProductView
+    ): JsonResponse
+    {
+        return $createProductForm->makeResponse($request, $createProductView);
+    }
+
     #[Route('/{id}', name: 'update_products', methods: ['PATCH'])]
+    #[OA\RequestBody(content: new OA\JsonContent())]
     public function update(
         Request            $request,
         IUpdateProductForm $updateProductForm,
@@ -71,6 +65,16 @@ class ProductController extends BaseController
     ): JsonResponse
     {
         return $updateProductForm->makeResponse($request, $updateProductView);
+    }
+
+    #[Route('/{id}', name: 'delete_product', methods: ['DELETE'])]
+    public function delete(
+        Request            $request,
+        IDeleteProductForm $deleteProductForm,
+        IDeleteProductView $deleteProductView
+    ): JsonResponse
+    {
+        return $deleteProductForm->makeResponse($request, $deleteProductView);
     }
 
 }
