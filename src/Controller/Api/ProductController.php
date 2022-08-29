@@ -13,7 +13,7 @@ use App\View\Product\Delete\IDeleteProductView;
 use App\View\Product\Get\IGetProductView;
 use App\View\Product\GetList\IGetProductListView;
 use App\View\Product\Update\IUpdateProductView;
-use OpenApi\Attributes as OA;
+use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Tag;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,7 +46,7 @@ class ProductController extends BaseController
     }
 
     #[Route('/', name: 'create_product', methods: ['POST'])]
-    #[RequestBody(content: new OA\JsonContent())]
+    #[RequestBody(content: new JsonContent())]
     public function new(
         Request            $request,
         ICreateProductForm $createProductForm,
@@ -57,7 +57,7 @@ class ProductController extends BaseController
     }
 
     #[Route('/{id}', name: 'update_products', methods: ['PATCH'])]
-    #[OA\RequestBody(content: new OA\JsonContent())]
+    #[RequestBody(content: new JsonContent())]
     public function update(
         Request            $request,
         IUpdateProductForm $updateProductForm,
