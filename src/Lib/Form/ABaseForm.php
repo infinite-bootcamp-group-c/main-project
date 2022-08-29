@@ -45,11 +45,10 @@ abstract class ABaseForm implements IBaseForm
         ]);
 
         $errors = $this->validator->validate($input, $constraints);
-
         if ($errors->count()) {
             $messages = [];
             foreach ($errors as $error) {
-                $messages[] = $error->getMessage();
+                $messages[$error->getPropertyPath()] = $error->getMessage();
             }
             return $messages;
         }
