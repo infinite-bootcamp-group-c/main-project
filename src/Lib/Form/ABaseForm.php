@@ -90,12 +90,13 @@ abstract class ABaseForm implements IBaseForm
         $validation = $this->validate($request);
 
         if (count($validation))
-            return $this->json(['errors' => $validation]);
+            return $this->json(['errors' => $validation], Response::HTTP_BAD_REQUEST);
 
         return $this->json(
             $view->execute(
-                $this->execute($request)
+                $this->execute($request),
             ),
+            $view->getHTTPStatusCode()
         );
     }
 }
