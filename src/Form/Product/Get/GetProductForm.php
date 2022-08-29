@@ -3,7 +3,6 @@
 namespace App\Form\Product\Get;
 
 use App\Lib\Form\ABaseForm;
-use App\View\Product\Get\IGetProductView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,7 +12,6 @@ class GetProductForm extends ABaseForm implements IGetProductForm
 {
 
     public function __construct(
-        private readonly IGetProductView       $getProductView,
         private readonly ValidatorInterface    $validator,
         private readonly TokenStorageInterface $tokenStorage,
     )
@@ -37,6 +35,6 @@ class GetProductForm extends ABaseForm implements IGetProductForm
 
     public function execute(Request $request): array
     {
-        return $this->getProductView->execute(self::getParams($request));
+        return self::getParams($request);
     }
 }
