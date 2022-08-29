@@ -2,6 +2,7 @@
 
 namespace App\Lib\Form;
 
+use App\Lib\View\ABaseView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,7 +86,7 @@ abstract class ABaseForm implements IBaseForm
         return new JsonResponse($data, $status);
     }
 
-    public function makeResponse(Request $request): JsonResponse
+    public function makeResponse(Request $request, ABaseView $view): JsonResponse
     {
         $validation = $this->validate($request);
 
@@ -93,7 +94,9 @@ abstract class ABaseForm implements IBaseForm
             return $this->json(['errors' => $validation]);
 
         return $this->json(
-            $this->execute($request)
+            $view->execute(
+                $this->execute($request)
+            ),
         );
     }
 }

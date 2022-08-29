@@ -13,7 +13,6 @@ class DeleteProductForm extends ABaseForm implements IDeleteProductForm
 {
 
     public function __construct(
-        private readonly IDeleteProductView    $deleteProductView,
         private readonly ValidatorInterface    $validator,
         private readonly TokenStorageInterface $tokenStorage,
 
@@ -38,6 +37,6 @@ class DeleteProductForm extends ABaseForm implements IDeleteProductForm
 
     public function execute(Request $request)
     {
-        return $this->deleteProductView->execute(self::getParams($request));
+        return self::getParams($request);
     }
 }
