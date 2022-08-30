@@ -2,17 +2,17 @@
 
 namespace App\Controller\Api;
 
-use App\Form\Product\Create\CreateProductForm;
-use App\Form\Product\Delete\DeleteProductForm;
-use App\Form\Product\Get\GetProductForm;
-use App\Form\Product\GetList\GetProductListForm;
-use App\Form\Product\Update\UpdateProductForm;
+use App\Form\Product\CreateProductForm;
+use App\Form\Product\DeleteProductForm;
+use App\Form\Product\GetProductForm;
+use App\Form\Product\GetProductListForm;
+use App\Form\Product\UpdateProductForm;
 use App\Lib\Controller\BaseController;
-use App\View\Product\Create\CreateProductView;
-use App\View\Product\Delete\DeleteProductView;
-use App\View\Product\Get\GetProductView;
-use App\View\Product\GetList\GetProductListView;
-use App\View\Product\Update\UpdateProductView;
+use App\View\Product\CreateProductView;
+use App\View\Product\DeleteProductView;
+use App\View\Product\GetProductListView;
+use App\View\Product\GetProductView;
+use App\View\Product\UpdateProductView;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Tag;

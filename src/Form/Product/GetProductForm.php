@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Form\Product\GetList;
+namespace App\Form\Product;
 
 use App\Lib\Form\ABaseForm;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class GetProductListForm extends ABaseForm
+class GetProductForm extends ABaseForm
 {
 
     public function __construct(
@@ -20,7 +21,16 @@ class GetProductListForm extends ABaseForm
 
     public function constraints(): array
     {
-        return [];
+        return [
+            'route' => [
+                'id' => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type('digit'),
+                ],
+            ],
+        ];
     }
 
     public function execute(Request $request): array

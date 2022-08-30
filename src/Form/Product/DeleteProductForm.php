@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Product\Delete;
+namespace App\Form\Product;
 
 use App\Lib\Form\ABaseForm;
 use App\Repository\ProductRepository;
