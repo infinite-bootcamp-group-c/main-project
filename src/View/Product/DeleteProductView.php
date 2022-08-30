@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Product\Delete;
+namespace App\View\Product;
 
 use App\Lib\View\ABaseView;
 use App\Repository\ProductRepository;

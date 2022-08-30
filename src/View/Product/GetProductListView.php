@@ -1,12 +1,10 @@
 <?php
 
-namespace App\View\Product\GetList;
+namespace App\View\Product;
 
 use App\Entity\Product;
 use App\Lib\View\ABaseView;
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 
 class GetProductListView extends ABaseView

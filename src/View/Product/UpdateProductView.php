@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Product\Create;
+namespace App\View\Product;
 
 use App\Entity\Product;
 use App\Lib\View\ABaseView;
 
 
-class CreateProductView extends ABaseView
+class UpdateProductView extends ABaseView
 {
     public function __construct()
     {
