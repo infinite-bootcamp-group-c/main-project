@@ -3,6 +3,7 @@
 namespace App\Lib\Form;
 
 use App\Lib\View\ABaseView;
+use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +22,22 @@ abstract class ABaseForm implements IBaseForm
     {
     }
 
+    public static function getBodyParams(Request $request): array
+    {
+        return json_decode($request->getContent(), true) ?? [];
+    }
+
+    public static function getQueryParams(Request $request): array
+    {
+        return $request->query->all() ?? [];
+    }
+
+    public static function getRouteParams(Request $request): array
+    {
+        return $request->attributes->get('_route_params') ?? [];
+    }
+
+    #[ArrayShape(['body' => "array", 'query' => "array", 'route' => "array"])]
     public static function getParams(Request $request): array
     {
         return [
@@ -28,6 +45,11 @@ abstract class ABaseForm implements IBaseForm
             'query' => self::getQueryParams($request),
             'route' => self::getRouteParams($request)
         ];
+    }
+
+    public function getUser(): ?UserInterface
+    {
+        return $this->tokenStorage->getToken()->getUser();
     }
 
     public function validate(Request $request): array
@@ -56,47 +78,33 @@ abstract class ABaseForm implements IBaseForm
 
     }
 
-    public static function getBodyParams(Request $request): array
-    {
-        return json_decode($request->getContent(), true) ?? [];
-    }
-
-    public static function getQueryParams(Request $request): array
-    {
-        return $request->query->all() ?? [];
-    }
-
-    public static function getRouteParams(Request $request): array
-    {
-        return $request->attributes->get('_route_params') ?? [];
-    }
-
-    public abstract function constraints();
-
-    public function getUser(): ?UserInterface
-    {
-        return $this->tokenStorage->getToken()->getUser();
-    }
-
-    public abstract function execute(Request $request);
-
-    public function json(array $data, int $status = Response::HTTP_OK): JsonResponse
+    public function json(mixed $data, int $status = Response::HTTP_OK): JsonResponse
     {
         return new JsonResponse($data, $status);
     }
 
-    public function makeResponse(Request $request, ABaseView $view): JsonResponse
+    public function makeResponse(Request $request, ABaseView $view = null): JsonResponse
     {
         $validation = $this->validate($request);
 
         if (count($validation))
             return $this->json(['errors' => $validation], Response::HTTP_BAD_REQUEST);
 
+        $formExecution = $this->execute($request);
+
+        if (!$view)
+            return $this->json(
+                null,
+                Response::HTTP_NO_CONTENT);
+
+
         return $this->json(
-            $view->execute(
-                $this->execute($request),
-            ),
+            $view->execute($formExecution),
             $view->getHTTPStatusCode()
         );
     }
+
+    public abstract function constraints(): array;
+
+    public abstract function execute(Request $request);
 }
