@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Form\Product\Create;
+namespace App\Form\Product;
 
 use App\Entity\Product;
+use App\Form\Product\Create\ICreateProductForm;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
-use App\View\Product\Create\ICreateProductView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class CreateProductForm extends ABaseForm implements ICreateProductForm
+class CreateProductForm extends ABaseForm
 {
 
     public function __construct(
@@ -28,22 +28,6 @@ class CreateProductForm extends ABaseForm implements ICreateProductForm
     public function constraints(): array
     {
         return [
-            'query' => [
-                'page' => [
-                    new Assert\NotBlank(),
-                    new Assert\NotNull(),
-                    new Assert\Positive(),
-                    new Assert\Type('digit'),
-                ],
-            ],
-            'route' => [
-                'id' => [
-                    new Assert\NotBlank(),
-                    new Assert\NotNull(),
-                    new Assert\Positive(),
-                    new Assert\Type('digit'),
-                ],
-            ],
             'body' => [
                 'category_id' => [
                     new Assert\NotBlank(),
@@ -84,15 +68,19 @@ class CreateProductForm extends ABaseForm implements ICreateProductForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(Request $request): Product
     {
         $form = self::getParams($request);
-        $product = new Product();
-        $product->setName($form["body"]["name"]);
-        $product->setPrice($form["body"]["price"]);
-        $product->setCategory($this->categoryRepository->find($form["body"]["category_id"]));
-        $product->setDescription($form["body"]["description"]);
-        $product->setQuantity($form["body"]["quantity"]);
+
+        $product = (new Product())
+            ->setName($form["body"]["name"])
+            ->setPrice($form["body"]["price"])
+            ->setCategory(
+                $this->categoryRepository->find($form["body"]["category_id"])
+            )
+            ->setDescription($form["body"]["description"])
+            ->setQuantity($form["body"]["quantity"]);
+
         $this->productRepository->add($product, flush: true);
 
         return $product;

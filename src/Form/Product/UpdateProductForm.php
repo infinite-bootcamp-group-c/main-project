@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Form\Product\Update;
+namespace App\Form\Product;
 
+use App\Entity\Product;
+use App\Form\Product\Update\IUpdateProductForm;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
-use App\View\Product\Update\IUpdateProductView;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class UpdateProductForm extends ABaseForm implements IUpdateProductForm
+class UpdateProductForm extends ABaseForm
 {
 
     public function __construct(
-        private readonly IUpdateProductView    $updateProductView,
         private readonly ValidatorInterface    $validator,
         private readonly ProductRepository     $productRepository,
         private readonly CategoryRepository    $categoryRepository,
@@ -64,15 +65,27 @@ class UpdateProductForm extends ABaseForm implements IUpdateProductForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(Request $request): Product
     {
         $form = self::getParams($request);
 
-        $product = $this->productRepository->find($form['route']['id']);
+        $productId = $form['route']['id'];
+        $product = $this->productRepository->find($productId);
+
+        if (!$product) {
+            throw new BadRequestException("Product ${productId} not found");
+        }
+
+        $categoryId = $form['body']['category_id'];
+        $category = $this->categoryRepository->find($categoryId);
+
+        if (!$category) {
+            throw new BadRequestException("Category ${categoryId} not found");
+        }
 
         isset($form['body']["name"]) && $product->setName($form['body']['name']);
         isset($form['body']['price']) && $product->setPrice($form['body']['price']);
-        isset($form['body']['category_id']) && $product->setCategory($this->categoryRepository->find($form['body']['category_id']));
+        isset($form['body']['category_id']) && $product->setCategory($category);
         isset($form['body']['description']) && $product->setDescription($form['body']['description']);
         isset($form['body']['quantity']) && $product->setQuantity($form['body']['quantity']);
 

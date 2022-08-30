@@ -1,23 +1,24 @@
 <?php
 
-namespace App\Form\Product\Delete;
+namespace App\Form\Product;
 
+use App\Entity\Product;
 use App\Lib\Form\ABaseForm;
 use App\Repository\ProductRepository;
-use App\View\Product\Delete\IDeleteProductView;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class DeleteProductForm extends ABaseForm implements IDeleteProductForm
+class GetProductForm extends ABaseForm
 {
 
     public function __construct(
         private readonly ValidatorInterface    $validator,
         private readonly TokenStorageInterface $tokenStorage,
         private readonly ProductRepository     $productRepository,
-
     )
     {
         parent::__construct($this->validator, $this->tokenStorage);
@@ -37,8 +38,16 @@ class DeleteProductForm extends ABaseForm implements IDeleteProductForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(Request $request): Product
     {
-        $this->productRepository->removeById(self::getParams($request)['route']['id']);
+        $form = self::getParams($request);
+        $productId = $form['route']['id'];
+        $product = $this->productRepository->find($productId);
+
+        if (!$product) {
+            throw new NotFoundHttpException("Product ${productId} found");
+        }
+
+        return $product;
     }
 }

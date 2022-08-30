@@ -15,4 +15,5 @@ abstract class ABaseView implements IBaseView
     {
         return $this->HTTPStatusCode;
     }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Lib\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityNotFoundException;
 
 /**
  * @extends ServiceEntityRepository
@@ -28,9 +29,16 @@ abstract class ABaseRepository extends ServiceEntityRepository implements IBaseR
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * @throws EntityNotFoundException
+     */
     public function removeById($id, bool $flush = true): void
     {
-        $this->remove($this->find($id), $flush);
+        $entity = $this->find($id);
+        if (!$entity) {
+            throw new EntityNotFoundException();
+        }
+        $this->remove($entity, $flush);
     }
 
     public function remove($entity, bool $flush = false): void
