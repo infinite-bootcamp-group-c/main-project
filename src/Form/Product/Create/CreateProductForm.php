@@ -28,6 +28,22 @@ class CreateProductForm extends ABaseForm implements ICreateProductForm
     public function constraints(): array
     {
         return [
+            'query' => [
+                'page' => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type('digit'),
+                ],
+            ],
+            'route' => [
+                'id' => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type('digit'),
+                ],
+            ],
             'body' => [
                 'category_id' => [
                     new Assert\NotBlank(),

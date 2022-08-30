@@ -71,10 +71,9 @@ class ProductController extends BaseController
     public function delete(
         Request            $request,
         IDeleteProductForm $deleteProductForm,
-        IDeleteProductView $deleteProductView
     ): JsonResponse
     {
-        return $deleteProductForm->makeResponse($request, $deleteProductView);
+        return $deleteProductForm->makeResponse($request);
     }
 
 }
