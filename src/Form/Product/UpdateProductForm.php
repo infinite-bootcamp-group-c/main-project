@@ -57,7 +57,6 @@ class UpdateProductForm extends ABaseForm
                     new Assert\Positive(),
                 ],
                 'description' => [
-                    new Assert\Length(min: 150, max: 1000),
                     new Assert\Regex(pattern: '/^\w+/', message: 'Description must contain only letters, numbers and underscores'),
                 ],
             ],
