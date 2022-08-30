@@ -12,7 +12,6 @@ class ExceptionListener
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
-        $request = $event->getRequest();
 
         $response = new JsonResponse([
             'message' => $exception->getMessage(),
