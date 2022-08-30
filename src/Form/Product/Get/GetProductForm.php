@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class GetProductForm extends ABaseForm implements IGetProductForm
+class GetProductForm extends ABaseForm
 {
 
     public function __construct(

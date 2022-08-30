@@ -6,7 +6,7 @@ use App\Entity\Product;
 use App\Lib\View\ABaseView;
 
 
-class UpdateProductView extends ABaseView implements IUpdateProductView
+class UpdateProductView extends ABaseView
 {
     public function __construct()
     {

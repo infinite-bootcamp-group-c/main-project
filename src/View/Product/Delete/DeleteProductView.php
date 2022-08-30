@@ -7,7 +7,7 @@ use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class DeleteProductView extends ABaseView implements IDeleteProductView
+class DeleteProductView extends ABaseView
 {
     protected int $HTTPStatusCode = Response::HTTP_NO_CONTENT;
 

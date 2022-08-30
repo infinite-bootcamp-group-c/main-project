@@ -5,17 +5,17 @@ namespace App\Form\Product\Update;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
-use App\View\Product\Update\IUpdateProductView;
+use App\View\Product\Update\UpdateProductView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class UpdateProductForm extends ABaseForm implements IUpdateProductForm
+class UpdateProductForm extends ABaseForm
 {
 
     public function __construct(
-        private readonly IUpdateProductView    $updateProductView,
+        private readonly UpdateProductView    $updateProductView,
         private readonly ValidatorInterface    $validator,
         private readonly ProductRepository     $productRepository,
         private readonly CategoryRepository    $categoryRepository,

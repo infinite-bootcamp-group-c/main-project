@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class CreateProductForm extends ABaseForm implements ICreateProductForm
+class CreateProductForm extends ABaseForm
 {
 
     public function __construct(
@@ -60,8 +60,6 @@ class CreateProductForm extends ABaseForm implements ICreateProductForm
                     new Assert\Positive(),
                 ],
                 'description' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length(min: 150, max: 1000),
                     new Assert\Regex(pattern: '/^\w+/', message: 'Description must contain only letters, numbers and underscores'),
                 ],
             ],
