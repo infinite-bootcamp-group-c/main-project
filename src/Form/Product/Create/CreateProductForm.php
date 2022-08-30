@@ -16,7 +16,6 @@ class CreateProductForm extends ABaseForm implements ICreateProductForm
 {
 
     public function __construct(
-        private readonly ICreateProductView    $createProductView,
         private readonly ValidatorInterface    $validator,
         private readonly ProductRepository     $productRepository,
         private readonly CategoryRepository    $categoryRepository,
@@ -29,6 +28,22 @@ class CreateProductForm extends ABaseForm implements ICreateProductForm
     public function constraints(): array
     {
         return [
+            'query' => [
+                'page' => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type('digit'),
+                ],
+            ],
+            'route' => [
+                'id' => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type('digit'),
+                ],
+            ],
             'body' => [
                 'category_id' => [
                     new Assert\NotBlank(),
@@ -69,7 +84,7 @@ class CreateProductForm extends ABaseForm implements ICreateProductForm
         ];
     }
 
-    public function execute(Request $request): array
+    public function execute(Request $request)
     {
         $form = self::getParams($request);
         $product = new Product();
@@ -80,6 +95,6 @@ class CreateProductForm extends ABaseForm implements ICreateProductForm
         $product->setQuantity($form["body"]["quantity"]);
         $this->productRepository->add($product, flush: true);
 
-        return $this->createProductView->execute($product);
+        return $product;
     }
 }

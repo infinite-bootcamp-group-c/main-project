@@ -3,6 +3,7 @@
 namespace App\Form\Product\Delete;
 
 use App\Lib\Form\ABaseForm;
+use App\Repository\ProductRepository;
 use App\View\Product\Delete\IDeleteProductView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -13,9 +14,9 @@ class DeleteProductForm extends ABaseForm implements IDeleteProductForm
 {
 
     public function __construct(
-        private readonly IDeleteProductView    $deleteProductView,
         private readonly ValidatorInterface    $validator,
         private readonly TokenStorageInterface $tokenStorage,
+        private readonly ProductRepository     $productRepository,
 
     )
     {
@@ -38,6 +39,6 @@ class DeleteProductForm extends ABaseForm implements IDeleteProductForm
 
     public function execute(Request $request)
     {
-        return $this->deleteProductView->execute(self::getParams($request));
+        $this->productRepository->removeById(self::getParams($request)['route']['id']);
     }
 }
