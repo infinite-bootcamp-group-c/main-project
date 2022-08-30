@@ -27,8 +27,8 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 15, scale: '0')]
-    private ?string $price = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $price = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $quantity = null;
