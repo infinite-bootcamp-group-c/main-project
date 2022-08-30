@@ -22,6 +22,16 @@ abstract class ABaseForm implements IBaseForm
     {
     }
 
+    #[ArrayShape(['body' => "array", 'query' => "array", 'route' => "array"])]
+    public static function getParams(Request $request): array
+    {
+        return [
+            'body' => self::getBodyParams($request),
+            'query' => self::getQueryParams($request),
+            'route' => self::getRouteParams($request)
+        ];
+    }
+
     public static function getBodyParams(Request $request): array
     {
         return json_decode($request->getContent(), true) ?? [];
@@ -37,19 +47,30 @@ abstract class ABaseForm implements IBaseForm
         return $request->attributes->get('_route_params') ?? [];
     }
 
-    #[ArrayShape(['body' => "array", 'query' => "array", 'route' => "array"])]
-    public static function getParams(Request $request): array
-    {
-        return [
-            'body' => self::getBodyParams($request),
-            'query' => self::getQueryParams($request),
-            'route' => self::getRouteParams($request)
-        ];
-    }
-
     public function getUser(): ?UserInterface
     {
         return $this->tokenStorage->getToken()->getUser();
+    }
+
+    public function makeResponse(Request $request, ABaseView $view = null): JsonResponse
+    {
+        $validation = $this->validate($request);
+
+        if (count($validation))
+            return $this->json(['errors' => $validation], Response::HTTP_BAD_REQUEST);
+
+        $formExecution = $this->execute($request);
+
+        if (!$view)
+            return $this->json(
+                null,
+                Response::HTTP_NO_CONTENT);
+
+
+        return $this->json(
+            $view->execute($formExecution),
+            $view->getHTTPStatusCode()
+        );
     }
 
     public function validate(Request $request): array
@@ -78,33 +99,12 @@ abstract class ABaseForm implements IBaseForm
 
     }
 
+    public abstract function constraints(): array;
+
     public function json(mixed $data, int $status = Response::HTTP_OK): JsonResponse
     {
         return new JsonResponse($data, $status);
     }
-
-    public function makeResponse(Request $request, ABaseView $view = null): JsonResponse
-    {
-        $validation = $this->validate($request);
-
-        if (count($validation))
-            return $this->json(['errors' => $validation], Response::HTTP_BAD_REQUEST);
-
-        $formExecution = $this->execute($request);
-
-        if (!$view)
-            return $this->json(
-                null,
-                Response::HTTP_NO_CONTENT);
-
-
-        return $this->json(
-            $view->execute($formExecution),
-            $view->getHTTPStatusCode()
-        );
-    }
-
-    public abstract function constraints(): array;
 
     public abstract function execute(Request $request);
 }

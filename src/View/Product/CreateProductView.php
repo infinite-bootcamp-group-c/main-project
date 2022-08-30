@@ -4,10 +4,12 @@ namespace App\View\Product;
 
 use App\Entity\Product;
 use App\Lib\View\ABaseView;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class CreateProductView extends ABaseView
 {
+    protected int $HTTPStatusCode = Response::HTTP_CREATED;
 
     public function execute(Product $product): array
     {
