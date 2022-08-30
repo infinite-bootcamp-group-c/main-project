@@ -4,13 +4,12 @@ namespace App\Form\Product\Delete;
 
 use App\Lib\Form\ABaseForm;
 use App\Repository\ProductRepository;
-use App\View\Product\Delete\IDeleteProductView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class DeleteProductForm extends ABaseForm implements IDeleteProductForm
+class DeleteProductForm extends ABaseForm
 {
 
     public function __construct(

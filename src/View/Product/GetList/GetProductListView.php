@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 
-class GetProductListView extends ABaseView implements IGetProductListView
+class GetProductListView extends ABaseView
 {
     public function __construct(private readonly ProductRepository $productRepository)
     {

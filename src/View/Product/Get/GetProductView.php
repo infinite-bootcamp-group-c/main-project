@@ -6,10 +6,9 @@ use App\Entity\Product;
 use App\Lib\View\ABaseView;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
-use function PHPUnit\Framework\isNull;
 
 
-class GetProductView extends ABaseView implements IGetProductView
+class GetProductView extends ABaseView
 {
     public function __construct(private readonly ProductRepository $productRepository)
     {
@@ -24,7 +23,7 @@ class GetProductView extends ABaseView implements IGetProductView
     public function getData(array $form): Product
     {
         $product = $this->productRepository->find($form['route']['id']);
-        if (isNull($product)) {
+        if (!$product) {
             throw new BadRequestException('Product not found');
         }
         return $product;

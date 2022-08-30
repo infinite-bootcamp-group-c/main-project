@@ -2,17 +2,17 @@
 
 namespace App\Controller\Api;
 
-use App\Form\Product\Create\ICreateProductForm;
-use App\Form\Product\Delete\IDeleteProductForm;
-use App\Form\Product\Get\IGetProductForm;
-use App\Form\Product\GetList\IGetProductListForm;
-use App\Form\Product\Update\IUpdateProductForm;
+use App\Form\Product\Create\CreateProductForm;
+use App\Form\Product\Delete\DeleteProductForm;
+use App\Form\Product\Get\GetProductForm;
+use App\Form\Product\GetList\GetProductListForm;
+use App\Form\Product\Update\UpdateProductForm;
 use App\Lib\Controller\BaseController;
-use App\View\Product\Create\ICreateProductView;
-use App\View\Product\Delete\IDeleteProductView;
-use App\View\Product\Get\IGetProductView;
-use App\View\Product\GetList\IGetProductListView;
-use App\View\Product\Update\IUpdateProductView;
+use App\View\Product\Create\CreateProductView;
+use App\View\Product\Delete\DeleteProductView;
+use App\View\Product\Get\GetProductView;
+use App\View\Product\GetList\GetProductListView;
+use App\View\Product\Update\UpdateProductView;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Tag;
@@ -28,8 +28,8 @@ class ProductController extends BaseController
     #[Route('/{id}', name: 'get_product', methods: ['GET'])]
     public function get(
         Request         $request,
-        IGetProductForm $getProductForm,
-        IGetProductView $getProductView
+        GetProductForm $getProductForm,
+        GetProductView $getProductView
     ): JsonResponse
     {
         return $getProductForm->makeResponse($request, $getProductView);
@@ -38,8 +38,8 @@ class ProductController extends BaseController
     #[Route('/', name: 'get_product_list', methods: ['GET'])]
     public function getList(
         Request             $request,
-        IGetProductListForm $getProductListForm,
-        IGetProductListView $getProductListView
+        GetProductListForm $getProductListForm,
+        GetProductListView $getProductListView
     ): JsonResponse
     {
         return $getProductListForm->makeResponse($request, $getProductListView);
@@ -49,8 +49,8 @@ class ProductController extends BaseController
     #[RequestBody(content: new JsonContent())]
     public function new(
         Request            $request,
-        ICreateProductForm $createProductForm,
-        ICreateProductView $createProductView
+        CreateProductForm $createProductForm,
+        CreateProductView $createProductView
     ): JsonResponse
     {
         return $createProductForm->makeResponse($request, $createProductView);
@@ -60,8 +60,8 @@ class ProductController extends BaseController
     #[RequestBody(content: new JsonContent())]
     public function update(
         Request            $request,
-        IUpdateProductForm $updateProductForm,
-        IUpdateProductView $updateProductView
+        UpdateProductForm $updateProductForm,
+        UpdateProductView $updateProductView
     ): JsonResponse
     {
         return $updateProductForm->makeResponse($request, $updateProductView);
@@ -70,8 +70,8 @@ class ProductController extends BaseController
     #[Route('/{id}', name: 'delete_product', methods: ['DELETE'])]
     public function delete(
         Request            $request,
-        IDeleteProductForm $deleteProductForm,
-        IDeleteProductView $deleteProductView
+        DeleteProductForm $deleteProductForm,
+        DeleteProductView $deleteProductView
     ): JsonResponse
     {
         return $deleteProductForm->makeResponse($request, $deleteProductView);
