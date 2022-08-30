@@ -3,7 +3,6 @@
 namespace App\Form\Product;
 
 use App\Entity\Product;
-use App\Form\Product\Update\IUpdateProductForm;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
@@ -18,9 +17,9 @@ class UpdateProductForm extends ABaseForm
 
     public function __construct(
         private readonly ValidatorInterface    $validator,
+        private readonly TokenStorageInterface $tokenStorage,
         private readonly ProductRepository     $productRepository,
         private readonly CategoryRepository    $categoryRepository,
-        private readonly TokenStorageInterface $tokenStorage,
     )
     {
         parent::__construct($this->validator, $this->tokenStorage);

@@ -2,7 +2,6 @@
 
 namespace App\Form\Product;
 
-use App\Form\Product\Delete\IDeleteProductForm;
 use App\Lib\Form\ABaseForm;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityNotFoundException;

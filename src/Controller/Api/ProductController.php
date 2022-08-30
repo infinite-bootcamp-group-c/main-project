@@ -36,7 +36,7 @@ class ProductController extends BaseController
 
     #[Route('/', name: 'get_product_list', methods: ['GET'])]
     public function getList(
-        Request             $request,
+        Request            $request,
         GetProductListForm $getProductListForm,
         GetProductListView $getProductListView
     ): JsonResponse
@@ -45,9 +45,9 @@ class ProductController extends BaseController
     }
 
     #[Route('/', name: 'create_product', methods: ['POST'])]
-    #[RequestBody(content: new JsonContent())]
+    #[RequestBody(content: new JsonContent(default: '{}'))]
     public function new(
-        Request            $request,
+        Request           $request,
         CreateProductForm $createProductForm,
         CreateProductView $createProductView
     ): JsonResponse
@@ -56,9 +56,9 @@ class ProductController extends BaseController
     }
 
     #[Route('/{id}', name: 'update_products', methods: ['PATCH'])]
-    #[RequestBody(content: new JsonContent())]
+    #[RequestBody(content: new JsonContent(default: '{}'))]
     public function update(
-        Request            $request,
+        Request           $request,
         UpdateProductForm $updateProductForm,
         UpdateProductView $updateProductView
     ): JsonResponse
@@ -68,7 +68,7 @@ class ProductController extends BaseController
 
     #[Route('/{id}', name: 'delete_product', methods: ['DELETE'])]
     public function delete(
-        Request            $request,
+        Request           $request,
         DeleteProductForm $deleteProductForm,
     ): JsonResponse
     {

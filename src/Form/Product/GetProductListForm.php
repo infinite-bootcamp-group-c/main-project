@@ -2,7 +2,6 @@
 
 namespace App\Form\Product;
 
-use App\Form\Product\GetList\IGetProductListForm;
 use App\Lib\Form\ABaseForm;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;

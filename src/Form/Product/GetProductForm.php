@@ -5,7 +5,6 @@ namespace App\Form\Product;
 use App\Entity\Product;
 use App\Lib\Form\ABaseForm;
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
