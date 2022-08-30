@@ -2,8 +2,12 @@
 
 namespace App\Lib\Form;
 
+use App\Lib\View\ABaseView;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -41,11 +45,10 @@ abstract class ABaseForm implements IBaseForm
         ]);
 
         $errors = $this->validator->validate($input, $constraints);
-
         if ($errors->count()) {
             $messages = [];
             foreach ($errors as $error) {
-                $messages[] = $error->getMessage();
+                $messages[$error->getPropertyPath()] = $error->getMessage();
             }
             return $messages;
         }
@@ -70,10 +73,30 @@ abstract class ABaseForm implements IBaseForm
 
     public abstract function constraints();
 
-    public function getUser()
+    public function getUser(): ?UserInterface
     {
         return $this->tokenStorage->getToken()->getUser();
     }
 
     public abstract function execute(Request $request);
+
+    public function json(array $data, int $status = Response::HTTP_OK): JsonResponse
+    {
+        return new JsonResponse($data, $status);
+    }
+
+    public function makeResponse(Request $request, ABaseView $view): JsonResponse
+    {
+        $validation = $this->validate($request);
+
+        if (count($validation))
+            return $this->json(['errors' => $validation], Response::HTTP_BAD_REQUEST);
+
+        return $this->json(
+            $view->execute(
+                $this->execute($request),
+            ),
+            $view->getHTTPStatusCode()
+        );
+    }
 }

@@ -64,7 +64,7 @@ class UpdateProductForm extends ABaseForm implements IUpdateProductForm
         ];
     }
 
-    public function execute(Request $request): array
+    public function execute(Request $request)
     {
         $form = self::getParams($request);
 
@@ -78,6 +78,6 @@ class UpdateProductForm extends ABaseForm implements IUpdateProductForm
 
         $this->productRepository->flush();
 
-        return $this->updateProductView->execute($product);
+        return $product;
     }
 }

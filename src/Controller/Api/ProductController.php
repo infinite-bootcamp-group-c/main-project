@@ -8,8 +8,14 @@ use App\Form\Product\Get\IGetProductForm;
 use App\Form\Product\GetList\IGetProductListForm;
 use App\Form\Product\Update\IUpdateProductForm;
 use App\Lib\Controller\BaseController;
+use App\View\Product\Create\ICreateProductView;
+use App\View\Product\Delete\IDeleteProductView;
+use App\View\Product\Get\IGetProductView;
+use App\View\Product\GetList\IGetProductListView;
+use App\View\Product\Update\IUpdateProductView;
+use OpenApi\Attributes\JsonContent;
+use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Tag;
-use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,50 +24,56 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Tag(name: 'Product', description: 'Product operations')]
 class ProductController extends BaseController
 {
-    public function __construct(
-        /*private readonly CacheItemPoolInterface $cache*/
-    )
-    {
-    }
-
-    #[Route('/', name: 'create_product', methods: ['POST'])]
-    public function new(Request $request, ICreateProductForm $createProductForm): JsonResponse
-    {
-        return $this->makeResponse($createProductForm, $request);
-    }
-
-    #[Route('/{id}', name: 'delete_product', methods: ['DELETE'])]
-    public function delete(Request $request, IDeleteProductForm $deleteProductForm): JsonResponse
-    {
-        return $this->makeResponse($deleteProductForm, $request);
-    }
 
     #[Route('/{id}', name: 'get_product', methods: ['GET'])]
-    public function get(Request $request, IGetProductForm $getProductForm): JsonResponse
+    public function get(
+        Request         $request,
+        IGetProductForm $getProductForm,
+        IGetProductView $getProductView
+    ): JsonResponse
     {
-        return $this->makeResponse($getProductForm, $request);
-        /*$cacheKey = 'product_' . $request->get('id');
-        $item = $this->cache->getItem($cacheKey);
-        if (!$item->isHit()) {
-            $cached = false;
-            $product = $this->makeResponse($getProductForm, $request);
-            $item->set($product);
-            $item->expiresAfter(30);
-            $this->cache->save($item);
-        }
-        return $item->get();*/
+        return $getProductForm->makeResponse($request, $getProductView);
     }
 
     #[Route('/', name: 'get_product_list', methods: ['GET'])]
-    public function getList(Request $request, IGetProductListForm $getProductListForm): JsonResponse
+    public function getList(
+        Request             $request,
+        IGetProductListForm $getProductListForm,
+        IGetProductListView $getProductListView
+    ): JsonResponse
     {
-        return $this->makeResponse($getProductListForm, $request);
+        return $getProductListForm->makeResponse($request, $getProductListView);
+    }
+
+    #[Route('/', name: 'create_product', methods: ['POST'])]
+    #[RequestBody(content: new JsonContent())]
+    public function new(
+        Request            $request,
+        ICreateProductForm $createProductForm,
+        ICreateProductView $createProductView
+    ): JsonResponse
+    {
+        return $createProductForm->makeResponse($request, $createProductView);
     }
 
     #[Route('/{id}', name: 'update_products', methods: ['PATCH'])]
-    public function update(Request $request, IUpdateProductForm $updateProductForm): JsonResponse
+    #[RequestBody(content: new JsonContent())]
+    public function update(
+        Request            $request,
+        IUpdateProductForm $updateProductForm,
+        IUpdateProductView $updateProductView
+    ): JsonResponse
     {
-        return $this->makeResponse($updateProductForm, $request);
+        return $updateProductForm->makeResponse($request, $updateProductView);
+    }
+
+    #[Route('/{id}', name: 'delete_product', methods: ['DELETE'])]
+    public function delete(
+        Request            $request,
+        IDeleteProductForm $deleteProductForm,
+    ): JsonResponse
+    {
+        return $deleteProductForm->makeResponse($request);
     }
 
 }
