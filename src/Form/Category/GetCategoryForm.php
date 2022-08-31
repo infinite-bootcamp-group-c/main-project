@@ -8,19 +8,14 @@ use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class GetCategoryForm extends ABaseForm
 {
 
     public function __construct(
-        private readonly ValidatorInterface $validator,
-        private readonly TokenStorageInterface $tokenStorage,
-        private readonly CategoryRepository $categoryRepository,
+        private readonly CategoryRepository $categoryRepository
     )
     {
-        parent::__construct($this->validator, $this->tokenStorage);
     }
 
     public function constraints(): array
