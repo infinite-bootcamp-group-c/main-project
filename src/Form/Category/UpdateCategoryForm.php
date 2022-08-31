@@ -15,13 +15,10 @@ class UpdateCategoryForm extends ABaseForm
 {
 
     public function __construct(
-        private readonly ValidatorInterface $validator,
-        private readonly TokenStorageInterface $tokenStorage,
         private readonly CategoryRepository $categoryRepository,
         private readonly ShopRepository $shopRepository
     )
     {
-        parent::__construct($this->validator, $this->tokenStorage);
     }
 
     public function constraints(): array
