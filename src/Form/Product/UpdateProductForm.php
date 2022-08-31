@@ -70,18 +70,25 @@ class UpdateProductForm extends ABaseForm
             throw new BadRequestException("Product ${productId} not found");
         }
 
-        $categoryId = $form['body']['category_id'];
-        $category = $this->categoryRepository->find($categoryId);
 
-        if (!$category) {
-            throw new BadRequestException("Category ${categoryId} not found");
+
+        if(isset($form['body']["name"]))
+            $product->setName($form['body']['name']);
+        if(isset($form['body']['price']))
+            $product->setPrice($form['body']['price']);
+        if(isset($form['body']['category_id'])) {
+            $categoryId = $form['body']['category_id'];
+            $category = $this->categoryRepository->find($categoryId);
+
+            if (!$category) {
+                throw new BadRequestException("Category ${categoryId} not found");
+            }
+            $product->setCategory($category);
         }
-
-        isset($form['body']["name"]) && $product->setName($form['body']['name']);
-        isset($form['body']['price']) && $product->setPrice($form['body']['price']);
-        isset($form['body']['category_id']) && $product->setCategory($category);
-        isset($form['body']['description']) && $product->setDescription($form['body']['description']);
-        isset($form['body']['quantity']) && $product->setQuantity($form['body']['quantity']);
+        if(isset($form['body']['description']))
+            $product->setDescription($form['body']['description']);
+        if(isset($form['body']['quantity']))
+            $product->setQuantity($form['body']['quantity']);
 
         $this->productRepository->flush();
 
