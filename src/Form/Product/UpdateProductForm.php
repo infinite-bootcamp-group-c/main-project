@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Form\Product\Create;
+namespace App\Form\Product;
 
 use App\Entity\Product;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
-use App\View\Product\Create\ICreateProductView;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class CreateProductForm extends ABaseForm implements ICreateProductForm
+class UpdateProductForm extends ABaseForm
 {
 
     public function __construct(
         private readonly ValidatorInterface    $validator,
+        private readonly TokenStorageInterface $tokenStorage,
         private readonly ProductRepository     $productRepository,
         private readonly CategoryRepository    $categoryRepository,
-        private readonly TokenStorageInterface $tokenStorage,
     )
     {
         parent::__construct($this->validator, $this->tokenStorage);
@@ -28,55 +28,35 @@ class CreateProductForm extends ABaseForm implements ICreateProductForm
     public function constraints(): array
     {
         return [
-            'query' => [
-                'page' => [
-                    new Assert\NotBlank(),
-                    new Assert\NotNull(),
-                    new Assert\Positive(),
-                    new Assert\Type('digit'),
-                ],
-            ],
             'route' => [
                 'id' => [
                     new Assert\NotBlank(),
-                    new Assert\NotNull(),
                     new Assert\Positive(),
-                    new Assert\Type('digit'),
                 ],
             ],
             'body' => [
                 'category_id' => [
-                    new Assert\NotBlank(),
-                    new Assert\NotNull(),
                     new Assert\Positive(),
                     new Assert\Type('integer'),
                 ],
                 'shop_id' => [
-                    new Assert\NotBlank(),
-                    new Assert\NotNull(),
                     new Assert\Positive(),
                     new Assert\Type('integer'),
                 ],
                 'name' => [
-                    new Assert\NotNull(),
-                    new Assert\NotBlank(),
                     new Assert\Length(min: 4, max: 255),
                     new Assert\Regex(pattern: '/^\w+/'
                         , message: 'Product name must contain only letters, numbers and underscores'),
                 ],
                 'price' => [
-                    new Assert\NotNull(),
-                    new Assert\NotBlank(),
                     new Assert\Type('integer'),
                     new Assert\positive(),
                 ],
                 'quantity' => [
-                    new Assert\NotBlank(),
                     new Assert\Type('integer'),
                     new Assert\Positive(),
                 ],
                 'description' => [
-                    new Assert\NotBlank(),
                     new Assert\Length(min: 150, max: 1000),
                     new Assert\Regex(pattern: '/^\w+/', message: 'Description must contain only letters, numbers and underscores'),
                 ],
@@ -84,16 +64,31 @@ class CreateProductForm extends ABaseForm implements ICreateProductForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(Request $request): Product
     {
         $form = self::getParams($request);
-        $product = new Product();
-        $product->setName($form["body"]["name"]);
-        $product->setPrice($form["body"]["price"]);
-        $product->setCategory($this->categoryRepository->find($form["body"]["category_id"]));
-        $product->setDescription($form["body"]["description"]);
-        $product->setQuantity($form["body"]["quantity"]);
-        $this->productRepository->add($product, flush: true);
+
+        $productId = $form['route']['id'];
+        $product = $this->productRepository->find($productId);
+
+        if (!$product) {
+            throw new BadRequestException("Product ${productId} not found");
+        }
+
+        $categoryId = $form['body']['category_id'];
+        $category = $this->categoryRepository->find($categoryId);
+
+        if (!$category) {
+            throw new BadRequestException("Category ${categoryId} not found");
+        }
+
+        isset($form['body']["name"]) && $product->setName($form['body']['name']);
+        isset($form['body']['price']) && $product->setPrice($form['body']['price']);
+        isset($form['body']['category_id']) && $product->setCategory($category);
+        isset($form['body']['description']) && $product->setDescription($form['body']['description']);
+        isset($form['body']['quantity']) && $product->setQuantity($form['body']['quantity']);
+
+        $this->productRepository->flush();
 
         return $product;
     }
