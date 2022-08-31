@@ -66,7 +66,6 @@ abstract class ABaseForm implements IBaseForm
                 null,
                 Response::HTTP_NO_CONTENT);
 
-
         return $this->json(
             $view->execute($formExecution),
             $view->getHTTPStatusCode()
