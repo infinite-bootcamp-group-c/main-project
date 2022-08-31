@@ -1,23 +1,17 @@
 <?php
 
-namespace App\View\Product\Create;
+namespace App\View\Product;
 
 use App\Entity\Product;
 use App\Lib\View\ABaseView;
+use Symfony\Component\HttpFoundation\Response;
 
 
-class CreateProductView extends ABaseView implements ICreateProductView
+class CreateProductView extends ABaseView
 {
-    public function __construct()
-    {
-    }
+    protected int $HTTPStatusCode = Response::HTTP_CREATED;
 
     public function execute(Product $product): array
-    {
-        return $this->getData($product);
-    }
-
-    public function getData(Product $product): array
     {
         return [
             'id' => $product->getId(),

@@ -1,25 +1,24 @@
 <?php
 
-namespace App\Form\Product\Update;
+namespace App\Form\Product;
 
+use App\Entity\Product;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
-use App\View\Product\Update\IUpdateProductView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class UpdateProductForm extends ABaseForm implements IUpdateProductForm
+class CreateProductForm extends ABaseForm
 {
 
     public function __construct(
-        private readonly IUpdateProductView    $updateProductView,
         private readonly ValidatorInterface    $validator,
+        private readonly TokenStorageInterface $tokenStorage,
         private readonly ProductRepository     $productRepository,
         private readonly CategoryRepository    $categoryRepository,
-        private readonly TokenStorageInterface $tokenStorage,
     )
     {
         parent::__construct($this->validator, $this->tokenStorage);
@@ -28,35 +27,39 @@ class UpdateProductForm extends ABaseForm implements IUpdateProductForm
     public function constraints(): array
     {
         return [
-            'route' => [
-                'id' => [
-                    new Assert\NotBlank(),
-                    new Assert\Positive(),
-                ],
-            ],
             'body' => [
                 'category_id' => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
                     new Assert\Positive(),
                     new Assert\Type('integer'),
                 ],
                 'shop_id' => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
                     new Assert\Positive(),
                     new Assert\Type('integer'),
                 ],
                 'name' => [
+                    new Assert\NotNull(),
+                    new Assert\NotBlank(),
                     new Assert\Length(min: 4, max: 255),
                     new Assert\Regex(pattern: '/^\w+/'
                         , message: 'Product name must contain only letters, numbers and underscores'),
                 ],
                 'price' => [
+                    new Assert\NotNull(),
+                    new Assert\NotBlank(),
                     new Assert\Type('integer'),
                     new Assert\positive(),
                 ],
                 'quantity' => [
+                    new Assert\NotBlank(),
                     new Assert\Type('integer'),
                     new Assert\Positive(),
                 ],
                 'description' => [
+                    new Assert\NotBlank(),
                     new Assert\Length(min: 150, max: 1000),
                     new Assert\Regex(pattern: '/^\w+/', message: 'Description must contain only letters, numbers and underscores'),
                 ],
@@ -64,19 +67,20 @@ class UpdateProductForm extends ABaseForm implements IUpdateProductForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(Request $request): Product
     {
         $form = self::getParams($request);
 
-        $product = $this->productRepository->find($form['route']['id']);
+        $product = (new Product())
+            ->setName($form["body"]["name"])
+            ->setPrice($form["body"]["price"])
+            ->setCategory(
+                $this->categoryRepository->find($form["body"]["category_id"])
+            )
+            ->setDescription($form["body"]["description"])
+            ->setQuantity($form["body"]["quantity"]);
 
-        isset($form['body']["name"]) && $product->setName($form['body']['name']);
-        isset($form['body']['price']) && $product->setPrice($form['body']['price']);
-        isset($form['body']['category_id']) && $product->setCategory($this->categoryRepository->find($form['body']['category_id']));
-        isset($form['body']['description']) && $product->setDescription($form['body']['description']);
-        isset($form['body']['quantity']) && $product->setQuantity($form['body']['quantity']);
-
-        $this->productRepository->flush();
+        $this->productRepository->add($product, flush: true);
 
         return $product;
     }
