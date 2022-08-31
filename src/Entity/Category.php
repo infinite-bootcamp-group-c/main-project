@@ -75,9 +75,11 @@ class Category
     /**
      * @param Shop|null $shop
      */
-    public function setShop(?Shop $shop): void
+    public function setShop(?Shop $shop): self
     {
         $this->shop = $shop;
+
+        return $this;
     }
 
     public function getId(): ?int

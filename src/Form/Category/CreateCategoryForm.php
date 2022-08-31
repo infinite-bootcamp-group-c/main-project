@@ -2,12 +2,23 @@
 
 namespace App\Form\Category;
 
+use App\Entity\Category;
 use App\Lib\Form\ABaseForm;
+use App\Repository\CategoryRepository;
+use App\Repository\ShopRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateCategoryForm extends ABaseForm
 {
+
+    public function __construct(
+        private readonly CategoryRepository $categoryRepository,
+        private readonly ShopRepository $shopRepository,
+    )
+    {
+    }
+
     public function constraints(): array
     {
         return [
@@ -29,8 +40,18 @@ class CreateCategoryForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): void
+    public function execute(Request $request): Category
     {
-        // TODO: Implement execute() method.
+        $form = self::getParams($request);
+
+        $category = (new Category())
+            ->setTitle($form['body']['title'])
+            ->setShop(
+                $this->shopRepository->find($form['body']['shop_id'])
+            );
+
+        $this->categoryRepository->add($category, true);
+
+        return $category;
     }
 }
