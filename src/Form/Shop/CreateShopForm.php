@@ -20,6 +20,10 @@ class CreateShopForm extends ABaseForm
                     new Assert\Regex(pattern: '/^\w+/'
                         , message: 'Shop name must contain only letters, numbers and underscores'),
                 ],
+                'user_id' => [
+                    new Assert\Positive(),
+                    new Assert\Type('integer'),
+                ],
                 'ig_username' => [
                     new Assert\NotNull(),
                     new Assert\NotBlank(),
@@ -28,13 +32,10 @@ class CreateShopForm extends ABaseForm
                         , message: 'IG username must contain only letters, numbers and underscores'),
                 ],
                 'logo_url' => [
-                    new Assert\NotBlank(),
+                    new Assert\Regex('/^\w+\.png/', "wrong pattern for shop logo image url"),
                 ],
                 'description' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length(min: 150, max: 1000),
-                    new Assert\Regex(pattern: '/^\w+/'
-                        , message: 'Description must contain only letters, numbers and underscores'),
+                    new Assert\Length(max:255, maxMessage: "description must be 255 characters at most."),
                 ],
             ],
         ];
