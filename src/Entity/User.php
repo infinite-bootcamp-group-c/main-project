@@ -6,14 +6,19 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class
 User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    #[Required]
+    public UserPasswordHasherInterface $passwordHasher;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -98,10 +103,13 @@ User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $plaintextPassword): self
     {
-        $this->password = $password;
-
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $this,
+            $plaintextPassword
+        );
+        $this->password = $hashedPassword;
         return $this;
     }
 
