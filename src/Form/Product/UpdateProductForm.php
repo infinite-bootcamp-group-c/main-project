@@ -75,12 +75,12 @@ class UpdateProductForm extends ABaseForm
             throw new BadRequestException("Product ${productId} not found");
         }
 
-
-
         if(isset($form['body']["name"]))
             $product->setName($form['body']['name']);
+
         if(isset($form['body']['price']))
             $product->setPrice($form['body']['price']);
+
         if(isset($form['body']['category_id'])) {
             $categoryId = $form['body']['category_id'];
             $category = $this->categoryRepository->find($categoryId);

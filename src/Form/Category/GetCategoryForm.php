@@ -5,20 +5,19 @@ namespace App\Form\Category;
 use App\Entity\Category;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
-use App\Repository\ShopRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class CreateCategoryForm extends ABaseForm
+class GetCategoryForm extends ABaseForm
 {
 
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly TokenStorageInterface $tokenStorage,
         private readonly CategoryRepository $categoryRepository,
-        private readonly ShopRepository $shopRepository
     )
     {
         parent::__construct($this->validator, $this->tokenStorage);
@@ -27,19 +26,12 @@ class CreateCategoryForm extends ABaseForm
     public function constraints(): array
     {
         return [
-            'body' => [
-                'shop_id' => [
+            'route' => [
+                'id' => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
                     new Assert\Positive(),
-                    new Assert\Type('integer'),
-                ],
-                'title' => [
-                    new Assert\NotBlank(),
-                    new Assert\NotNull(),
-                    new Assert\Length(min: 4, max: 255),
-                    new Assert\Regex(pattern: '/^\w+/'
-                        , message: 'Category name must contain only letters, numbers and underscores'),
+                    new Assert\Type('digit'),
                 ],
             ],
         ];
@@ -48,14 +40,12 @@ class CreateCategoryForm extends ABaseForm
     public function execute(Request $request): Category
     {
         $form = self::getParams($request);
+        $categoryId = $form['route']['id'];
+        $category = $this->categoryRepository->find($categoryId);
 
-        $category = (new Category())
-            ->setTitle($form['body']['title'])
-            ->setShop(
-                $this->shopRepository->find($form['body']['shop_id'])
-            );
-
-        $this->categoryRepository->add($category, true);
+        if (!$category) {
+            throw new NotFoundHttpException("Category ${categoryId} found");
+        }
 
         return $category;
     }
