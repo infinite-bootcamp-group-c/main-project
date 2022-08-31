@@ -15,12 +15,9 @@ class GetCategoryForm extends ABaseForm
 {
 
     public function __construct(
-        private readonly ValidatorInterface $validator,
-        private readonly TokenStorageInterface $tokenStorage,
         private readonly CategoryRepository $categoryRepository,
     )
     {
-        parent::__construct($this->validator, $this->tokenStorage);
     }
 
     public function constraints(): array
