@@ -11,16 +11,16 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 
 abstract class ABaseForm implements IBaseForm
 {
-    public function __construct(
-        private readonly ValidatorInterface    $validator,
-        private readonly TokenStorageInterface $tokenStorage,
-    )
-    {
-    }
+    #[Required]
+    public ValidatorInterface $validator;
+
+    #[Required]
+    public TokenStorageInterface $tokenStorage;
 
     #[ArrayShape(['body' => "array", 'query' => "array", 'route' => "array"])]
     public static function getParams(Request $request): array
