@@ -9,16 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class
 User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[Required]
-    public UserPasswordHasherInterface $passwordHasher;
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -54,7 +50,7 @@ User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\InverseJoinColumn(name: 'address_id', referencedColumnName: 'id', unique: true)]
     private Collection $addresses;
 
-    public function __construct()
+    public function __construct(private readonly UserPasswordHasherInterface $passwordHasher)
     {
         $this->shops = new ArrayCollection();
         $this->creditInfos = new ArrayCollection();
