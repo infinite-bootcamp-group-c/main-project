@@ -22,11 +22,11 @@ class RegisterUserForm extends ABaseForm
     {
         return [
             'body' => [
-                'firstName' => [
+                'first_name' => [
                     new Assert\Length(max: 255),
                     new Assert\Regex(pattern: '/^[a-zA-Z0-9]+$/')
                 ],
-                'lastName' => [
+                'last_name' => [
                     new Assert\Length(max: 255),
                     new Assert\Regex(pattern: '/^[a-zA-Z0-9]+$/')
                 ],
@@ -34,7 +34,7 @@ class RegisterUserForm extends ABaseForm
                     new Assert\Length(max: 255),
                     new Assert\Email(message: 'The email {{ value }} is not valid email.')
                 ],
-                'phoneNumber' => [
+                'phone_number' => [
                     new Assert\NotNull(),
                     new Assert\NotBlank(),
                     new Assert\Length(min: 11, max: 15),
@@ -55,15 +55,15 @@ class RegisterUserForm extends ABaseForm
         $form = self::getParams($request);
 
         $user = (new User($this->passwordHasher))
-            ->setPhoneNumber($form["body"]["phoneNumber"])
+            ->setPhoneNumber($form["body"]["phone_number"])
             ->setPassword($form["body"]["password"]);
 
-        if(isset($form["body"]["firstName"])) {
-            $user->setFirstName($form["body"]["firstName"]);
+        if(isset($form["body"]["first_name"])) {
+            $user->setFirstName($form["body"]["first_name"]);
         }
 
-        if(isset($form["body"]["lastName"])) {
-            $user->setLastName($form["body"]["lastName"]);
+        if(isset($form["body"]["last_name"])) {
+            $user->setLastName($form["body"]["last_name"]);
         }
 
         if(isset($form["body"]["email"])) {

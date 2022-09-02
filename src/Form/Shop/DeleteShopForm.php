@@ -6,6 +6,7 @@ use App\Lib\Form\ABaseForm;
 use App\Repository\ProductRepository;
 use App\Repository\ShopRepository;
 use Doctrine\ORM\EntityNotFoundException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -36,6 +37,12 @@ class DeleteShopForm extends ABaseForm
     public function execute(Request $request): void
     {
         $shopId = self::getParams($request)['route']['id'];
+        $shop = $this->shopRepository->find($shopId);
+
+        if($shop->getUser()->getId() !== $this->getUser()->getId()){
+            throw new BadRequestException('You are not allowed to update this shop');
+        }
+
         try {
             $this->shopRepository->removeById($shopId);
         } catch (EntityNotFoundException) {
