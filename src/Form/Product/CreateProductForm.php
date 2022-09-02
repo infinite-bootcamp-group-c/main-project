@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CreateProductForm extends ABaseForm
 {
 
+    use TCategoryAndShopValidate;
+
     public function __construct(
         private readonly ProductRepository  $productRepository
     )
@@ -52,8 +54,7 @@ class CreateProductForm extends ABaseForm
                     new Assert\Positive(),
                 ],
                 'description' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length(min: 150, max: 1000),
+                    new Assert\Length(max: 1000),
                     new Assert\Regex(pattern: '/^\w+/',
                         message: 'The description {{ value }} is not valid.'),
                 ],
@@ -65,7 +66,7 @@ class CreateProductForm extends ABaseForm
     {
         $form = self::getParams($request);
 
-        $result = TCategoryAndShopValidate::class->validate($form);
+        $result = $this->validation($form);
 
         $product = (new Product())
             ->setName($form["body"]["name"])
