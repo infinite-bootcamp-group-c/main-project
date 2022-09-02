@@ -13,6 +13,11 @@ class UpdateCategoryView extends ABaseView
         return [
             'id' => $category->getId(),
             'title' => $category->getTitle(),
+            'shop' => $category->getShop()
+                ->getName(),
+            'vendorPhoneNumber' => $category->getShop()
+                ->getUser()
+                ->getPhoneNumber(),
             'created_at' => $category->getCreatedAt(),
             'updated_at' => $category->getUpdatedAt(),
         ];

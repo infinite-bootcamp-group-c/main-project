@@ -12,6 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UpdateProductForm extends ABaseForm
 {
 
+    use TCategoryAndShopValidate;
+
     public function __construct(
         private readonly ProductRepository  $productRepository
     )
@@ -62,7 +64,7 @@ class UpdateProductForm extends ABaseForm
     {
         $form = self::getParams($request);
 
-        $result = TCategoryAndShopValidate::class->validate($form);
+        $result = $this->validation($form);
 
         $productId = $form['route']['id'];
         $product = $this->productRepository->find($productId);
