@@ -5,7 +5,6 @@ namespace App\Form\Shop;
 use App\Entity\Shop;
 use App\Lib\Form\ABaseForm;
 use App\Repository\ShopRepository;
-use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,8 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UpdateShopForm extends ABaseForm
 {
     public function __construct(
-        private readonly ShopRepository $shopRepository,
-        private readonly UserRepository $userRepository,
+        private readonly ShopRepository $shopRepository
     )
     {
     }
@@ -30,28 +28,21 @@ class UpdateShopForm extends ABaseForm
             ],
             'body' => [
                 'name' => [
-                    new Assert\NotNull(),
-                    new Assert\NotBlank(),
                     new Assert\Length(min: 4, max: 255),
                     new Assert\Regex(pattern: '/^\w+/'
-                        , message: 'Shop name must contain only letters, numbers and underscores'),
-                ],
-                'user_id' => [
-                    new Assert\Positive(),
-                    new Assert\Type('integer'),
+                        , message: 'The shop name {{ value }} is not valid.'),
                 ],
                 'ig_username' => [
-                    new Assert\NotNull(),
-                    new Assert\NotBlank(),
                     new Assert\Length(min: 3, max: 30),
                     new Assert\Regex(pattern: '^[\w](?!.*?\.{2})[\w.]{1,28}[\w]$'
-                        , message: 'IG username must contain only letters, numbers and underscores'),
+                        , message: 'The instagram username {{ value }} is not valid.'),
                 ],
                 'logo_url' => [
-                    new Assert\Regex('/^\w+\.png/', "wrong pattern for shop logo image url"),
+                    new Assert\Regex(pattern: '/^\w+\.png/',
+                        message: "The logo url {{ value }} is not valid."),
                 ],
                 'description' => [
-                    new Assert\Length(max:255, maxMessage: "description must be 255 characters at most."),
+                    new Assert\Length(max:255)
                 ],
             ],
         ];
@@ -68,14 +59,10 @@ class UpdateShopForm extends ABaseForm
             throw new BadRequestException("Shop ${shopId} not found");
         }
 
-        if(isset($form['body']['user_id'])) {
-            $userId = $form['body']['user_id'];
-            $user = $this->userRepository->find($userId);
-            if (!$user) {
-                throw new BadRequestException("Category ${userId} not found");
-            }
-            $shop->setUser($user);
+        if($shop->getUser()->getId() !== $this->getUser()->getId()){
+            throw new BadRequestException('You are not allowed to update this shop');
         }
+
         if(isset($form['body']["name"]))
             $shop->setName($form['body']['name']);
         if(isset($form['body']['description']))

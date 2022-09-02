@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Form\Product\DeleteProductForm;
 use App\Form\Shop\CreateShopForm;
+use App\Form\Shop\DeleteShopForm;
 use App\Form\Shop\GetShopForm;
 use App\Form\Shop\GetShopListForm;
 use App\Form\Shop\UpdateShopForm;
@@ -68,9 +69,9 @@ class ShopController extends AbstractController
     #[Route('/{id}', name: 'delete_shop', methods: ['DELETE'])]
     public function delete(
         Request           $request,
-        DeleteProductForm $deleteProductForm,
+        DeleteShopForm $deleteShopForm,
     ): JsonResponse
     {
-        return $deleteProductForm->makeResponse($request);
+        return $deleteShopForm->makeResponse($request);
     }
 }

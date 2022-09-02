@@ -13,6 +13,7 @@ class GetShopListView extends ABaseView
             return [
                 'id' => $shop->getId(),
                 'name' => $shop->getName(),
+                'vendorPhoneNumber' => $shop->getUser()->getPhoneNumber(),
                 'logo' => $shop->getLogo(),
                 'description' => $shop->getDescription(),
                 'instagram_username' => $shop->getIgUsername(),
