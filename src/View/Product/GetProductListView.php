@@ -15,6 +15,8 @@ class GetProductListView extends ABaseView
             return [
                 'id' => $product->getId(),
                 'name' => $product->getName(),
+                'category' => $product->getCategory()->getTitle(),
+                'shop' => $product->getCategory()->getShop()->getName(),
                 'price' => $product->getPrice(),
                 'description' => $product->getDescription(),
                 'created_at' => $product->getCreatedAt(),
