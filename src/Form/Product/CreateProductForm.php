@@ -4,7 +4,6 @@ namespace App\Form\Product;
 
 use App\Entity\Product;
 use App\Lib\Form\ABaseForm;
-use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,8 +12,7 @@ class CreateProductForm extends ABaseForm
 {
 
     public function __construct(
-        private readonly ProductRepository  $productRepository,
-        private readonly CategoryRepository $categoryRepository,
+        private readonly ProductRepository  $productRepository
     )
     {
     }
@@ -40,7 +38,7 @@ class CreateProductForm extends ABaseForm
                     new Assert\NotBlank(),
                     new Assert\Length(min: 4, max: 255),
                     new Assert\Regex(pattern: '/^\w+/'
-                        , message: 'Product name must contain only letters, numbers and underscores'),
+                        , message: 'The product name {{ value }} is not valid.'),
                 ],
                 'price' => [
                     new Assert\NotNull(),
@@ -56,7 +54,8 @@ class CreateProductForm extends ABaseForm
                 'description' => [
                     new Assert\NotBlank(),
                     new Assert\Length(min: 150, max: 1000),
-                    new Assert\Regex(pattern: '/^\w+/', message: 'Description must contain only letters, numbers and underscores'),
+                    new Assert\Regex(pattern: '/^\w+/',
+                        message: 'The description {{ value }} is not valid.'),
                 ],
             ],
         ];
@@ -66,12 +65,12 @@ class CreateProductForm extends ABaseForm
     {
         $form = self::getParams($request);
 
+        $result = TCategoryAndShopValidate::class->validate($form);
+
         $product = (new Product())
             ->setName($form["body"]["name"])
             ->setPrice($form["body"]["price"])
-            ->setCategory(
-                $this->categoryRepository->find($form["body"]["category_id"])
-            )
+            ->setCategory($result["category"])
             ->setDescription($form["body"]["description"])
             ->setQuantity($form["body"]["quantity"]);
 

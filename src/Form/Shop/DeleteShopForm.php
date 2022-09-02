@@ -40,7 +40,7 @@ class DeleteShopForm extends ABaseForm
         $shop = $this->shopRepository->find($shopId);
 
         if($shop->getUser()->getId() !== $this->getUser()->getId()){
-            throw new BadRequestException('You are not allowed to update this shop');
+            throw new BadRequestException('You are not allowed to delete this shop');
         }
 
         try {
