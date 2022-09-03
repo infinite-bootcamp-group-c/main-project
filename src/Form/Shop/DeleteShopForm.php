@@ -2,8 +2,8 @@
 
 namespace App\Form\Shop;
 
+use App\Form\Product\Traits\HasValidateShopOwnership;
 use App\Lib\Form\ABaseForm;
-use App\Repository\ProductRepository;
 use App\Repository\ShopRepository;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class DeleteShopForm extends ABaseForm
 {
+    use HasValidateShopOwnership;
 
     public function __construct(
         private readonly ShopRepository $shopRepository,
@@ -39,9 +40,7 @@ class DeleteShopForm extends ABaseForm
         $shopId = self::getParams($request)['route']['id'];
         $shop = $this->shopRepository->find($shopId);
 
-        if($shop->getUser()->getId() !== $this->getUser()->getId()){
-            throw new BadRequestException('You are not allowed to delete this shop');
-        }
+        $this->validateShopOwnership($shop, $this->getUser()->getId());
 
         try {
             $this->shopRepository->removeById($shopId);
