@@ -38,7 +38,7 @@ class ProfileController extends BaseController
         return $getAddressesForm->makeResponse($request, $getAddressesView);
     }
 
-    #[Route('/address/{id}', name: 'get_address_details', methods: ['GET'])]
+    #[Route('/address/{address_id}', name: 'get_address_details', methods: ['GET'])]
     public function get_address(
         Request $request,
         GetAddressDetailsForm $getAddressesForm,
@@ -47,7 +47,7 @@ class ProfileController extends BaseController
         return $getAddressesForm->makeResponse($request, $getAddressesView);
     }
 
-    #[Route('/address/{id}', name: 'delete_address', methods: ['DELETE'])]
+    #[Route('/address/{address_id}', name: 'delete_address', methods: ['DELETE'])]
     public function delete_address(
         Request $request,
         DeleteAddressForm $deleteAddressForm,
