@@ -4,11 +4,14 @@ namespace App\Repository;
 
 use App\Entity\OrderItem;
 use App\Lib\Repository\ABaseRepository;
+use App\Lib\Repository\HasPaginator;
 use App\Lib\Repository\IBaseRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class OrderItemRepository extends ABaseRepository implements IBaseRepository
 {
+    use HasPaginator;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, OrderItem::class);
