@@ -7,6 +7,7 @@ use App\Repository\CreditInfoRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class DeleteCreditForm extends ABaseForm
 {
@@ -31,7 +32,7 @@ class DeleteCreditForm extends ABaseForm
             ->find($credit_id);
 
         if (!$credit_id){
-            throw new BadRequestException("invalid credit id");
+            throw new BadRequestHttpException("invalid credit id");
         }
 
         $user = $credit->getUser();
