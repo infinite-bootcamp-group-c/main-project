@@ -8,6 +8,7 @@ use App\Repository\AddressRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class NewAddressForm extends ABaseForm
 {
@@ -34,7 +35,7 @@ class NewAddressForm extends ABaseForm
             ->find($userId);
 
         if (!$user) {
-            throw new BadRequestException("Invalid user");
+            throw new BadRequestHttpException("Invalid user");
         }
 
         $address = (new Address())

@@ -7,6 +7,7 @@ use App\Repository\AddressRepository;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class DeleteAddressForm extends ABaseForm
 {
@@ -28,7 +29,7 @@ class DeleteAddressForm extends ABaseForm
         $address = $this->addressRepository->find($addressId);
 
         if (!$addressId) {
-            throw new BadRequestException("invalid address id");
+            throw new BadRequestHttpException("invalid address id");
         }
 
         $this->addressRepository->remove($address);

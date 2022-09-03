@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class GetCreditsForm extends ABaseForm
 {
@@ -30,7 +31,7 @@ class GetCreditsForm extends ABaseForm
             ->find($user_id);
 
         if (!$user) {
-            throw new BadRequestException();
+            throw new BadRequestHttpException("invalid user id");
         }
 
         return $user->getCreditInfos();

@@ -7,6 +7,7 @@ use App\Lib\Form\ABaseForm;
 use App\Repository\CreditInfoRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class GetCreditDetailsForm extends ABaseForm
 {
@@ -30,7 +31,7 @@ class GetCreditDetailsForm extends ABaseForm
             ->find($credit_id);
 
         if (!$credit) {
-            throw new BadRequestException();
+            throw new BadRequestHttpException("invalid credit id");
         }
 
         return $credit;

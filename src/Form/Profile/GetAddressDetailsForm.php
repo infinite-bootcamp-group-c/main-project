@@ -7,6 +7,7 @@ use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class GetAddressDetailsForm extends ABaseForm
 {
@@ -30,7 +31,7 @@ class GetAddressDetailsForm extends ABaseForm
             ->find($addressId);
 
         if (!$address) {
-            throw new BadRequestException("invalid address id");
+            throw new BadRequestHttpException("invalid address id");
         }
 
         return $address;

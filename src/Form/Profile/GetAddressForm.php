@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class GetAddressForm extends ABaseForm
 {
@@ -31,7 +32,7 @@ class GetAddressForm extends ABaseForm
         $user = $this->userRepository->find($userId);
 
         iF (!$user) {
-            throw new BadRequestException("Invalid user id");
+            throw new BadRequestHttpException("Invalid user id");
         }
 
         return $user->getAddresses();

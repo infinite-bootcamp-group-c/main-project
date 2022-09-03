@@ -8,6 +8,7 @@ use App\Repository\CreditInfoRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class NewCreditForm extends ABaseForm
 {
@@ -32,7 +33,7 @@ class NewCreditForm extends ABaseForm
              ->find($userId);
 
          if (!$user) {
-             throw new BadRequestException("Invalid user id");
+             throw new BadRequestHttpException("Invalid user id");
          }
 
          $creditInfo = (new CreditInfo())
