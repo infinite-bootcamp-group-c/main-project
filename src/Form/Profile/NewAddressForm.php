@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class NewAddressForm extends ABaseForm
 {
@@ -44,6 +45,9 @@ class NewAddressForm extends ABaseForm
                 "country" => [
 
                 ],
+                "city" => [
+
+                ],
                 "latitude" => [
 
                 ],
@@ -73,13 +77,15 @@ class NewAddressForm extends ABaseForm
             ->setProvince($form["body"]["province"])
             ->setAddressDetails($form["body"]["address_details"])
             ->setCountry($form["body"]["country"])
+            ->setCity($form["body"]["city"])
             ->setLatitude($form["body"]["latitude"])
             ->setLongitude($form["body"]["longitude"]);
 
-        $user->addAddress($address);
+        $this->addressRepository->add($address);
 
-        $this->addressRepository->flush();
+        $user->addAddress($address);
         $this->userRepository->flush();
+        $this->addressRepository->flush();
 
         return $address;
     }
