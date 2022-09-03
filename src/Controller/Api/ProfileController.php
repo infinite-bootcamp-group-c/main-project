@@ -2,9 +2,25 @@
 
 namespace App\Controller\Api;
 
+use App\Form\Profile\DeleteAddressForm;
+use App\Form\Profile\DeleteCreditForm;
+use App\Form\Profile\GetAddressDetailsForm;
+use App\Form\Profile\GetAddressForm;
+use App\Form\Profile\GetCreditDetailsForm;
+use App\Form\Profile\GetCreditsForm;
+use App\Form\Profile\NewAddressForm;
+use App\Form\Profile\NewCreditForm;
 use App\Form\User\GetUserForm;
 use App\Form\User\RegisterUserForm;
 use App\Lib\Controller\BaseController;
+use App\View\Profile\DeleteAddressView;
+use App\View\Profile\DeleteCreditView;
+use App\View\Profile\GetAddressDetailsView;
+use App\View\Profile\GetAddressView;
+use App\View\Profile\GetCreditDetailsView;
+use App\View\Profile\GetCreditView;
+use App\View\Profile\NewAddressView;
+use App\View\Profile\NewCreditView;
 use App\View\User\GetUserView;
 use App\View\User\RegisterUserView;
 use OpenApi\Attributes\JsonContent;
@@ -70,12 +86,12 @@ class ProfileController extends BaseController
     public function get_credits(
         Request $request,
         GetCreditsForm $getCreditsForm,
-        GetCreditsView $getCreditsView
+        GetCreditView $getCreditsView
     ): JsonResponse {
         return $getCreditsForm->makeResponse($request, $getCreditsView);
     }
 
-    #[Route('/credits', name: 'get_credit', methods: ['GET'])]
+    #[Route('/credits/{id}', name: 'get_credit', methods: ['GET'])]
     public function get_credit(
         Request $request,
         GetCreditDetailsForm $getCreditDetailsForm,
@@ -84,7 +100,7 @@ class ProfileController extends BaseController
         return $getCreditDetailsForm->makeResponse($request, $getCreditDetailsView);
     }
 
-    #[Route('/credits', name: 'delete_credit', methods: ['DELETE'])]
+    #[Route('/credits/{id}', name: 'delete_credit', methods: ['DELETE'])]
     public function delete_credit(
         Request $request,
         DeleteCreditForm $deleteCreditForm,
