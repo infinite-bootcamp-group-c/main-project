@@ -1,19 +1,21 @@
 <?php
 
-namespace App\Form\Category;
+namespace App\Form\Shop;
 
 use App\Lib\Form\ABaseForm;
-use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
+use App\Repository\ShopRepository;
 use Doctrine\ORM\EntityNotFoundException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class DeleteCategoryForm extends ABaseForm
+class DeleteShopForm extends ABaseForm
 {
 
     public function __construct(
-        private readonly CategoryRepository $categoryRepository
+        private readonly ShopRepository $shopRepository,
     )
     {
     }
@@ -32,21 +34,19 @@ class DeleteCategoryForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(Request $request): void
     {
-        $categoryId = self::getParams($request)['route']['id'];
+        $shopId = self::getParams($request)['route']['id'];
+        $shop = $this->shopRepository->find($shopId);
 
-        if($this->categoryRepository->find($categoryId)
-                ->getShop()
-                ->getUser()
-                ->getId() !== $this->getUser()->getId()) {
-            throw new NotFoundHttpException('you are not allowed to delete this category');
+        if($shop->getUser()->getId() !== $this->getUser()->getId()){
+            throw new BadRequestException('You are not allowed to delete this shop');
         }
 
         try {
-            $this->categoryRepository->removeById($categoryId);
+            $this->shopRepository->removeById($shopId);
         } catch (EntityNotFoundException) {
-            throw new NotFoundHttpException("Category {$categoryId} Not Found");
+            throw new NotFoundHttpException("Shop {$shopId} not Found");
         }
     }
 }
