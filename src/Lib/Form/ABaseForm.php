@@ -81,9 +81,9 @@ abstract class ABaseForm implements IBaseForm
         ];
 
         $constraints = new Assert\Collection([
-            'body' => new Assert\Collection($this->constraints()['body'] ?? []),
-            'query' => new Assert\Collection($this->constraints()['query'] ?? []),
-            'route' => new Assert\Collection($this->constraints()['route'] ?? []),
+            'body' => new Assert\Collection($this->constraints()['body'] ?? [], allowMissingFields: true),
+            'query' => new Assert\Collection($this->constraints()['query'] ?? [], allowMissingFields: true),
+            'route' => new Assert\Collection($this->constraints()['route'] ?? [], allowMissingFields: true),
         ]);
 
         $errors = $this->validator->validate($input, $constraints);
