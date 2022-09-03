@@ -5,6 +5,7 @@ namespace App\Form\Product;
 use App\Lib\Form\ABaseForm;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityNotFoundException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,7 +15,6 @@ class DeleteProductForm extends ABaseForm
 
     public function __construct(
         private readonly ProductRepository $productRepository,
-
     )
     {
     }
@@ -36,6 +36,16 @@ class DeleteProductForm extends ABaseForm
     public function execute(Request $request): void
     {
         $productId = self::getParams($request)['route']['id'];
+
+        if($this->productRepository->find($productId)
+                ->getCategory()
+                ->getShop()
+                ->getUser()
+                ->getId() !== $this->getUser()->getId()
+        ){
+            throw new BadRequestException('You are not allowed to delete this product');
+        }
+
         try {
             $this->productRepository->removeById($productId);
         } catch (EntityNotFoundException) {

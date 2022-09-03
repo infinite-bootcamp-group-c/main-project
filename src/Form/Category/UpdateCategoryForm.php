@@ -8,8 +8,6 @@ use App\Repository\ShopRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UpdateCategoryForm extends ABaseForm
 {
@@ -34,7 +32,7 @@ class UpdateCategoryForm extends ABaseForm
                 'title' => [
                     new Assert\Length(min: 4, max: 255),
                     new Assert\Regex(pattern: '/^\w+/'
-                        , message: 'Category name must contain only letters, numbers and underscores'),
+                        , message: 'The category name {{ value }} is not valid.'),
                 ],
                 'shop_id' => [
                     new Assert\Positive(),
@@ -48,6 +46,9 @@ class UpdateCategoryForm extends ABaseForm
     {
         $form = self::getParams($request);
 
+        $shopId = $form['body']['shop_id'];
+        $shop = $this->shopRepository->find($shopId);
+
         $categoryId = $form['route']['id'];
         $category = $this->categoryRepository->find($categoryId);
 
@@ -60,11 +61,12 @@ class UpdateCategoryForm extends ABaseForm
         }
 
         if(isset($form['body']['shop_id'])) {
-            $shopId = $form['body']['shop_id'];
-            $shop = $this->shopRepository->find($shopId);
-
             if(!$shop) {
                 throw new BadRequestException("Shop ${shopId} not found");
+            }
+
+            if($shop->getUser()->getId() !== $this->getUser()->getId()){
+                throw new BadRequestException('You can not update this category');
             }
 
             $category->setShop($shop);
