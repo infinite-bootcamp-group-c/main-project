@@ -4,7 +4,6 @@ namespace App\Form\Product;
 
 use App\Entity\Product;
 use App\Lib\Form\ABaseForm;
-use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,9 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UpdateProductForm extends ABaseForm
 {
 
+    use TCategoryAndShopValidate;
+
     public function __construct(
-        private readonly ProductRepository  $productRepository,
-        private readonly CategoryRepository $categoryRepository,
+        private readonly ProductRepository  $productRepository
     )
     {
     }
@@ -41,7 +41,7 @@ class UpdateProductForm extends ABaseForm
                 'name' => [
                     new Assert\Length(min: 4, max: 255),
                     new Assert\Regex(pattern: '/^\w+/'
-                        , message: 'Product name must contain only letters, numbers and underscores'),
+                        , message: 'The product name {{ value }} is not valid.'),
                 ],
                 'price' => [
                     new Assert\Type('integer'),
@@ -53,7 +53,8 @@ class UpdateProductForm extends ABaseForm
                 ],
                 'description' => [
                     new Assert\Length(min: 150, max: 1000),
-                    new Assert\Regex(pattern: '/^\w+/', message: 'Description must contain only letters, numbers and underscores'),
+                    new Assert\Regex(pattern: '/^\w+/',
+                        message: 'The product description {{ value }} is not valid.'),
                 ],
             ],
         ];
@@ -62,6 +63,8 @@ class UpdateProductForm extends ABaseForm
     public function execute(Request $request): Product
     {
         $form = self::getParams($request);
+
+        $result = $this->validation($form);
 
         $productId = $form['route']['id'];
         $product = $this->productRepository->find($productId);
@@ -77,16 +80,13 @@ class UpdateProductForm extends ABaseForm
             $product->setPrice($form['body']['price']);
 
         if(isset($form['body']['category_id'])) {
-            $categoryId = $form['body']['category_id'];
-            $category = $this->categoryRepository->find($categoryId);
-
-            if (!$category) {
-                throw new BadRequestException("Category ${categoryId} not found");
-            }
+            $category = $result['category'];
             $product->setCategory($category);
         }
+
         if(isset($form['body']['description']))
             $product->setDescription($form['body']['description']);
+
         if(isset($form['body']['quantity']))
             $product->setQuantity($form['body']['quantity']);
 

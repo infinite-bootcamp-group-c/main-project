@@ -45,7 +45,7 @@ class CategoryController extends AbstractController
         return $getCategoryForm->makeResponse($request, $getCategoryView);
     }
 
-    #[Route('', name: 'create_category', methods: ['POST'])]
+    #[Route('/', name: 'create_category', methods: ['POST'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function new(
         Request $request,

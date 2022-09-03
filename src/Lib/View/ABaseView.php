@@ -16,4 +16,12 @@ abstract class ABaseView implements IBaseView
         return $this->HTTPStatusCode;
     }
 
+    public function renderPaginated(array $items, $callback): array
+    {
+        return [
+            ...$items,
+            'items' => array_map($callback, $items['items']),
+        ];
+    }
+
 }
