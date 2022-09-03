@@ -19,7 +19,16 @@ class GetCreditDetailsForm extends ABaseForm
 
     public function constraints(): array
     {
-        return [];
+        return [
+            "route" => [
+                "credit_id" => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type('digit'),
+                ]
+            ]
+        ];
     }
 
     public function execute(Request $request): CreditInfo

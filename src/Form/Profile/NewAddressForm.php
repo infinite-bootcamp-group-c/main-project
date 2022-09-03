@@ -21,8 +21,37 @@ class NewAddressForm extends ABaseForm
 
     public function constraints(): array
     {
-        // TODO: Implement constraints() method.
-        return [];
+        return [
+            "body" => [
+                "user_id" => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type('digit'),
+                ],
+                "title" => [
+
+                ],
+                "postal_code" => [
+
+                ],
+                "province" => [
+
+                ],
+                "address_details" => [
+
+                ],
+                "country" => [
+
+                ],
+                "latitude" => [
+
+                ],
+                "longitude" => [
+
+                ]
+            ]
+        ];
     }
 
     public function execute(Request $request): Address

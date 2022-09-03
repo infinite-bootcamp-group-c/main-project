@@ -21,7 +21,25 @@ class NewCreditForm extends ABaseForm
 
     public function constraints(): array
     {
-        return [];
+        return [
+            "body" => [
+                "user_id" => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type('digit'),
+                ],
+                "card" => [
+
+                ],
+                "IBAN" => [
+
+                ],
+                "expires_at" => [
+
+                ]
+            ]
+        ];
     }
 
      public function execute(Request $request): CreditInfo

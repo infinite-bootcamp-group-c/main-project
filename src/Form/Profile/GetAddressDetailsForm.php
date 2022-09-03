@@ -19,7 +19,16 @@ class GetAddressDetailsForm extends ABaseForm
 
     public function constraints(): array
     {
-        return [];
+        return [
+            "route" => [
+                "address_id" => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type('digit'),
+                ]
+            ]
+        ];
     }
 
     public function execute(Request $request): Address
