@@ -3,7 +3,10 @@
 namespace App\Form\Product;
 
 use App\Entity\Product;
+use App\Form\Product\Traits\HasValidateCategoryOwnership;
+use App\Form\Product\Traits\HasValidateShopOwnership;
 use App\Lib\Form\ABaseForm;
+use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,10 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CreateProductForm extends ABaseForm
 {
 
-    use TCategoryAndShopValidate;
+    use HasValidateShopOwnership, HasValidateCategoryOwnership;
 
     public function __construct(
-        private readonly ProductRepository  $productRepository
+        private readonly ProductRepository  $productRepository,
+        private readonly CategoryRepository $categoryRepository
     )
     {
     }
@@ -66,12 +70,18 @@ class CreateProductForm extends ABaseForm
     {
         $form = self::getParams($request);
 
-        $result = $this->validation($form);
+        $categoryId = $form['body']['category_id'];
+        $category = $this->categoryRepository->find($categoryId);
+
+        $userId = $this->getUser()->getId();
+
+        $this->validateShopOwnership($category->getShop(), $userId);
+        $this->validateCategoryOwnership($category->getShop(), $category);
 
         $product = (new Product())
             ->setName($form["body"]["name"])
             ->setPrice($form["body"]["price"])
-            ->setCategory($result["category"])
+            ->setCategory($category)
             ->setDescription($form["body"]["description"])
             ->setQuantity($form["body"]["quantity"]);
 
