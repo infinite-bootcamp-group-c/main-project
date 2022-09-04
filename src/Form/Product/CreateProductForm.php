@@ -3,8 +3,7 @@
 namespace App\Form\Product;
 
 use App\Entity\Product;
-use App\Form\Product\Traits\HasValidateCategoryOwnership;
-use App\Form\Product\Traits\HasValidateShopOwnership;
+use App\Form\Product\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
@@ -14,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CreateProductForm extends ABaseForm
 {
 
-    use HasValidateShopOwnership, HasValidateCategoryOwnership;
+    use HasValidateOwnership;
 
     public function __construct(
         private readonly ProductRepository  $productRepository,
@@ -75,8 +74,7 @@ class CreateProductForm extends ABaseForm
 
         $userId = $this->getUser()->getId();
 
-        $this->validateShopOwnership($category->getShop(), $userId);
-        $this->validateCategoryOwnership($category->getShop(), $category);
+        $this->validateOwnership($category->getShop(), $userId);
 
         $product = (new Product())
             ->setName($form["body"]["name"])
