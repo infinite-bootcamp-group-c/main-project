@@ -3,7 +3,7 @@
 namespace App\Form\Product;
 
 use App\Entity\Product;
-use App\Form\Product\Traits\HasValidateOwnership;
+use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
@@ -24,8 +24,7 @@ class UpdateProductForm extends ABaseForm
     {
     }
 
-    public
-    function constraints(): array
+    public function constraints(): array
     {
         return [
             'route' => [
