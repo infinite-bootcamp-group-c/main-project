@@ -2,7 +2,7 @@
 
 namespace App\Lib\Repository;
 
-trait HasPaginator
+trait HasRepositoryPaginator
 {
     public function paginate(int $page = 1, int $limit = 10, string $sort = 'ASC', string $sortBy = 'createdAt', array $criteria = []): array
     {
