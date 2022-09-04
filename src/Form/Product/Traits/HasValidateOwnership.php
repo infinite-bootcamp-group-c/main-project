@@ -2,13 +2,13 @@
 
 namespace App\Form\Product\Traits;
 
-use App\Entity\Category;
+
 use App\Entity\Shop;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-trait HasValidateShopOwnership
+trait HasValidateOwnership
 {
-    public function validateShopOwnership(Shop $shop, int $userId): void
+    public function validateOwnership(Shop $shop, int $userId): void
     {
         if ($shop->getUser()->getId() !== $userId)
             throw new BadRequestHttpException('You are not allowed to modify product in this shop');
