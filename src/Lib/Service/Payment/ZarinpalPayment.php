@@ -2,9 +2,6 @@
 
 namespace App\Lib\Service\Payment;
 
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -13,24 +10,17 @@ use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class ZarinPalPayment implements IPaymentGateway
+class ZarinpalPayment extends APaymentGateway
 {
     public function __construct(
-        private readonly HttpClientInterface   $httpClient,
-        private readonly ContainerBagInterface $params,
+        private readonly HttpClientInterface $httpClient,
     )
     {
     }
 
-    public function config($name = null)
+    function getConfigName(): string
     {
-        try {
-            if ($name)
-                return $this->params->get('zarinpal')[$name];
-            return $this->params->get('zarinpal');
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
-            throw new BadRequestHttpException('ZarinPal config not found');
-        }
+        return 'zarinpal';
     }
 
     public function request($amount, array $params = [], $callbackUrl = '', $description = ''): array
@@ -116,7 +106,7 @@ class ZarinPalPayment implements IPaymentGateway
             $content['error'] = $this->getErrorMessage($content['Status']);
 
             if ($response->getStatusCode() !== 200)
-                $content['error'] = 'تراکنش با خطا مواجه شد';
+                $content['error'] = 'transaction failed!';
 
             return $content;
         } catch (TransportExceptionInterface|ClientExceptionInterface|DecodingExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface $e) {
