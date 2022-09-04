@@ -35,12 +35,12 @@ class GetProductForm extends ABaseForm
     public function execute(Request $request): Product
     {
         $form = self::getParams($request);
+
         $productId = $form['route']['id'];
         $product = $this->productRepository->find($productId);
 
-        if (!$product) {
+        if (!$product)
             throw new NotFoundHttpException("Product ${productId} found");
-        }
 
         return $product;
     }
