@@ -7,6 +7,7 @@ use App\Repository\AddressRepository;
 use App\Repository\ShopRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class DeleteShopAddressForm extends ABaseForm
 {
@@ -19,7 +20,22 @@ class DeleteShopAddressForm extends ABaseForm
 
     public function constraints(): array
     {
-        return [];
+        return [
+            "route" => [
+                "shop_id" => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type("digit")
+                ],
+                "address_id" => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type("digit")
+                ]
+            ]
+        ];
     }
 
     public function execute(Request $request): String
