@@ -16,11 +16,13 @@ trait HasPaginator
             $queryBuilder->setParameter($key, $value);
         }
 
+        $totalItems = $this->count($criteria);
+
         return [
             'items' => $queryBuilder->getQuery()->getResult(),
-            'totalItems' => $this->count([]),
+            'totalItems' => $totalItems,
             'itemsPerPage' => $limit,
-            'totalPages' => ceil($this->count([]) / $limit),
+            'totalPages' => ceil($totalItems / $limit),
             'currentPage' => $page,
         ];
     }
