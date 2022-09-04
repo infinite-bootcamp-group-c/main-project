@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Product\Traits;
+namespace App\Form\Traits;
 
 
 use App\Entity\Shop;
@@ -11,6 +11,6 @@ trait HasValidateOwnership
     public function validateOwnership(Shop $shop, int $userId): void
     {
         if ($shop->getUser()->getId() !== $userId)
-            throw new BadRequestHttpException('You are not allowed to modify product in this shop');
+            throw new BadRequestHttpException('You are not the owner of this shop.');
     }
 }
