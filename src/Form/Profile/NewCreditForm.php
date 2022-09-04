@@ -6,9 +6,9 @@ use App\Entity\CreditInfo;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CreditInfoRepository;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class NewCreditForm extends ABaseForm
 {
@@ -23,20 +23,17 @@ class NewCreditForm extends ABaseForm
     {
         return [
             "body" => [
-                "user_id" => [
+                "card" => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
-                    new Assert\Positive(),
-                    new Assert\Type('digit'),
-                ],
-                "card" => [
-
                 ],
                 "IBAN" => [
-
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
                 ],
                 "expires_at" => [
-
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
                 ]
             ]
         ];
@@ -46,18 +43,31 @@ class NewCreditForm extends ABaseForm
      {
          $form = self::getParams($request);
 
-         $userId = $form["body"]["user_id"];
+         $user_phone = $this->getUser()->getUserIdentifier();
          $user = $this->userRepository
-             ->find($userId);
+             ->findOneBy(["phoneNumber" => $user_phone]);
 
          if (!$user) {
-             throw new BadRequestHttpException("Invalid user id");
+             throw new BadRequestHttpException("invalid user id");
+         }
+
+         $expires_at = null;
+         try
+         {
+             $expires_at = new \DateTimeImmutable($form["body"]["expires_at"]);
+         }
+         catch (\Exception $exception)
+         {
+             throw $exception;
          }
 
          $creditInfo = (new CreditInfo())
              ->setCard($form["body"]["card"])
              ->setIBAN($form["body"]["IBAN"])
-             ->setExpiresAt($form["body"]["expires_at"]);
+             ->setExpiresAt($expires_at)
+             ->setUser($user);
+
+         $this->creditInfoRepository->add($creditInfo);
          $user->addCreditInfo($creditInfo);
 
          $this->creditInfoRepository->flush();

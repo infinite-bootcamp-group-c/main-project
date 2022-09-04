@@ -3,6 +3,7 @@
 namespace App\View\Profile;
 
 use App\Entity\Address;
+use App\Entity\CreditInfo;
 use App\Lib\View\ABaseView;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -12,10 +13,11 @@ class GetCreditView extends ABaseView
 
     public function execute(array $credits): array
     {
-        return array_map(function (Address $creditInfo) {
+        return array_map(function (CreditInfo $creditInfo) {
             return [
                 "id" => $creditInfo->getId(),
-                "expires_at" => $creditInfo->setExpiresAt()
+                "card_no" => $creditInfo->getCard(),
+                "expires_at" => $creditInfo->getExpiresAt()
             ];
         }, $credits);
     }

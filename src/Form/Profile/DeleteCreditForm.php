@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class DeleteCreditForm extends ABaseForm
 {
@@ -22,7 +23,7 @@ class DeleteCreditForm extends ABaseForm
     {
         return [
             "route" => [
-                "credit_id" => [
+                "id" => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
                     new Assert\Positive(),
@@ -35,7 +36,7 @@ class DeleteCreditForm extends ABaseForm
     public function execute(Request $request): String
     {
         $form = self::getParams($request);
-        $credit_id = $form["route"]["credit_id"];
+        $credit_id = $form["route"]["id"];
 
         $credit = $this->creditInfoRepository
             ->find($credit_id);

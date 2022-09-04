@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class GetCreditsForm extends ABaseForm
 {
@@ -19,30 +20,19 @@ class GetCreditsForm extends ABaseForm
 
     public function constraints(): array
     {
-        return [
-            "route" => [
-                "user_id" => [
-                    new Assert\NotBlank(),
-                    new Assert\NotNull(),
-                    new Assert\Positive(),
-                    new Assert\Type('digit'),
-                ]
-            ]
-        ];
+        return [];
     }
 
-    public function execute(Request $request): Collection
+    public function execute(Request $request): array
     {
-        $form = self::getParams($request);
-        $user_id = $form["route"]["user_id"];
-
+        $user_phone = $this->getUser()->getUserIdentifier();
         $user = $this->userRepository
-            ->find($user_id);
+            ->findOneBy(["phoneNumber" => $user_phone]);
 
         if (!$user) {
             throw new BadRequestHttpException("invalid user id");
         }
 
-        return $user->getCreditInfos();
+        return $user->getCreditInfos()->getValues();
     }
 }

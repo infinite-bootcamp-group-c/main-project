@@ -16,7 +16,7 @@ class NewCreditView extends ABaseView
             "id" => $creditInfo->getId(),
             "card" => $creditInfo->getCard(),
             "IBAN" => $creditInfo->getIBAN(),
-            "expires_at" => $creditInfo->setExpiresAt()
+            "expires_at" => $creditInfo->getExpiresAt()
         ];
     }
 }
