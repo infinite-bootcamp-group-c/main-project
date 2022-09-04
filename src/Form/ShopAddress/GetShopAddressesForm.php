@@ -7,6 +7,7 @@ use App\Repository\ShopRepository;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class GetShopAddressesForm extends ABaseForm
 {
@@ -18,10 +19,19 @@ class GetShopAddressesForm extends ABaseForm
 
     public function constraints(): array
     {
-        return [];
+        return [
+            "route" => [
+                "id" => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type("digit")
+                ]
+            ]
+        ];
     }
 
-    public function execute(Request $request): Collection
+    public function execute(Request $request): array
     {
         $route = self::getRouteParams($request);
         $shop_id = $route["id"];
@@ -32,6 +42,6 @@ class GetShopAddressesForm extends ABaseForm
             throw new BadRequestHttpException("invalid shop id");
         }
 
-        return $shop->getAddresses();
+        return $shop->getAddresses()->getValues();
     }
 }

@@ -24,12 +24,6 @@ class NewAddressForm extends ABaseForm
     {
         return [
             "body" => [
-                "user_id" => [
-                    new Assert\NotBlank(),
-                    new Assert\NotNull(),
-                    new Assert\Positive(),
-                    new Assert\Type('digit'),
-                ],
                 "title" => [
 
                 ],
@@ -62,10 +56,9 @@ class NewAddressForm extends ABaseForm
     {
         $form = self::getParams($request);
 
-        $userId = $form["body"]["user_id"];
-
+        $user_phone = $this->getUser()->getUserIdentifier();
         $user = $this->userRepository
-            ->find($userId);
+            ->findOneBy(["phoneNumber" => $user_phone]);
 
         if (!$user) {
             throw new BadRequestHttpException("Invalid user");

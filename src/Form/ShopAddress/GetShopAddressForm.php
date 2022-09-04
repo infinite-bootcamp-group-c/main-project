@@ -2,10 +2,12 @@
 
 namespace App\Form\ShopAddress;
 
+use App\Entity\Address;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class GetShopAddressForm extends ABaseForm
 {
@@ -17,7 +19,16 @@ class GetShopAddressForm extends ABaseForm
 
     public function constraints(): array
     {
-        return [];
+        return [
+            "route" => [
+                "id" => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type("digit")
+                ]
+            ]
+        ];
     }
 
     public function execute(Request $request): Address

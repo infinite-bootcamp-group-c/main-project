@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Tag(name: 'shop_address', description: 'Profile operations')]
 class ShopAddressController extends BaseController
 {
-    #[Route("/{id}", name: 'get_shop_addresses', methods: ['GET'])]
+    #[Route("/all/{id}", name: 'get_shop_addresses', methods: ['GET'])]
     public function getAll(
         Request $request,
         GetShopAddressesForm $getShopAddressesForm,
@@ -31,7 +31,7 @@ class ShopAddressController extends BaseController
         return $getShopAddressesForm->makeResponse($request,$getShopAddressesView);
     }
 
-    // shop id
+    // address_id
     #[Route("/{id}", name: 'get_shop_address', methods: ['GET'])]
     public function get(
         Request $request,
@@ -52,7 +52,7 @@ class ShopAddressController extends BaseController
     }
 
     // shop id
-    #[Route("/{id}", name: 'delete_shop_address', methods: ['DELETE'])]
+    #[Route("/{shop_id}/{address_id}", name: 'delete_shop_address', methods: ['DELETE'])]
     public function delete(
         Request $request,
         DeleteShopAddressForm $deleteShopAddressForm,

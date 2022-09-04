@@ -8,6 +8,7 @@ use App\Repository\AddressRepository;
 use App\Repository\ShopRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class NewShopAddressForm extends ABaseForm
 {
@@ -20,7 +21,40 @@ class NewShopAddressForm extends ABaseForm
 
     public function constraints(): array
     {
-        return [];
+        return [
+            "body" => [
+                "shop_id" => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type('digit')
+                ],
+                "title" => [
+
+                ],
+                "postal_code" => [
+
+                ],
+                "province" => [
+
+                ],
+                "address_details" => [
+
+                ],
+                "country" => [
+
+                ],
+                "city" => [
+
+                ],
+                "latitude" => [
+
+                ],
+                "longitude" => [
+
+                ]
+            ]
+        ];
     }
 
     public function execute(Request $request): Address
@@ -32,7 +66,7 @@ class NewShopAddressForm extends ABaseForm
             ->find($shop_id);
 
         if (!$shop) {
-            throw new BadRequestHttpException("Invalid user");
+            throw new BadRequestHttpException("invalid shop id");
         }
 
         $address = (new Address())
