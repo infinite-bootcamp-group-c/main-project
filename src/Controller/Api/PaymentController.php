@@ -3,7 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Lib\Controller\BaseController;
-use App\Lib\Service\Payment\ZarinPalPayment;
+use App\Lib\Service\Payment\ZarinpalPayment;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Tag;
@@ -20,7 +20,7 @@ class PaymentController extends BaseController
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function request(
         Request         $request,
-        ZarinPalPayment $zarinPal,
+        ZarinpalPayment $zarinPal,
     ): JsonResponse
     {
         $payment = $zarinPal->request(
@@ -44,7 +44,7 @@ class PaymentController extends BaseController
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function verify(
         Request         $request,
-        ZarinPalPayment $zarinPal,
+        ZarinpalPayment $zarinPal,
     ): JsonResponse
     {
         $verify = $zarinPal->verify(
