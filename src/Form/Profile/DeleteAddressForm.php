@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class DeleteAddressForm extends ABaseForm
 {
@@ -23,7 +24,7 @@ class DeleteAddressForm extends ABaseForm
     {
         return [
             "route" => [
-                "address_id" => [
+                "id" => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
                     new Assert\Positive(),
@@ -36,12 +37,13 @@ class DeleteAddressForm extends ABaseForm
     public function execute(Request $request): String
     {
         $form = self::getParams($request);
-        $user_id = $form["route"]["user_id"];
-        $addressId = $form["route"]["address_id"];
+        $user_phone = $this->getUser()->getUserIdentifier();
+        $addressId = $form["route"]["id"];
         $address = $this->addressRepository->find($addressId);
-        $user = $this->userRepository->find($user_id);
+        $user = $this->userRepository
+            ->findOneBy(["phoneNumber" => $user_phone]);
 
-        if (!$addressId) {
+        if (!$address) {
             throw new BadRequestHttpException("invalid address id");
         }
 

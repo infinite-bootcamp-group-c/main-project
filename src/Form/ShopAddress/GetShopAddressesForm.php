@@ -29,7 +29,7 @@ class GetShopAddressesForm extends ABaseForm
             ->find($shop_id);
 
         if (!$shop) {
-            return new BadRequestHttpException("invalid shop id");
+            throw new BadRequestHttpException("invalid shop id");
         }
 
         return $shop->getAddresses();

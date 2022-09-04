@@ -2,7 +2,15 @@
 
 namespace App\Controller\Api;
 
+use App\Form\ShopAddress\DeleteShopAddressForm;
+use App\Form\ShopAddress\GetShopAddressesForm;
+use App\Form\ShopAddress\GetShopAddressForm;
+use App\Form\ShopAddress\NewShopAddressForm;
 use App\Lib\Controller\BaseController;
+use App\View\ShopAddress\DeleteShopAddressView;
+use App\View\ShopAddress\GetShopAddressesView;
+use App\View\ShopAddress\GetShopAddressView;
+use App\View\ShopAddress\NewShopAddressView;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Tag;
@@ -11,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/shop_address')]
-#[Tag(name: 'Profile', description: 'Profile operations')]
+#[Tag(name: 'shop_address', description: 'Profile operations')]
 class ShopAddressController extends BaseController
 {
     #[Route("/{id}", name: 'get_shop_addresses', methods: ['GET'])]

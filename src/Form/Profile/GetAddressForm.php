@@ -13,7 +13,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class GetAddressForm extends ABaseForm
 {
     public function __construct(
-        private readonly AddressRepository $addressRepository,
         private readonly UserRepository $userRepository
     ) {
 
@@ -21,29 +20,19 @@ class GetAddressForm extends ABaseForm
 
     public function constraints(): array
     {
-        return [
-            "route" => [
-                "user_id" => [
-                    new Assert\NotBlank(),
-                    new Assert\NotNull(),
-                    new Assert\Positive(),
-                    new Assert\Type('digit'),
-                ]
-            ]
-        ];
+        return [];
     }
 
-    public function execute(Request $request): Collection
+    public function execute(Request $request): array
     {
-        $form = self::getParams($request);
-
-        $userId = $form["route"]["user_id"];
-        $user = $this->userRepository->find($userId);
+        $user_phone = $this->getUser()->getUserIdentifier();
+        $user = $this->userRepository
+            ->findOneBy(["phoneNumber" => $user_phone]);
 
         iF (!$user) {
             throw new BadRequestHttpException("Invalid user id");
         }
 
-        return $user->getAddresses();
+        return $user->getAddresses()->getValues();
     }
 }

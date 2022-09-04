@@ -8,6 +8,7 @@ use App\Repository\AddressRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class GetAddressDetailsForm extends ABaseForm
 {
@@ -21,7 +22,7 @@ class GetAddressDetailsForm extends ABaseForm
     {
         return [
             "route" => [
-                "address_id" => [
+                "id" => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
                     new Assert\Positive(),
@@ -35,7 +36,7 @@ class GetAddressDetailsForm extends ABaseForm
     {
         $form = self::getParams($request);
 
-        $addressId = $form["route"]["address_id"];
+        $addressId = $form["route"]["id"];
         $address = $this->addressRepository
             ->find($addressId);
 
