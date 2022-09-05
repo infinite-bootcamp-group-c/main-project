@@ -4,8 +4,8 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Lib\Repository\ABaseRepository;
-use App\Lib\Repository\HasRepositoryPaginator;
 use App\Lib\Repository\IBaseRepository;
+use App\Lib\Repository\Pagination\HasRepositoryPaginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
