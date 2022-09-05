@@ -4,8 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Product;
 use App\Lib\Repository\ABaseRepository;
-use App\Lib\Repository\HasRepositoryPaginator;
 use App\Lib\Repository\IBaseRepository;
+use App\Lib\Repository\Pagination\HasRepositoryPaginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ProductRepository extends ABaseRepository implements IBaseRepository
