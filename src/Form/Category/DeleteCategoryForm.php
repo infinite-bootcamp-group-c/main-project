@@ -2,15 +2,17 @@
 
 namespace App\Form\Category;
 
+use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class DeleteCategoryForm extends ABaseForm
 {
+
+    use HasValidateOwnership;
 
     public function __construct(
         private readonly CategoryRepository $categoryRepository
@@ -35,18 +37,15 @@ class DeleteCategoryForm extends ABaseForm
     public function execute(Request $request)
     {
         $categoryId = self::getParams($request)['route']['id'];
+        $category = $this->categoryRepository->find($categoryId);
 
-        if($this->categoryRepository->find($categoryId)
-                ->getShop()
-                ->getUser()
-                ->getId() !== $this->getUser()->getId()) {
-            throw new NotFoundHttpException('you are not allowed to delete this category');
+        if(!$category) {
+            throw new BadRequestHttpException("Category {$categoryId} Not Found");
         }
 
-        try {
-            $this->categoryRepository->removeById($categoryId);
-        } catch (EntityNotFoundException) {
-            throw new NotFoundHttpException("Category {$categoryId} Not Found");
-        }
+        $shop = $category->getShop();
+        $this->ValidateOwnership($shop, $this->getUser()->getId());
+
+        $this->categoryRepository->remove($category, true);
     }
 }

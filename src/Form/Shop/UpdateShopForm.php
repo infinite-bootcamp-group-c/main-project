@@ -3,6 +3,7 @@
 namespace App\Form\Shop;
 
 use App\Entity\Shop;
+use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\ShopRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -11,6 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateShopForm extends ABaseForm
 {
+    use HasValidateOwnership;
+
     public function __construct(
         private readonly ShopRepository $shopRepository
     )
@@ -34,7 +37,7 @@ class UpdateShopForm extends ABaseForm
                 ],
                 'ig_username' => [
                     new Assert\Length(min: 3, max: 30),
-                    new Assert\Regex(pattern: '^[\w](?!.*?\.{2})[\w.]{1,28}[\w]$'
+                    new Assert\Regex(pattern: '/^[\w](?!.*?\.{2})[\w.]{1,28}[\w]$/'
                         , message: 'The instagram username {{ value }} is not valid.'),
                 ],
                 'logo_url' => [
@@ -59,9 +62,7 @@ class UpdateShopForm extends ABaseForm
             throw new BadRequestException("Shop ${shopId} not found");
         }
 
-        if($shop->getUser()->getId() !== $this->getUser()->getId()){
-            throw new BadRequestException('You are not allowed to update this shop');
-        }
+        $this->validateOwnership($shop, $this->getUser()->getId());
 
         if(isset($form['body']["name"]))
             $shop->setName($form['body']['name']);

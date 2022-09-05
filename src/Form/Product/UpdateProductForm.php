@@ -3,20 +3,18 @@
 namespace App\Form\Product;
 
 use App\Entity\Product;
-use App\Form\Product\Traits\HasValidateCategoryOwnership;
-use App\Form\Product\Traits\HasValidateShopOwnership;
+use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ShopRepository;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateProductForm extends ABaseForm
 {
-    use HasValidateShopOwnership, HasValidateCategoryOwnership;
+    use HasValidateOwnership;
 
     public function __construct(
         private readonly ProductRepository  $productRepository,
@@ -26,8 +24,7 @@ class UpdateProductForm extends ABaseForm
     {
     }
 
-    public
-    function constraints(): array
+    public function constraints(): array
     {
         return [
             'route' => [
@@ -67,33 +64,20 @@ class UpdateProductForm extends ABaseForm
         ];
     }
 
-    public
-    function execute(Request $request): Product
+    public function execute(Request $request): Product
     {
         $form = self::getParams($request);
 
-        $shopId = $form['route']['id'];
-        $categoryId = $form['body']['category_id'];
         $productId = $form['route']['id'];
-
-        $shop = $this->shopRepository->find($shopId);
-
-        if (!$shop)
-            throw new BadRequestHttpException("Shop ${shopId} not found");
-
-        $category = $this->categoryRepository->find($categoryId);
-
-        if (!$category)
-            throw new BadRequestHttpException("Category ${categoryId} not found");
-
-
-        $this->validateShopOwnership($shop, $this->getUser()->getId());
-        $this->validateCategoryOwnership($shop, $category);
-
         $product = $this->productRepository->find($productId);
 
         if (!$product)
-            throw new BadRequestException("Product ${productId} not found");
+            throw new BadRequestHttpException("Product ${productId} not found");
+
+        $productCategory = $product->getCategory();
+        $shop = $productCategory->getShop();
+
+        $this->validateOwnership($shop, $this->getUser()->getId());
 
         if (isset($form['body']["name"]))
             $product->setName($form['body']['name']);
@@ -102,8 +86,28 @@ class UpdateProductForm extends ABaseForm
             $product->setPrice($form['body']['price']);
 
         if (isset($form['body']['category_id'])) {
-            $category = $this->categoryRepository->find($form['body']['category_id']);
+            $categoryId = $form['body']['category_id'];
+            $category = $this->categoryRepository->find($categoryId);
+
+            if (!$category)
+                throw new BadRequestHttpException("Category ${categoryId} not found");
+
+            $this->validateOwnership($this->shopRepository->find($category->getShop()->getId()),
+                $this->getUser()->getId());
+
             $product->setCategory($category);
+        }
+
+        if(isset($form['body']['shop_id'])){
+            $shopId = $form['body']['shop_id'];
+            $shop = $this->shopRepository->find($shopId);
+
+            if(!$shop)
+                throw new BadRequestHttpException("Shop ${shopId} not found");
+
+            $this->validateOwnership($shop, $this->getUser()->getId());
+
+            $productCategory->setShop($shop);
         }
 
         if (isset($form['body']['description']))
