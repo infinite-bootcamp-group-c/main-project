@@ -39,7 +39,7 @@ class GetCategoryForm extends ABaseForm
         $category = $this->categoryRepository->find($categoryId);
 
         if (!$category) {
-            throw new NotFoundHttpException("Category ${categoryId} found");
+            throw new NotFoundHttpException("Category ${categoryId} not found");
         }
 
         return $category;
