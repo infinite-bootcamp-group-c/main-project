@@ -3,18 +3,24 @@
 namespace App\Form\Product;
 
 use App\Entity\Product;
+use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
+use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Repository\ShopRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateProductForm extends ABaseForm
 {
 
-    use TCategoryAndShopValidate;
+    use HasValidateOwnership;
 
     public function __construct(
-        private readonly ProductRepository  $productRepository
+        private readonly ProductRepository  $productRepository,
+        private readonly CategoryRepository $categoryRepository,
+        private readonly ShopRepository $shopRepository,
     )
     {
     }
@@ -24,12 +30,6 @@ class CreateProductForm extends ABaseForm
         return [
             'body' => [
                 'category_id' => [
-                    new Assert\NotBlank(),
-                    new Assert\NotNull(),
-                    new Assert\Positive(),
-                    new Assert\Type('integer'),
-                ],
-                'shop_id' => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
                     new Assert\Positive(),
@@ -66,12 +66,18 @@ class CreateProductForm extends ABaseForm
     {
         $form = self::getParams($request);
 
-        $result = $this->validation($form);
+        $categoryId = $form['body']['category_id'];
+        $category = $this->categoryRepository->find($categoryId);
+
+        if(!$category)
+            throw new BadRequestHttpException("Category {$categoryId} not found");
+
+        $this->validateOwnership($category->getShop(), $this->getUser()->getId());
 
         $product = (new Product())
             ->setName($form["body"]["name"])
             ->setPrice($form["body"]["price"])
-            ->setCategory($result["category"])
+            ->setCategory($category)
             ->setDescription($form["body"]["description"])
             ->setQuantity($form["body"]["quantity"]);
 

@@ -4,13 +4,13 @@ namespace App\Repository;
 
 use App\Entity\ShopDeposit;
 use App\Lib\Repository\ABaseRepository;
-use App\Lib\Repository\HasPaginator;
+use App\Lib\Repository\HasRepositoryPaginator;
 use App\Lib\Repository\IBaseRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ShopDepositRepository extends ABaseRepository implements IBaseRepository
 {
-    use HasPaginator;
+    use HasRepositoryPaginator;
 
     public function __construct(ManagerRegistry $registry)
     {
