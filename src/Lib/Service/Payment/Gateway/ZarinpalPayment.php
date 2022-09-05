@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Lib\Service\Payment;
+namespace App\Lib\Service\Payment\Gateway;
 
+use App\Lib\Service\Payment\APaymentGateway;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -9,15 +10,10 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class ZarinpalPayment extends APaymentGateway
 {
-    public function __construct(
-        private readonly HttpClientInterface $httpClient,
-    )
-    {
-    }
-
     function getConfigName(): string
     {
         return 'zarinpal';
