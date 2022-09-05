@@ -2,7 +2,9 @@
 
 namespace App\Controller\Api;
 
+use App\Form\Basket\CreateBasketForm;
 use App\Lib\Controller\BaseController;
+use App\View\Basket\CreateBasketView;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Tag;
@@ -17,9 +19,11 @@ class BasketController extends BaseController
     #[Route('/add', name: 'add_new_item', methods: ['POST'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function addToBasket(
-        Request         $request,
+        Request          $request,
+        CreateBasketForm $createBasketForm,
+        CreateBasketView $createBasketView,
     ): JsonResponse
     {
-        return new JsonResponse();
+        return $createBasketForm->makeResponse($request, $createBasketView);
     }
 }
