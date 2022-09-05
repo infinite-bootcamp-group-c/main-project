@@ -60,7 +60,7 @@ class Order
         return $this->status;
     }
 
-    public function setStatus(object $status): self
+    public function setStatus(OrderStatus $status): self
     {
         $this->status = $status;
 
