@@ -81,6 +81,7 @@
   },
   "scripts": {
     "format": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src",
+    "seed": "php bin/console doctrine:fixtures:load --no-interaction",
     "auto-scripts": {
       "cache:clear": "symfony-cmd",
       "assets:install %PUBLIC_DIR%": "symfony-cmd"
