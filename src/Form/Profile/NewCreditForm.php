@@ -26,14 +26,21 @@ class NewCreditForm extends ABaseForm
                 "card" => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
+                    new Assert\Length(
+                        exactly: 16, exactMessage: "card number must be 16 characters long"
+                    )
                 ],
                 "IBAN" => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
+                    new Assert\Length(
+                        exactly: 26, exactMessage: "IBAN must be 26 characters long"
+                    )
                 ],
                 "expires_at" => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
+                    new Assert\DateTime()
                 ]
             ]
         ];
