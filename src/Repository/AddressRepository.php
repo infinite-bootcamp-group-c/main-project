@@ -10,8 +10,6 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class AddressRepository extends ABaseRepository implements IBaseRepository
 {
-    use HasRepositoryPaginator;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Address::class);

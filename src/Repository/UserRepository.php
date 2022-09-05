@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\User;
 use App\Lib\Repository\ABaseRepository;
 use App\Lib\Repository\IBaseRepository;
-use App\Lib\Repository\Pagination\HasRepositoryPaginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -14,8 +13,6 @@ use function get_class;
 
 class UserRepository extends ABaseRepository implements IBaseRepository, PasswordUpgraderInterface
 {
-    use HasRepositoryPaginator;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);

@@ -10,8 +10,6 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class OrderTransactionRepository extends ABaseRepository implements IBaseRepository
 {
-    use HasRepositoryPaginator;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, OrderTransaction::class);
