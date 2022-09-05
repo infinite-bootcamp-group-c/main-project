@@ -2,8 +2,10 @@
 
 namespace App\Controller\Api;
 
+use App\Form\User\GetUserForm;
 use App\Form\User\RegisterUserForm;
 use App\Lib\Controller\BaseController;
+use App\View\User\GetUserView;
 use App\View\User\RegisterUserView;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\RequestBody;
@@ -25,6 +27,16 @@ class UserController extends BaseController
     ): JsonResponse
     {
         return $registerUserForm->makeResponse($request, $registerUserView);
+    }
+
+    #[Route('/', name: 'get_user', methods: ['GET'])]
+    public function get(
+        Request     $request,
+        GetUserForm $findUserForm,
+        GetUserView $findUserVIew,
+    ): JsonResponse
+    {
+        return $findUserForm->makeResponse($request, $findUserVIew);
     }
 
 }
