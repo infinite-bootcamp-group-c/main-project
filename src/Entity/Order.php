@@ -38,11 +38,15 @@ class Order
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderItem::class)]
     private Collection $items;
 
-    #[ORM\ManyToMany(targetEntity: 'Address')]
-    #[ORM\JoinTable(name: 'orders_addresses')]
-    #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
-    #[ORM\InverseJoinColumn(name: 'address_id', referencedColumnName: 'id', unique: true)]
-    private Collection $addresses;
+//    #[ORM\ManyToMany(targetEntity: 'Address')]
+//    #[ORM\JoinTable(name: 'orders_addresses')]
+//    #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
+//    #[ORM\InverseJoinColumn(name: 'address_id', referencedColumnName: 'id', unique: true)]
+//    private Collection $addresses;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Address $address = null;
 
     public function __construct()
     {
@@ -136,24 +140,34 @@ class Order
     /**
      * @return Collection<int, Address>
      */
-    public function getAddresses(): Collection
+//    public function getAddresses(): Collection
+//    {
+//        return $this->addresses;
+//    }
+//
+//    public function addAddress(Address $address): self
+//    {
+//        if (!$this->addresses->contains($address)) {
+//            $this->addresses->add($address);
+//        }
+//
+//        return $this;
+//    }
+
+//    public function removeAddress(Address $address): self
+//    {
+//        $this->addresses->removeElement($address);
+//
+//        return $this;
+//    }
+
+    public function setAddress(Address $address): self
     {
-        return $this->addresses;
+        $this->address = $address;
     }
 
-    public function addAddress(Address $address): self
+    public function getAddress(Address $address)
     {
-        if (!$this->addresses->contains($address)) {
-            $this->addresses->add($address);
-        }
-
-        return $this;
-    }
-
-    public function removeAddress(Address $address): self
-    {
-        $this->addresses->removeElement($address);
-
-        return $this;
+        return $this->address;
     }
 }

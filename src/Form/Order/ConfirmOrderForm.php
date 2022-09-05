@@ -4,6 +4,7 @@ namespace App\Form\Order;
 
 use App\Entity\Enums\OrderStatus;
 use App\Lib\Form\ABaseForm;
+use App\Repository\AddressRepository;
 use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +15,8 @@ class ConfirmOrderForm extends ABaseForm
 {
     public function __construct(
         private readonly OrderRepository $orderRepository,
-        private readonly OrderItemRepository $orderItemRepository
+        private readonly OrderItemRepository $orderItemRepository,
+        private readonly AddressRepository $addressRepository
     ) {
 
     }
@@ -41,14 +43,22 @@ class ConfirmOrderForm extends ABaseForm
 
     public function execute(Request $request)
     {
-        $route = self::getRouteParams($request);
-        $order_id = $route["id"];
+        $body = self::getBodyParams($request);
+        $order_id = $body["id"];
+        $address_id = $body["address_id"];
 
         $order = $this->orderRepository
             ->find($order_id);
 
+        $address = $this->addressRepository
+            ->find($address_id);
+
         if (!$order) {
             throw new BadRequestHttpException("invalid order id");
+        }
+
+        if (!$address) {
+            throw new BadRequestHttpException("invalid address id");
         }
 
         $orderItems = $this->orderItemRepository
@@ -69,6 +79,7 @@ class ConfirmOrderForm extends ABaseForm
 
         $order->setTotalPrice($total_price);
         $order->setStatus(OrderStatus::WAITING);
+        $order->setAddress($address);
 
         $this->orderItemRepository->flush();
         $this->orderRepository->flush();
