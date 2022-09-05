@@ -2,7 +2,9 @@
 
 namespace App\Controller\Api;
 
+use App\Form\Basket\AddToBasketForm;
 use App\Lib\Controller\BaseController;
+use App\View\Basket\AddToBasketView;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Tag;
@@ -14,12 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Tag(name: 'Basket', description: 'Basket operations')]
 class BasketController extends BaseController
 {
-    #[Route('/add', name: 'add_new_item', methods: ['POST'])]
+    #[Route('/', name: 'set_item', methods: ['PATCH'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function addToBasket(
         Request         $request,
+        AddToBasketForm $addToBasketForm,
+        AddToBasketView $addToeBasketView,
     ): JsonResponse
     {
-        return new JsonResponse();
+        return $addToBasketForm->makeResponse($request, $addToeBasketView);
     }
 }
