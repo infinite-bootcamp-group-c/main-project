@@ -22,11 +22,10 @@ class OrderFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager)
     {
-        $configs = include('src/DataFixtures/fixtureConfig.php');
+        $configs = include('src/DataFixtures/FixtureConfig.php');
         $order_cnt = $configs['order_cnt'];
         $shop_cnt = $configs['address_cnt'];
         $user_cnt = $configs['user_cnt'];
-        // create 10 orders! Bam!
         for ($i = 1; $i <= $order_cnt; $i++) {
             $order = new Order();
 
@@ -35,7 +34,6 @@ class OrderFixtures extends Fixture implements FixtureGroupInterface
             $orderStatus = OrderStatus::from(mt_rand(0, 4));
 
 
-            //mt_rand(1, $shop_unique)
             $order->setShop($this->shopRepository->find($shopId));
             $order->setUser($this->userRepository->find($user_id));
             $order->setStatus($orderStatus);

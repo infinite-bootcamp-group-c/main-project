@@ -18,7 +18,7 @@ class CategoryFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager)
     {
-        $configs = include('src/DataFixtures/fixtureConfig.php');
+        $configs = include('src/DataFixtures/FixtureConfig.php');
         $category_cnt = $configs['category_cnt'];
         $category_unique = $configs['category_unique'];
         // create 3 categories for each 3 shops
