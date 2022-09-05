@@ -28,7 +28,7 @@ class Order
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: "Shop")]
     #[ORM\JoinColumn(nullable: false)]
     private ?Shop $shop = null;
 
@@ -59,9 +59,9 @@ class Order
         return $this->id;
     }
 
-    public function getStatus(): string
+    public function getStatus(): int
     {
-        return $this->status;
+        return $this->status->name;
     }
 
     public function setStatus(OrderStatus $status): self
@@ -160,10 +160,11 @@ class Order
 //
 //        return $this;
 //    }
-
+k
     public function setAddress(Address $address): self
     {
         $this->address = $address;
+        return $this;
     }
 
     public function getAddress(Address $address)

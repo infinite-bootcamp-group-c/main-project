@@ -7,7 +7,7 @@ use App\Entity\Order;
 use App\Entity\OrderItem;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateBasketView extends ABaseView
+class AddToBasketView extends ABaseView
 {
     protected int $HTTPStatusCode = Response::HTTP_CREATED;
 
