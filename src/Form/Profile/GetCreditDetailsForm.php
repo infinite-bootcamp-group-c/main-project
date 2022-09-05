@@ -41,7 +41,7 @@ class GetCreditDetailsForm extends ABaseForm
             ->find($credit_id);
 
         if (!$credit) {
-            throw new BadRequestHttpException("invalid credit id");
+            throw new BadRequestHttpException("CreditInfo {$credit_id} Not Found");
         }
 
         return $credit;

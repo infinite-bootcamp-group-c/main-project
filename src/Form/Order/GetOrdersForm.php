@@ -29,7 +29,7 @@ class GetOrdersForm extends ABaseForm
             ->findOneBy(["phone_number" => $user_phone]);
 
         if (!$user) {
-            throw new BadRequestHttpException("invalid user id");
+            throw new BadRequestHttpException("JWT Token Expired");
         }
 
         return $this->orderRepository

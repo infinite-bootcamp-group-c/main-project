@@ -80,7 +80,7 @@ class NewShopAddressForm extends ABaseForm
             ->find($shop_id);
 
         if (!$shop) {
-            throw new BadRequestHttpException("invalid shop id");
+            throw new BadRequestHttpException("Shop {$shop_id} Not Found");
         }
 
         $address = (new Address())

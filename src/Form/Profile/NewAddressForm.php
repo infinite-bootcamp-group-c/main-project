@@ -75,7 +75,7 @@ class NewAddressForm extends ABaseForm
             ->findOneBy(["phoneNumber" => $user_phone]);
 
         if (!$user) {
-            throw new BadRequestHttpException("Invalid user");
+            throw new BadRequestHttpException("JWT Token Expired");
         }
 
         $address = (new Address())

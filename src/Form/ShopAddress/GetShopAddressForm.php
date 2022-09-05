@@ -21,7 +21,7 @@ class GetShopAddressForm extends ABaseForm
     {
         return [
             "route" => [
-                "id" => [
+                "address_id" => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
                     new Assert\Positive(),
@@ -34,12 +34,12 @@ class GetShopAddressForm extends ABaseForm
     public function execute(Request $request): Address
     {
         $route = self::getRouteParams($request);
-        $address_id = $route["id"];
+        $address_id = $route["address_id"];
         $address = $this->addressRepository
             ->find($address_id);
 
         if (!$address) {
-            throw new BadRequestHttpException("invalid address id");
+            throw new BadRequestHttpException("Address {$address_id} Not Found");
         }
 
         return $address;

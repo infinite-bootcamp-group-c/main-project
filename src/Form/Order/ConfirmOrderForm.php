@@ -54,11 +54,11 @@ class ConfirmOrderForm extends ABaseForm
             ->find($address_id);
 
         if (!$order) {
-            throw new BadRequestHttpException("invalid order id");
+            throw new BadRequestHttpException("Order {$order_id} Not Found");
         }
 
         if (!$address) {
-            throw new BadRequestHttpException("invalid address id");
+            throw new BadRequestHttpException("Address {$address_id} Not Found");
         }
 
         $orderItems = $this->orderItemRepository
@@ -71,7 +71,7 @@ class ConfirmOrderForm extends ABaseForm
             // check if product is still available
             $product = $orderItem->getProduct();
             if ($product->getQuantity() < $orderItem->getQuantity()) {
-                throw new BadRequestHttpException("product not available");
+                throw new BadRequestHttpException("Product Is Not Available");
             } else {
                 $product->setQuantity($product->getQuantity() - $orderItem->getQuantity());
             }
