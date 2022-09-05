@@ -30,28 +30,42 @@ class NewShopAddressForm extends ABaseForm
                     new Assert\Type('digit')
                 ],
                 "title" => [
-
+                    new Assert\NotNull(),
+                    new Assert\NotBlank(),
+                    new Assert\Length(min: 4, max: 255),
+                    new Assert\Regex(pattern: '/^\w+/'
+                        , message: 'The shop name {{ value }} is not valid.'),
                 ],
                 "postal_code" => [
-
+                    new Assert\NotNull(),
+                    new Assert\NotBlank(),
+                    new Assert\Type("digit")
                 ],
                 "province" => [
-
+                    new Assert\NotNull(),
+                    new Assert\NotBlank()
                 ],
                 "address_details" => [
-
+                    new Assert\NotNull(),
+                    new Assert\NotBlank()
                 ],
                 "country" => [
-
+                    new Assert\NotNull(),
+                    new Assert\NotBlank()
                 ],
                 "city" => [
-
+                    new Assert\NotNull(),
+                    new Assert\NotBlank()
                 ],
                 "latitude" => [
-
+                    new Assert\NotNull(),
+                    new Assert\NotBlank(),
+                    new Assert\Type("digit")
                 ],
                 "longitude" => [
-
+                    new Assert\NotNull(),
+                    new Assert\NotBlank(),
+                    new Assert\Type("digit")
                 ]
             ]
         ];
