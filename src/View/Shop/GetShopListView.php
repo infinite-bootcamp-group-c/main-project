@@ -9,18 +9,13 @@ class GetShopListView extends ABaseView
 {
     public function execute(array $products): array
     {
-        return array_map(function (Shop $shop) {
+        return $this->renderPaginated($products, function (Shop $shop) {
             return [
                 'id' => $shop->getId(),
                 'name' => $shop->getName(),
-                'vendorPhoneNumber' => $shop->getUser()->getPhoneNumber(),
-                'logo' => $shop->getLogo(),
-                'description' => $shop->getDescription(),
-                'instagram_username' => $shop->getIgUsername(),
-                'addresses' => $shop->getAddresses(),
-                'created_at' => $shop->getCreatedAt(),
-                'updated_at' => $shop->getUpdatedAt(),
+                'createdAt' => $shop->getCreatedAt(),
+                'updatedAt' => $shop->getUpdatedAt(),
             ];
-        }, $products);
+        });
     }
 }

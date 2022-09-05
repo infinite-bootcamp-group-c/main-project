@@ -12,7 +12,9 @@ use App\View\Category\GetCategoryListView;
 use App\View\Category\GetCategoryView;
 use App\View\Category\UpdateCategoryView;
 use OpenApi\Attributes\JsonContent;
+use OpenApi\Attributes\Parameter;
 use OpenApi\Attributes\RequestBody;
+use OpenApi\Attributes\Schema;
 use OpenApi\Attributes\Tag;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,6 +28,12 @@ class CategoryController extends AbstractController
 {
 
     #[Route('', name: 'get_category_list', methods: ['GET'])]
+    #[
+        Parameter(name: 'page', in: 'query', required: false, example: 1),
+        Parameter(name: 'limit', in: 'query', required: false, example: 10),
+        Parameter(name: 'sort', in: 'query', required: false, schema: new Schema(type: 'string', enum: ['ASC', 'DESC']), example: 'ASC'),
+        Parameter(name: 'sort_by', in: 'query', required: false, schema: new Schema(type: 'string', enum: ['id', 'createdAt', 'updatedAt']), example: 'createdAt'),
+    ]
     public function getList(
         Request            $request,
         GetCategoryListForm $getCategoryListForm,

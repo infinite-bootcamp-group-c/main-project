@@ -20,7 +20,6 @@ use OpenApi\Attributes\Tag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Lib\Repository\ParamPaginator;
 
 #[Route('/products')]
 #[Tag(name: 'Product', description: 'Product operations')]

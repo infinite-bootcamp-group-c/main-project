@@ -17,7 +17,6 @@ trait HasRepositoryPaginator
         }
 
         $totalItems = $this->count($criteria);
-
         return [
             'items' => $queryBuilder->getQuery()->getResult(),
             'totalItems' => $totalItems,
