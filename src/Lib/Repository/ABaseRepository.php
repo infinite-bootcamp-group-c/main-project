@@ -4,17 +4,31 @@ namespace App\Lib\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @extends ServiceEntityRepository
  *
- * @method find($id, $lockMode = null, $lockVersion = null)
  * @method findOneBy(array $criteria, array $orderBy = null)
  * @method array findAll()
  * @method array findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 abstract class ABaseRepository extends ServiceEntityRepository implements IBaseRepository
 {
+    public function find($id, $lockMode = null, $lockVersion = null){
+        try {
+            return $this->createQueryBuilder('p')
+                ->where('p.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->useQueryCache(true)
+                //->enableResultCache()
+                ->setMaxResults(1)->getOneOrNullResult();
+        } catch (NonUniqueResultException $NonUniqueResultException) {
+            //TODO handleException
+        };
+    }
+
     public function add($entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
