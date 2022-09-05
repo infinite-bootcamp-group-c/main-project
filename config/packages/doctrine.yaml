@@ -17,6 +17,12 @@ doctrine:
         dir: '%kernel.project_dir%/src/Entity'
         prefix: 'App\Entity'
         alias: App
+    result_cache_driver:
+      type: pool
+      pool: my.dedicated.redis
+    query_cache_driver:
+      type: pool
+      pool: my.dedicated.redis
 
 when@test:
   doctrine:
