@@ -3,7 +3,8 @@
 namespace App\Controller\Api;
 
 use App\Lib\Controller\BaseController;
-use App\Lib\Service\Payment\ZarinpalPayment;
+use App\Lib\Service\Payment\PaymentGatewayFactory;
+use Exception;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Tag;
@@ -16,14 +17,17 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Tag(name: 'Payment', description: 'Payment operations')]
 class PaymentController extends BaseController
 {
+    /**
+     * @throws Exception
+     */
     #[Route('/request', name: 'request_payment', methods: ['GET'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function request(
-        Request         $request,
-        ZarinpalPayment $zarinPal,
+        Request               $request,
+        PaymentGatewayFactory $paymentGatewayFactory,
     ): JsonResponse
     {
-        $payment = $zarinPal->request(
+        $payment = $paymentGatewayFactory->get('zarinpal')->request(
             amount: 5000, // TODO:: we should get this from the database
             params: [
                 'user_id' => 1,
@@ -40,14 +44,17 @@ class PaymentController extends BaseController
 
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/verify', name: 'verify_payment', methods: ['GET'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function verify(
-        Request         $request,
-        ZarinpalPayment $zarinPal,
+        Request               $request,
+        PaymentGatewayFactory $paymentGatewayFactory,
     ): JsonResponse
     {
-        $verify = $zarinPal->verify(
+        $verify = $paymentGatewayFactory->get('zarinpal')->verify(
             amount: 5000, // TODO:: we should get this from the database
             authority: $request->get('Authority'),
         );
