@@ -3,15 +3,17 @@
 namespace App\Form\Category;
 
 use App\Entity\Category;
+use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ShopRepository;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateCategoryForm extends ABaseForm
 {
+    use HasValidateOwnership;
 
     public function __construct(
         private readonly CategoryRepository $categoryRepository,
@@ -49,12 +51,10 @@ class CreateCategoryForm extends ABaseForm
         $shop = $this->shopRepository->find($shopId);
 
         if(!$shop) {
-            throw new BadRequestException('Shop not found');
+            throw new BadRequestHttpException("Shop {$shopId} not found");
         }
 
-        if($shop->getUser()->getId() !== $this->getUser()->getId()) {
-            throw new BadRequestException('You are not allowed to create category for this shop');
-        }
+        $this->validateOwnership($shop, $this->getUser()->getId());
 
         $category = (new Category())
             ->setTitle($form['body']['title'])

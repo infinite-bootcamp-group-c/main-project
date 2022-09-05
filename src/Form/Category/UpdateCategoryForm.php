@@ -2,15 +2,18 @@
 
 namespace App\Form\Category;
 
+use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ShopRepository;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateCategoryForm extends ABaseForm
 {
+
+    use HasValidateOwnership;
 
     public function __construct(
         private readonly CategoryRepository $categoryRepository,
@@ -46,28 +49,29 @@ class UpdateCategoryForm extends ABaseForm
     {
         $form = self::getParams($request);
 
-        $shopId = $form['body']['shop_id'];
-        $shop = $this->shopRepository->find($shopId);
-
         $categoryId = $form['route']['id'];
         $category = $this->categoryRepository->find($categoryId);
 
         if(!$category) {
-            throw new BadRequestException("Category ${categoryId} not found");
+            throw new BadRequestHttpException("Category ${categoryId} not found");
         }
+
+        $this->validateOwnership($category->getShop(), $this->getUser()->getId());
 
         if(isset($form['body']['title'])) {
             $category->setTitle($form['body']['title']);
         }
 
-        if(isset($form['body']['shop_id'])) {
+        if(isset($form["body"]["shop_id"])) {
+
+            $shopId = $form['body']['shop_id'];
+            $shop = $this->shopRepository->find($shopId);
+
             if(!$shop) {
-                throw new BadRequestException("Shop ${shopId} not found");
+                throw new BadRequestHttpException("Shop ${shopId} not found");
             }
 
-            if($shop->getUser()->getId() !== $this->getUser()->getId()){
-                throw new BadRequestException('You can not update this category');
-            }
+            $this->validateOwnership($shop, $this->getUser()->getId());
 
             $category->setShop($shop);
         }

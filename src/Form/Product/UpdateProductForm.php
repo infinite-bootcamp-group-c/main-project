@@ -3,19 +3,23 @@
 namespace App\Form\Product;
 
 use App\Entity\Product;
+use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
+use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use App\Repository\ShopRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateProductForm extends ABaseForm
 {
-
-    use TCategoryAndShopValidate;
+    use HasValidateOwnership;
 
     public function __construct(
-        private readonly ProductRepository  $productRepository
+        private readonly ProductRepository  $productRepository,
+        private readonly ShopRepository     $shopRepository,
+        private readonly CategoryRepository $categoryRepository,
     )
     {
     }
@@ -64,30 +68,52 @@ class UpdateProductForm extends ABaseForm
     {
         $form = self::getParams($request);
 
-        $result = $this->validation($form);
-
         $productId = $form['route']['id'];
         $product = $this->productRepository->find($productId);
 
-        if (!$product) {
-            throw new BadRequestException("Product ${productId} not found");
-        }
+        if (!$product)
+            throw new BadRequestHttpException("Product ${productId} not found");
 
-        if(isset($form['body']["name"]))
+        $productCategory = $product->getCategory();
+        $shop = $productCategory->getShop();
+
+        $this->validateOwnership($shop, $this->getUser()->getId());
+
+        if (isset($form['body']["name"]))
             $product->setName($form['body']['name']);
 
-        if(isset($form['body']['price']))
+        if (isset($form['body']['price']))
             $product->setPrice($form['body']['price']);
 
-        if(isset($form['body']['category_id'])) {
-            $category = $result['category'];
+        if (isset($form['body']['category_id'])) {
+            $categoryId = $form['body']['category_id'];
+            $category = $this->categoryRepository->find($categoryId);
+
+            if (!$category)
+                throw new BadRequestHttpException("Category ${categoryId} not found");
+
+            $this->validateOwnership($this->shopRepository->find($category->getShop()->getId()),
+                $this->getUser()->getId());
+
             $product->setCategory($category);
         }
 
-        if(isset($form['body']['description']))
+        if(isset($form['body']['shop_id'])){
+            $shopId = $form['body']['shop_id'];
+            $shop = $this->shopRepository->find($shopId);
+
+            if(!$shop)
+                throw new BadRequestHttpException("Shop ${shopId} not found");
+
+            $this->validateOwnership($shop, $this->getUser()->getId());
+
+            $productCategory->setShop($shop);
+        }
+
+        if (isset($form['body']['description']))
             $product->setDescription($form['body']['description']);
 
-        if(isset($form['body']['quantity']))
+        if (isset($form['body']['quantity']))
             $product->setQuantity($form['body']['quantity']);
 
         $this->productRepository->flush();
