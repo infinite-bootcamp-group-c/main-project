@@ -3,22 +3,24 @@
 namespace App\Form\Product;
 
 use App\Entity\Product;
-use App\Form\Product\Traits\HasValidateCategoryOwnership;
-use App\Form\Product\Traits\HasValidateShopOwnership;
+use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Repository\ShopRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateProductForm extends ABaseForm
 {
 
-    use HasValidateShopOwnership, HasValidateCategoryOwnership;
+    use HasValidateOwnership;
 
     public function __construct(
         private readonly ProductRepository  $productRepository,
-        private readonly CategoryRepository $categoryRepository
+        private readonly CategoryRepository $categoryRepository,
+        private readonly ShopRepository $shopRepository,
     )
     {
     }
@@ -28,12 +30,6 @@ class CreateProductForm extends ABaseForm
         return [
             'body' => [
                 'category_id' => [
-                    new Assert\NotBlank(),
-                    new Assert\NotNull(),
-                    new Assert\Positive(),
-                    new Assert\Type('integer'),
-                ],
-                'shop_id' => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
                     new Assert\Positive(),
@@ -73,10 +69,10 @@ class CreateProductForm extends ABaseForm
         $categoryId = $form['body']['category_id'];
         $category = $this->categoryRepository->find($categoryId);
 
-        $userId = $this->getUser()->getId();
+        if(!$category)
+            throw new BadRequestHttpException("Category {$categoryId} not found");
 
-        $this->validateShopOwnership($category->getShop(), $userId);
-        $this->validateCategoryOwnership($category->getShop(), $category);
+        $this->validateOwnership($category->getShop(), $this->getUser()->getId());
 
         $product = (new Product())
             ->setName($form["body"]["name"])

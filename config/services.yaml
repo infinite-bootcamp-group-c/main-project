@@ -4,6 +4,11 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+  zarinpal:
+    testing: true
+    merchant_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+    callback_url: 'http://localhost/api/payments/verify'
+    description: 'lorem ipsum dolor sit amet'
 
 services:
   # default configuration for services in *this* file
