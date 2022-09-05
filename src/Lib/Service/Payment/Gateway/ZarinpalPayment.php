@@ -9,8 +9,6 @@ use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class ZarinpalPayment extends APaymentGateway
 {
@@ -21,6 +19,10 @@ class ZarinpalPayment extends APaymentGateway
 
     public function request($amount, array $params = [], $callbackUrl = '', $description = ''): array
     {
+        if (!$callbackUrl) {
+            $callbackUrl = $this->config('callback_url');
+        }
+
         $this->validateArguments($callbackUrl, $description, '', true);
 
         $requestType = $this->config('testing') ? 'sandbox' : 'www';
