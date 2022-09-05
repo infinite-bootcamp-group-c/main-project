@@ -17,10 +17,7 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager)
     {
-        /*
-         * Create 3 user
-         */
-        $configs = include('src/DataFixtures/fixtureConfig.php');
+        $configs = include('src/DataFixtures/FixtureConfig.php');
         $user_cnt = $configs['user_cnt'];
         for ($i = 1; $i <= $user_cnt; $i++) {
             $user = new User($this->hasher);

@@ -4,14 +4,12 @@ namespace App\Repository;
 
 use App\Entity\Shop;
 use App\Lib\Repository\ABaseRepository;
-use App\Lib\Repository\HasRepositoryPaginator;
 use App\Lib\Repository\IBaseRepository;
+use App\Lib\Repository\Pagination\HasRepositoryPaginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ShopRepository extends ABaseRepository implements IBaseRepository
 {
-    use HasRepositoryPaginator;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Shop::class);

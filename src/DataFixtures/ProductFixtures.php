@@ -18,10 +18,9 @@ class ProductFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager)
     {
-        $configs = include('src/DataFixtures/fixtureConfig.php');
+        $configs = include('src/DataFixtures/FixtureConfig.php');
         $product_cnt = $configs['product_cnt'];
         $product_unique = $configs['product_unique'];
-        // create 3 products for each 9 categories
         for ($i = 1; $i <= $product_cnt; $i++) {
             $product = new Product();
             $categoryId = ($i-1)%$product_unique + 1;
