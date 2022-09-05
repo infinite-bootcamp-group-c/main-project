@@ -18,10 +18,14 @@ class CategoryFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager)
     {
+        $configs = include('src/DataFixtures/fixtureConfig.php');
+        $category_cnt = $configs['category_cnt'];
+        $category_unique = $configs['category_unique'];
         // create 3 categories for each 3 shops
-        for ($i = 1; $i < 10; $i++) {
+        for ($i = 1; $i <= $category_cnt; $i++) {
             $category = new Category();
-            $shopId = ($i-1)/3 + 1;
+            $shopId = ($i-1)%$category_unique + 1;
+
             $category->setShop($this->shopRepository->find($shopId));
             $category->setTitle('category'.$i);
 
