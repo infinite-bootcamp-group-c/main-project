@@ -10,8 +10,6 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class ProductRepository extends ABaseRepository implements IBaseRepository
 {
-    use HasRepositoryPaginator;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Product::class);
