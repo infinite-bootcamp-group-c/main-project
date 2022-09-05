@@ -30,7 +30,7 @@ class GetAddressForm extends ABaseForm
             ->findOneBy(["phoneNumber" => $user_phone]);
 
         iF (!$user) {
-            throw new BadRequestHttpException("Invalid user id");
+            throw new BadRequestHttpException("JWT Token Expired");
         }
 
         return $user->getAddresses()->getValues();

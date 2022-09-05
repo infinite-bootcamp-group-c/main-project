@@ -42,16 +42,17 @@ class DeleteOrderForm extends ABaseForm
         // add the quantity to products
         // delete order
 
-        $order_id = self::getRouteParams($request);
+        $route = self::getRouteParams($request);
+        $order_id = $route["id"];
         $order = $this->orderRepository
             ->find($order_id);
 
         if (!$order) {
-            throw new BadRequestHttpException("invalid order id");
+            throw new BadRequestHttpException("Order {$order_id} Not Found");
         }
 
         if ($order->getStatus() != OrderStatus::OPEN) {
-            throw new BadRequestHttpException("order is not open, can not be deleted");
+            throw new BadRequestHttpException("Can only delete order when it's open");
         }
 
         $order_items = $this->orderItemRepository

@@ -44,7 +44,7 @@ class PayOrderForm extends ABaseForm
             ->find($order_id);
 
         if (!$order) {
-            throw new BadRequestHttpException("invalid order id");
+            throw new BadRequestHttpException("Order {$order_id} Not Found");
         }
 
         $payment_method = "zarinpal";

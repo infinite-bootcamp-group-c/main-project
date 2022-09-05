@@ -44,11 +44,11 @@ class DeleteAddressForm extends ABaseForm
             ->findOneBy(["phoneNumber" => $user_phone]);
 
         if (!$address) {
-            throw new BadRequestHttpException("invalid address id");
+            throw new BadRequestHttpException("Address {$addressId} Not Found");
         }
 
         if (!$user) {
-            throw new BadRequestHttpException("invalid user id");
+            throw new BadRequestHttpException("JWT Token Expired");
         }
 
         $user->removeAddress($address);

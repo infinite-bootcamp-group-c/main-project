@@ -49,11 +49,11 @@ class DeleteShopAddressForm extends ABaseForm
             ->find($shop_id);
 
         if (!$address) {
-            throw new BadRequestHttpException("invalid address id");
+            throw new BadRequestHttpException("Address {$address_id} Not Found");
         }
 
         if (!$shop) {
-            throw new BadRequestHttpException("invalid shop id");
+            throw new BadRequestHttpException("Shop {$shop_id} Not Found");
         }
 
         $shop->removeAddress($address);

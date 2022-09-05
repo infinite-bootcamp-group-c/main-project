@@ -42,7 +42,7 @@ class DeleteCreditForm extends ABaseForm
             ->find($credit_id);
 
         if (!$credit_id){
-            throw new BadRequestHttpException("invalid credit id");
+            throw new BadRequestHttpException("CreditInfo {$credit_id} Not Found");
         }
 
         $user = $credit->getUser();

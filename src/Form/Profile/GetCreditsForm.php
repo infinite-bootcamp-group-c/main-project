@@ -30,7 +30,7 @@ class GetCreditsForm extends ABaseForm
             ->findOneBy(["phoneNumber" => $user_phone]);
 
         if (!$user) {
-            throw new BadRequestHttpException("invalid user id");
+            throw new BadRequestHttpException("JWT Token Expired");
         }
 
         return $user->getCreditInfos()->getValues();

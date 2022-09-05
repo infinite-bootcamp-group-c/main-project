@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Tag(name: 'Shop Address', description: 'Shop Address operations')]
 class ShopAddressController extends BaseController
 {
-    #[Route("/all/{id}", name: 'get_shop_addresses', methods: ['GET'])]
+    #[Route("/all/{shop_id}", name: 'get_shop_addresses', methods: ['GET'])]
     public function getAll(
         Request              $request,
         GetShopAddressesForm $getShopAddressesForm,
@@ -33,7 +33,7 @@ class ShopAddressController extends BaseController
     }
 
     // address_id
-    #[Route("/{id}", name: 'get_shop_address', methods: ['GET'])]
+    #[Route("/{address_id}", name: 'get_shop_address', methods: ['GET'])]
     public function get(
         Request            $request,
         GetShopAddressForm $getShopAddressForm,

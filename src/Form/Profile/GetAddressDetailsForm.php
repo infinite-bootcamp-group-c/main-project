@@ -41,7 +41,7 @@ class GetAddressDetailsForm extends ABaseForm
             ->find($addressId);
 
         if (!$address) {
-            throw new BadRequestHttpException("invalid address id");
+            throw new BadRequestHttpException("Address {$addressId} Not Found");
         }
 
         return $address;
