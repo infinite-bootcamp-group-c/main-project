@@ -8,7 +8,7 @@ security:
     app_user_provider:
       entity:
         class: App\Entity\User
-        property: phone_number
+        property: phoneNumber
   firewalls:
     api:
       pattern: ^/api
@@ -18,7 +18,7 @@ security:
         check_path: /api/auth/login # or, if you have defined a route for your login path, the route name you used
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
-        username_path: phone_number
+        username_path: phoneNumber
       jwt: ~
       refresh_jwt:
         check_path: /api/auth/token/refresh # or, you may use the `api_refresh_token` route name
@@ -41,6 +41,7 @@ security:
   access_control:
     - { path: ^/api/doc, roles: PUBLIC_ACCESS }
     - { path: ^/api/product, roles: PUBLIC_ACCESS }
+    - { path: ^/api/payment, roles: PUBLIC_ACCESS }
     - { path: ^/api/users/register, roles: PUBLIC_ACCESS }
     - { path: ^/api/auth/(login|token/refresh), roles: PUBLIC_ACCESS }
     - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
