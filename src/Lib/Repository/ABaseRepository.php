@@ -2,6 +2,7 @@
 
 namespace App\Lib\Repository;
 
+use App\Lib\Repository\Pagination\HasRepositoryPaginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityNotFoundException;
 
@@ -15,6 +16,8 @@ use Doctrine\ORM\EntityNotFoundException;
  */
 abstract class ABaseRepository extends ServiceEntityRepository implements IBaseRepository
 {
+    use HasRepositoryPaginator;
+
     public function add($entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

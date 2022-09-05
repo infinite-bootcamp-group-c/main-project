@@ -18,11 +18,14 @@ class ShopFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager)
     {
-        // create 3 shops! Bam!
-        for ($i = 1; $i < 4; $i++) {
+        $configs = include('src/DataFixtures/FixtureConfig.php');
+        $shop_cnt = $configs['address_cnt'];
+        $shop_unique = $configs['shop_unique'];
+        for ($i = 1; $i <= $shop_cnt; $i++) {
             $shop = new Shop();
+
             $shop->setName('user'.$i);
-            $shop->setUser($this->userRepository->find(mt_rand(1, 3)));
+            $shop->setUser($this->userRepository->find(mt_rand(1, $shop_unique)));
             $shop->setDescription('Test description for shop'.$i);
             $shop->setIgUsername('ig'.$i);
 

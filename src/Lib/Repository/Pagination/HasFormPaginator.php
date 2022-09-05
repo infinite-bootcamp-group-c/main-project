@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib\Repository;
+namespace App\Lib\Repository\Pagination;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
