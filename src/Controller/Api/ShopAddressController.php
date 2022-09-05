@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/shop_address')]
+#[Route('/shop-address')]
 #[Tag(name: 'Shop Address', description: 'Shop Address operations')]
 class ShopAddressController extends BaseController
 {
