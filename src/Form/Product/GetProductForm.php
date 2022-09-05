@@ -40,7 +40,7 @@ class GetProductForm extends ABaseForm
         $product = $this->productRepository->find($productId);
 
         if (!$product)
-            throw new NotFoundHttpException("Product ${productId} found");
+            throw new NotFoundHttpException("Product ${productId} not found");
 
         return $product;
     }
