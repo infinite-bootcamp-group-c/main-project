@@ -10,18 +10,17 @@ class GetCategoryListView extends ABaseView
 
     public function execute(array $categories): array
     {
-        return array_map(function (Category $category) {
+        return $this->renderPaginated($categories, function (Category $category) {
             return [
                 'id' => $category->getId(),
                 'title' => $category->getTitle(),
-                'shop' => $category->getShop()
-                    ->getName(),
+                'shop' => $category->getShop()->getName(),
                 'vendorPhoneNumbers' => $category->getShop()
                     ->getUser()
                     ->getPhoneNumber(),
-                'created_at' => $category->getCreatedAt(),
-                'updated_at' => $category->getUpdatedAt(),
+                'createdAt' => $category->getCreatedAt(),
+                'updatedAt' => $category->getUpdatedAt(),
             ];
-        }, $categories);
+        });
     }
 }

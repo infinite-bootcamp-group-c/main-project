@@ -5,11 +5,11 @@ namespace App\Lib\Repository;
 use App\Lib\Repository\Pagination\HasRepositoryPaginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @extends ServiceEntityRepository
  *
- * @method find($id, $lockMode = null, $lockVersion = null)
  * @method findOneBy(array $criteria, array $orderBy = null)
  * @method array findAll()
  * @method array findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -17,6 +17,20 @@ use Doctrine\ORM\EntityNotFoundException;
 abstract class ABaseRepository extends ServiceEntityRepository implements IBaseRepository
 {
     use HasRepositoryPaginator;
+
+    public function find($id, $lockMode = null, $lockVersion = null){
+        try {
+            return $this->createQueryBuilder('p')
+                ->where('p.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->useQueryCache(true)
+                //->enableResultCache()
+                ->setMaxResults(1)->getOneOrNullResult();
+        } catch (NonUniqueResultException $NonUniqueResultException) {
+            //TODO handleException
+        };
+    }
 
     public function add($entity, bool $flush = false): void
     {
