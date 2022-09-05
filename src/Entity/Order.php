@@ -28,7 +28,7 @@ class Order
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: "Shop")]
     #[ORM\JoinColumn(nullable: false)]
     private ?Shop $shop = null;
 
@@ -38,11 +38,15 @@ class Order
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderItem::class)]
     private Collection $items;
 
-    #[ORM\ManyToMany(targetEntity: 'Address')]
-    #[ORM\JoinTable(name: 'orders_addresses')]
-    #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
-    #[ORM\InverseJoinColumn(name: 'address_id', referencedColumnName: 'id', unique: true)]
-    private Collection $addresses;
+//    #[ORM\ManyToMany(targetEntity: 'Address')]
+//    #[ORM\JoinTable(name: 'orders_addresses')]
+//    #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
+//    #[ORM\InverseJoinColumn(name: 'address_id', referencedColumnName: 'id', unique: true)]
+//    private Collection $addresses;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Address $address = null;
 
     public function __construct()
     {
@@ -55,9 +59,9 @@ class Order
         return $this->id;
     }
 
-    public function getStatus(): string
+    public function getStatus(): int
     {
-        return $this->status;
+        return $this->status->name;
     }
 
     public function setStatus(OrderStatus $status): self
@@ -136,24 +140,35 @@ class Order
     /**
      * @return Collection<int, Address>
      */
-    public function getAddresses(): Collection
-    {
-        return $this->addresses;
-    }
+//    public function getAddresses(): Collection
+//    {
+//        return $this->addresses;
+//    }
+//
+//    public function addAddress(Address $address): self
+//    {
+//        if (!$this->addresses->contains($address)) {
+//            $this->addresses->add($address);
+//        }
+//
+//        return $this;
+//    }
 
-    public function addAddress(Address $address): self
+//    public function removeAddress(Address $address): self
+//    {
+//        $this->addresses->removeElement($address);
+//
+//        return $this;
+//    }
+k
+    public function setAddress(Address $address): self
     {
-        if (!$this->addresses->contains($address)) {
-            $this->addresses->add($address);
-        }
-
+        $this->address = $address;
         return $this;
     }
 
-    public function removeAddress(Address $address): self
+    public function getAddress(Address $address)
     {
-        $this->addresses->removeElement($address);
-
-        return $this;
+        return $this->address;
     }
 }
