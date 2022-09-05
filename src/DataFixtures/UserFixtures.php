@@ -17,11 +17,11 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager)
     {
-        /*
-         * Create 3 user
-         */
-        for ($i = 1; $i < 4; $i++) {
-            $user = new User();
+        $configs = include('src/DataFixtures/FixtureConfig.php');
+        $user_cnt = $configs['user_cnt'];
+        for ($i = 1; $i <= $user_cnt; $i++) {
+            $user = new User($this->hasher);
+
             $user->setEmail('email'.$i.'@test.com');
             $user->setFirstName('firstName'.$i);
             $user->setLastName('lastName'.$i);

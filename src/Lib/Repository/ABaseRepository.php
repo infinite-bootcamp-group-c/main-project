@@ -2,6 +2,7 @@
 
 namespace App\Lib\Repository;
 
+use App\Lib\Repository\Pagination\HasRepositoryPaginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -15,6 +16,8 @@ use Doctrine\ORM\NonUniqueResultException;
  */
 abstract class ABaseRepository extends ServiceEntityRepository implements IBaseRepository
 {
+    use HasRepositoryPaginator;
+
     public function find($id, $lockMode = null, $lockVersion = null){
         try {
             return $this->createQueryBuilder('p')

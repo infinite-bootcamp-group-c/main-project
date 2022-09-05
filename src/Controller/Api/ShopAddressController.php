@@ -18,46 +18,50 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/shop_address')]
-#[Tag(name: 'shop_address', description: 'Profile operations')]
+#[Route('/shop-address')]
+#[Tag(name: 'Shop Address', description: 'Shop Address operations')]
 class ShopAddressController extends BaseController
 {
     #[Route("/all/{id}", name: 'get_shop_addresses', methods: ['GET'])]
     public function getAll(
-        Request $request,
+        Request              $request,
         GetShopAddressesForm $getShopAddressesForm,
         GetShopAddressesView $getShopAddressesView
-    ): JsonResponse {
-        return $getShopAddressesForm->makeResponse($request,$getShopAddressesView);
+    ): JsonResponse
+    {
+        return $getShopAddressesForm->makeResponse($request, $getShopAddressesView);
     }
 
     // address_id
     #[Route("/{id}", name: 'get_shop_address', methods: ['GET'])]
     public function get(
-        Request $request,
+        Request            $request,
         GetShopAddressForm $getShopAddressForm,
         GetShopAddressView $getShopAddressView
-    ): JsonResponse {
-        return $getShopAddressForm->makeResponse($request,$getShopAddressView);
+    ): JsonResponse
+    {
+        return $getShopAddressForm->makeResponse($request, $getShopAddressView);
     }
 
     #[Route("/", name: 'new_shop_address', methods: ['POST'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function post(
-        Request $request,
+        Request            $request,
         NewShopAddressForm $newShopAddressForm,
         NewShopAddressView $newShopAddressView
-    ): JsonResponse {
-        return $newShopAddressForm->makeResponse($request,$newShopAddressView);
+    ): JsonResponse
+    {
+        return $newShopAddressForm->makeResponse($request, $newShopAddressView);
     }
 
     // shop id
     #[Route("/{shop_id}/{address_id}", name: 'delete_shop_address', methods: ['DELETE'])]
     public function delete(
-        Request $request,
+        Request               $request,
         DeleteShopAddressForm $deleteShopAddressForm,
         DeleteShopAddressView $deleteShopAddressView
-    ): JsonResponse {
-        return $deleteShopAddressForm->makeResponse($request,$deleteShopAddressView);
+    ): JsonResponse
+    {
+        return $deleteShopAddressForm->makeResponse($request, $deleteShopAddressView);
     }
 }
