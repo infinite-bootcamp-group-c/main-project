@@ -1,5 +1,5 @@
 <?php
-return array(
+return [
     'address_cnt' => 3,
     'category_cnt' => 9,
     'category_unique' => 3,
@@ -10,4 +10,4 @@ return array(
     'shop_cnt' => 9,
     'shop_unique' => 3,
     'user_cnt' => 3,
-);
+];
