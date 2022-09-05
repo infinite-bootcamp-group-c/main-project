@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/shop_address')]
-#[Tag(name: 'shop-address', description: 'Profile operations')]
+#[Route('/shop-address')]
+#[Tag(name: 'Shop Address', description: 'Shop Address operations')]
 class ShopAddressController extends BaseController
 {
     #[Route("/all/{id}", name: 'get_shop_addresses', methods: ['GET'])]

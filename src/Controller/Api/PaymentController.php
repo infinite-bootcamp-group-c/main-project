@@ -32,7 +32,6 @@ class PaymentController extends BaseController
             params: [
                 'user_id' => 1,
             ],
-            callbackUrl: $this->getParameter('zarinpal')['callback_url'],
         );
 
         if ($payment['result'] == 'warning')
