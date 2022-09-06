@@ -2,16 +2,17 @@
 
 namespace App\Form\Shop;
 
-use App\Entity\Shop;
+use App\Entity\ShopDeposit;
 use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
-use App\Repository\OrderRepository;
 use App\Repository\OrderTransactionRepository;
+use App\Repository\ShopDepositRepository;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\ShopRepository;
 use Symfony\Component\HttpFoundation\Request;
-
 
 class DepositShopForm extends ABaseForm
 {
@@ -21,7 +22,7 @@ class DepositShopForm extends ABaseForm
     public function __construct(
         private readonly ShopRepository $shopRepository,
         private readonly OrderTransactionRepository $orderTransactionRepository,
-        private readonly OrderRepository $orderRepository,
+        private readonly ShopDepositRepository $shopDepositRepository,
     )
     {
     }
@@ -40,7 +41,10 @@ class DepositShopForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Shop
+    /**
+     * @throws Exception
+     */
+    public function execute(Request $request): void
     {
         $form = self::getParams($request);
         $shopId = $form['body']['shop_id'];
@@ -50,27 +54,48 @@ class DepositShopForm extends ABaseForm
             throw new NotFoundHttpException("Shop ${shopId} not found");
         }
 
-        $this->ValidateOwnership($shop, $this->getUser()->getId()); // check ownership of the shop
+        $this->validateOwnership($shop, $this->getUser()->getId());
 
-        /*
-         * SELECT
-         * `order_transactions'.id,
-         * `order_transactions`.amount
-         * FROM `order_transactions`
-         * LEFT JOIN `order` ON order_transactions`.order_id = `order`.id
-         * WHERE shop_deposit_id = null AND `order`.shop_id = $shopId AND status = 'success'
-         */
+        $conn = DriverManager::getConnection(['url' => $_ENV['DATABASE_URL']]);
+        $conn->beginTransaction();
+        try {
+            $qb = $this->orderTransactionRepository->createQueryBuilder('ot');
 
-        $queryBuilder = $this->orderTransactionRepository
-            ->createQueryBuilder('ot')
-            ->select('ot.id', 'ot.amount')
-            ->from('ot')
-//            ->join('ot.order_id', 'order',
-//                'WITH', 'ot.order_id = order.id')
-            ->innerJoin('ot', 'order', 'o', 'ot.order_id = o.id')
-            ->where('ot.shop_deposit_id = null AND order.shop_id = :shop_id AND ot.status = 1')
-            ->setParameter('shop_id', $shop->getId());
+            $orderTransactionResult = $qb->select('ot.id', 'ot.amount')
+                ->leftJoin('ot.order', 'o', 'WITH', 'ot.order = o.id')
+                ->where('ot.shopDeposit IS NULL AND o.shop = :shop_id AND ot.status = 1')
+                ->setParameter('shop_id', $shopId)
+                ->getQuery()
+                ->getResult();
 
-        return $shop;
+            $sumOfDepositToShop = array_sum(array_column($orderTransactionResult, 'amount'));
+            $orderTransactionId = array_column($orderTransactionResult, 'id');
+
+            if($sumOfDepositToShop == 0) {
+                throw new \Exception("Withdrawal is not possible for shop ${shopId}");
+            }
+
+            $shopDeposit = (new ShopDeposit())
+                ->setAmount($sumOfDepositToShop)
+                ->setShop($shop)
+                ->setPaidAt(new \DateTimeImmutable());
+
+            $this->shopDepositRepository->add($shopDeposit, true);
+
+            $shopDepositId = $shopDeposit->getId();
+
+            $this->orderTransactionRepository->createQueryBuilder('ot')
+                ->update()
+                ->set('ot.shopDeposit', ':shop_deposit_id')
+                ->where('ot.id IN (:order_transaction_id)')
+                ->setParameter('shop_deposit_id', $shopDepositId)
+                ->setParameter('order_transaction_id', $orderTransactionId)
+                ->getQuery()
+                ->execute();
+        }
+        catch (\Exception $e) {
+            $conn->rollBack();
+            throw $e;
+        }
     }
 }
