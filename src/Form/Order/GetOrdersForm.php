@@ -24,6 +24,9 @@ class GetOrdersForm extends ABaseForm
 
     public function execute(Request $request): array
     {
+        $user_id = $this->getUser()->getId();
+        dd($user_id);
+
         $user_phone = $this->getUser()->getUserIdentifier();
         $user = $this->userRepository
             ->findOneBy(["phone_number" => $user_phone]);

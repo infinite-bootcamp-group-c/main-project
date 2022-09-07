@@ -3,6 +3,7 @@
 namespace App\Form\Order;
 
 use App\Entity\Enums\OrderStatus;
+use App\Form\Traits\HasOrderOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
@@ -13,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class DeleteOrderForm extends ABaseForm
 {
+    use HasOrderOwnership;
+
     public function __construct(
         private readonly OrderRepository $orderRepository,
         private readonly ProductRepository $productRepository,
@@ -44,12 +47,14 @@ class DeleteOrderForm extends ABaseForm
 
         $route = self::getRouteParams($request);
         $order_id = $route["id"];
+        $user_id = $this->getUser()->getId();
         $order = $this->orderRepository
             ->find($order_id);
 
         if (!$order) {
             throw new BadRequestHttpException("Order {$order_id} Not Found");
         }
+        $this->validateOwnership($order, $user_id);
 
         if ($order->getStatus() != OrderStatus::OPEN) {
             throw new BadRequestHttpException("Can only delete order when it's open");
@@ -66,6 +71,7 @@ class DeleteOrderForm extends ABaseForm
         }
 
         $this->orderRepository->remove($order);
+        $this->orderRepository->flush();
 
         return "Order Deleted";
     }
