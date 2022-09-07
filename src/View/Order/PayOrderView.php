@@ -7,10 +7,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PayOrderView extends ABaseView
 {
-    protected int $HTTPStatusCode = Response::HTTP_CREATED;
+    protected int $HTTPStatusCode = Response::HTTP_ACCEPTED;
 
-    public function execute(): array
+    public function execute($reditect_url): array
     {
-
+        return [
+            "redirect_url" => $reditect_url,
+        ];
     }
 }

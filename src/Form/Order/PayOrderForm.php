@@ -26,7 +26,7 @@ class PayOrderForm extends ABaseForm
     {
         return [
             "route" => [
-                "id" => [
+                "order_id" => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
                     new Assert\Positive(),
@@ -39,7 +39,7 @@ class PayOrderForm extends ABaseForm
     public function execute(Request $request)
     {
         $route = self::getRouteParams($request);
-        $order_id = $route["id"];
+        $order_id = $route["order_id"];
         $order = $this->orderRepository
             ->find($order_id);
 
@@ -53,12 +53,13 @@ class PayOrderForm extends ABaseForm
             ->setStatus(OrderTransactionStatus::WAITING)
             ->setOrder($order)
             ->setPaymentMethod($payment_method);
+        $this->orderTransactionRepository->add($order_transaction);
         $this->orderTransactionRepository->flush();
         $payment = $this->paymentGatewayFactory->get($payment_method)->request(
             amount: $order->getTotalPrice(),
             params: [
                 "order_id" => $order_id,
-                "order_transaction" => $order_transaction->getId()
+                "order_transaction_id" => $order_transaction->getId()
             ],
         );
 

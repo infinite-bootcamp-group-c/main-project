@@ -19,7 +19,7 @@ class DeleteOrderForm extends ABaseForm
     public function __construct(
         private readonly OrderRepository $orderRepository,
         private readonly ProductRepository $productRepository,
-        private readonly OrderItemRepository $orderItemRepository
+        private readonly OrderItemRepository $orderItemRepository,
     ) {
 
     }
@@ -56,23 +56,30 @@ class DeleteOrderForm extends ABaseForm
         }
         $this->validateOwnership($order, $user_id);
 
-        if ($order->getStatus() != OrderStatus::OPEN) {
+//        dd($order->getStatus());
+        if ($order->getStatus() != OrderStatus::OPEN->name && $order->getStatus() != OrderStatus::WAITING->name) {
             throw new BadRequestHttpException("Can only delete order when it's open");
         }
 
         $order_items = $this->orderItemRepository
-            ->findBy(["order_id" => $order_id]);
+            ->findBy(["order" => $order_id]);
 
         foreach ($order_items as $order_item) {
-            $product = $order_item->getProduct();
-
-            $product->setQuantity($product->getQuantity() + $order_item->getQuantity());
             $this->orderItemRepository->remove($order_item);
+
+            if ($order->getStatus() != OrderStatus::WAITING)
+            {
+                $product = $order_item->getProduct();
+                $product->setQuantity($product->getQuantity() + $order_item->getQuantity());
+            }
         }
 
         $this->orderRepository->remove($order);
         $this->orderRepository->flush();
-
+        if ($order->getStatus() != OrderStatus::WAITING)
+        {
+            $this->productRepository->flush();
+        }
         return "Order Deleted";
     }
 }
