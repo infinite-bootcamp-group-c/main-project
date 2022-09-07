@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Tag(name: 'Order', description: 'Order operations')]
 class OrderController extends BaseController
 {
-    #[Route('/confirm/{id}', name: "Confirm", methods: ["POST"])]
+    #[Route('/confirm', name: "Confirm", methods: ["POST"])]
     #[RequestBody(content: new JsonContent("{}"))]
     public function confirm(
         Request $request,
@@ -33,7 +33,7 @@ class OrderController extends BaseController
         return $confirmOrderForm->makeResponse($request, $confirmOrderView);
     }
 
-    #[Route("/pay", name: "Pay", methods: ["POST"])]
+    #[Route("/pay/{order_id}", name: "Pay", methods: ["POST"])]
     #[RequestBody(content: new JsonContent("{}"))]
     public function pay(
         Request $request,
