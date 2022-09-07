@@ -17,7 +17,7 @@ class ConfirmOrderView extends ABaseView
             "total_price" => $order->getTotalPrice(),
             "status" => $order->getStatus(),
             "shop" => $order->getShop(),
-            "address" => $order->getAddresses()
+            "address" => $order->getAddress()->getTitle()
         ];
     }
 }
