@@ -24,18 +24,15 @@ class GetOrdersForm extends ABaseForm
 
     public function execute(Request $request): array
     {
-        $user_id = $this->getUser()->getId();
-        dd($user_id);
-
-        $user_phone = $this->getUser()->getUserIdentifier();
-        $user = $this->userRepository
-            ->findOneBy(["phone_number" => $user_phone]);
-
-        if (!$user) {
-            throw new BadRequestHttpException("JWT Token Expired");
-        }
+        $user = $this->getUser();
+////        $user = $this->userRepository
+////            ->findOneBy(["phone_number" => $user_phone]);
+//
+//        if (!$user) {
+//            throw new BadRequestHttpException("JWT Token Expired");
+//        }
 
         return $this->orderRepository
-            ->findBy(["user_id" => $user->getId()]);
+            ->findBy(["user" => $user->getId()]);
     }
 }
