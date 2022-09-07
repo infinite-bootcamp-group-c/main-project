@@ -3,20 +3,25 @@
 namespace App\Form\Order;
 
 use App\Entity\Enums\OrderStatus;
+use App\Form\Traits\HasOrderOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
+use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ConfirmOrderForm extends ABaseForm
 {
+    use HasOrderOwnership;
+
     public function __construct(
         private readonly OrderRepository $orderRepository,
         private readonly OrderItemRepository $orderItemRepository,
-        private readonly AddressRepository $addressRepository
+        private readonly AddressRepository $addressRepository,
+        private readonly ProductRepository $productRepository
     ) {
 
     }
@@ -47,6 +52,8 @@ class ConfirmOrderForm extends ABaseForm
         $order_id = $body["id"];
         $address_id = $body["address_id"];
 
+        $user_id = $this->getUser()->getId();
+//        dd($user_id);
         $order = $this->orderRepository
             ->find($order_id);
 
@@ -56,6 +63,7 @@ class ConfirmOrderForm extends ABaseForm
         if (!$order) {
             throw new BadRequestHttpException("Order {$order_id} Not Found");
         }
+        $this->validateOwnership($order, $user_id);
 
         if (!$address) {
             throw new BadRequestHttpException("Address {$address_id} Not Found");
@@ -81,6 +89,7 @@ class ConfirmOrderForm extends ABaseForm
         $order->setStatus(OrderStatus::WAITING);
         $order->setAddress($address);
 
+        $this->productRepository->flush();
         $this->orderItemRepository->flush();
         $this->orderRepository->flush();
 

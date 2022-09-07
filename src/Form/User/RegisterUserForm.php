@@ -56,7 +56,8 @@ class RegisterUserForm extends ABaseForm
 
         $user = (new User($this->passwordHasher))
             ->setPhoneNumber($form["body"]["phone_number"])
-            ->setPassword($form["body"]["password"]);
+            ->setPassword($form["body"]["password"])
+            ->setRoles(['ROLE_USER']);
 
         if(isset($form["body"]["first_name"])) {
             $user->setFirstName($form["body"]["first_name"]);

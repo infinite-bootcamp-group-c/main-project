@@ -18,7 +18,7 @@ security:
         check_path: /api/auth/login # or, if you have defined a route for your login path, the route name you used
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
-        username_path: phoneNumber
+        username_path: phone_number
       jwt: ~
       refresh_jwt:
         check_path: /api/auth/token/refresh # or, you may use the `api_refresh_token` route name
