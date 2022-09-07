@@ -14,10 +14,12 @@ class GetOrdersView extends ABaseView
     {
         return array_map(function (Order $order) {
             return [
+                "id" => $order->getId(),
                 "status" => $order->getStatus(),
                 "shop" => $order->getShop(),
                 "total_price" => $order->getTotalPrice(),
-                "items_count" => $order->getItems()->count()
+                "items_count" => $order->getItems()->count(),
+                "address" => $order->getAddress()?->getTitle()
             ];
         }, $orders);
     }

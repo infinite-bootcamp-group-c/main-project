@@ -59,7 +59,7 @@ class Order
         return $this->id;
     }
 
-    public function getStatus(): int
+    public function getStatus(): String
     {
         return $this->status->name;
     }
@@ -167,7 +167,7 @@ class Order
         return $this;
     }
 
-    public function getAddress(Address $address)
+    public function getAddress()
     {
         return $this->address;
     }
