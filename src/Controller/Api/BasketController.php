@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Form\Basket\AddToBasketForm;
+use App\Form\Basket\RemoveFromBasketForm;
 use App\Lib\Controller\BaseController;
 use App\View\Basket\AddToBasketView;
 use OpenApi\Attributes\JsonContent;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Tag(name: 'Basket', description: 'Basket operations')]
 class BasketController extends BaseController
 {
-    #[Route('/', name: 'set_item', methods: ['PATCH'])]
+    #[Route('/item', name: 'set_item', methods: ['PATCH'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function addToBasket(
         Request         $request,
@@ -25,5 +26,15 @@ class BasketController extends BaseController
     ): JsonResponse
     {
         return $addToBasketForm->makeResponse($request, $addToeBasketView);
+    }
+
+    #[Route('/item', name: 'delete_item', methods: ['DELETE'])]
+    #[RequestBody(content: new JsonContent(default: '{}'))]
+    public function deleteItem(
+        Request         $request,
+        RemoveFromBasketForm $removeFromBasketForm,
+    ): JsonResponse
+    {
+        return $removeFromBasketForm->makeResponse($request);
     }
 }
