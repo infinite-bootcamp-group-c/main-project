@@ -26,5 +26,3 @@
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
 *.cache
-/docker/*/data/*
-/docker/*/logs/*

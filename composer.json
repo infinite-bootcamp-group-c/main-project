@@ -81,6 +81,7 @@
   },
   "scripts": {
     "format": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src",
+    "seed": "php bin/console doctrine:fixtures:load --no-interaction",
     "auto-scripts": {
       "cache:clear": "symfony-cmd",
       "assets:install %PUBLIC_DIR%": "symfony-cmd"
@@ -102,6 +103,7 @@
     }
   },
   "require-dev": {
+    "doctrine/doctrine-fixtures-bundle": "^3.4",
     "phpunit/phpunit": "^9.5",
     "symfony/browser-kit": "6.1.*",
     "symfony/css-selector": "6.1.*",

@@ -19,7 +19,7 @@ class OrderTransaction
     private ?int $id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?ShopDeposit $shopDeposit = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
@@ -96,7 +96,7 @@ class OrderTransaction
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(OrderTransactionStatus $status): self
     {
         $this->status = $status;
 

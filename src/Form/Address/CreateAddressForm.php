@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CreateAddressForm extends ABaseForm
 {
 
-    public function constraints()
+    public function constraints(): array
     {
         return [
             'body' => [

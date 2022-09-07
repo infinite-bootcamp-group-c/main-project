@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\ShopDeposit;
 use App\Lib\Repository\ABaseRepository;
 use App\Lib\Repository\IBaseRepository;
+use App\Lib\Repository\Pagination\HasRepositoryPaginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ShopDepositRepository extends ABaseRepository implements IBaseRepository

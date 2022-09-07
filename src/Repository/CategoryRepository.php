@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Category;
 use App\Lib\Repository\ABaseRepository;
 use App\Lib\Repository\IBaseRepository;
+use App\Lib\Repository\Pagination\HasRepositoryPaginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CategoryRepository extends ABaseRepository implements IBaseRepository
