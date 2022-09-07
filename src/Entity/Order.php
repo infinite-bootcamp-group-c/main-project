@@ -44,7 +44,7 @@ class Order
 //    #[ORM\InverseJoinColumn(name: 'address_id', referencedColumnName: 'id', unique: true)]
 //    private Collection $addresses;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: "Address")]
     #[ORM\JoinColumn(nullable: true)]
     private ?Address $address = null;
 
