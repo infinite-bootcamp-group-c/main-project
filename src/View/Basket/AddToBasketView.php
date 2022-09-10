@@ -17,8 +17,8 @@ class AddToBasketView extends ABaseView
         $oderItem = $entities["orderItem"];
 
         return [
-            "orderId" => $order->id,
-            "orderItemId" => $oderItem->id
+            "orderId" => $order->getId(),
+            "orderItemId" => $oderItem->getId(),
         ];
     }
 }
