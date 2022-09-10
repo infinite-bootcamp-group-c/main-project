@@ -24,7 +24,7 @@ services:
       - '../src/DependencyInjection/'
       - '../src/Entity/'
       - '../src/Kernel.php'
-      - '../src/DataFixtures/FixtureConfig.php'
+      - '../src/DataFixtures/FixtureConfig.php'g
 
   App\EventListener\ExceptionListener:
     tags:
