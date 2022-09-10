@@ -23,14 +23,29 @@ class VerifyPaymentForm extends ABaseForm
 
     public function constraints(): array
     {
-        return [];
+        return [
+            "query" => [
+                "order_id" => [
+
+                ],
+                "order_transaction_id" => [
+
+                ],
+                "Authority" => [
+
+                ],
+                "Status" => [
+
+                ]
+            ]
+        ];
     }
 
-    public function execute(Request $request): String
+    public function execute(Request $request): array
     {
         $route = self::getQueryParams($request);
+        $transaction_id = $route["order_transaction_id"];
         $order_id = $route["order_id"];
-        $transaction_id = $route["transaction_id"];
 
         $order = $this->orderRepository->find($order_id);
         if (!$order) {
