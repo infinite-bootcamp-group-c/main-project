@@ -16,6 +16,11 @@ class ShopFixtures extends Fixture implements FixtureGroupInterface
     {
     }
 
+    public static function getGroups(): array
+    {
+        return ['shop'];
+    }
+
     public function load(ObjectManager $manager)
     {
         $configs = include('src/DataFixtures/FixtureConfig.php');
@@ -24,20 +29,14 @@ class ShopFixtures extends Fixture implements FixtureGroupInterface
         for ($i = 1; $i <= $shop_cnt; $i++) {
             $shop = new Shop();
 
-            $shop->setName('user'.$i);
+            $shop->setName('user' . $i);
             $shop->setUser($this->userRepository->find(mt_rand(1, $shop_unique)));
-            $shop->setDescription('Test description for shop'.$i);
-            $shop->setIgUsername('ig'.$i);
+            $shop->setDescription('Test description for shop' . $i);
+            $shop->setIgUsername('ig' . $i);
 
             $manager->persist($shop);
         }
 
         $manager->flush();
-    }
-
-
-    public static function getGroups(): array
-    {
-        return ['shop'];
     }
 }

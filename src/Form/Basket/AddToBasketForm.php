@@ -2,20 +2,13 @@
 
 namespace App\Form\Basket;
 
-use App\Entity\OrderItem;
-use App\Entity\Product;
-use App\Entity\Category;
-use App\Entity\Shop;
-use App\Entity\Order;
+use App\Lib\Form\ABaseForm;
 use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
-use App\Repository\ShopRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Lib\Form\ABaseForm;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class AddToBasketForm extends ABaseForm
 {
@@ -49,8 +42,8 @@ class AddToBasketForm extends ABaseForm
     }
 
     public function execute(Request $request): array
-    // TODO if the order is not open can not do it
-    // TODO if quantity of product is less that now
+        // TODO if the order is not open can not do it
+        // TODO if quantity of product is less that now
     {
         $form = self::getParams($request);
 

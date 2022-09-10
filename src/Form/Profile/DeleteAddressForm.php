@@ -6,8 +6,6 @@ use App\Form\Traits\HasAddressOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityNotFoundException;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,8 +16,9 @@ class DeleteAddressForm extends ABaseForm
 
     public function __construct(
         private readonly AddressRepository $addressRepository,
-        private readonly UserRepository $userRepository
-    ) {
+        private readonly UserRepository    $userRepository
+    )
+    {
 
     }
 
@@ -54,7 +53,7 @@ class DeleteAddressForm extends ABaseForm
             throw new BadRequestHttpException("JWT Token Expired");
         }
 
-        $this->validateOwnership($address,$user);
+        $this->validateOwnership($address, $user);
 
         $user->removeAddress($address);
         $this->addressRepository->remove($address);

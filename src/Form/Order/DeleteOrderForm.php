@@ -17,10 +17,11 @@ class DeleteOrderForm extends ABaseForm
     use HasOrderOwnership;
 
     public function __construct(
-        private readonly OrderRepository $orderRepository,
-        private readonly ProductRepository $productRepository,
+        private readonly OrderRepository     $orderRepository,
+        private readonly ProductRepository   $productRepository,
         private readonly OrderItemRepository $orderItemRepository,
-    ) {
+    )
+    {
 
     }
 
@@ -38,7 +39,7 @@ class DeleteOrderForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): String
+    public function execute(Request $request): string
     {
         // check if order is open
         // delete order items
@@ -67,8 +68,7 @@ class DeleteOrderForm extends ABaseForm
         foreach ($order_items as $order_item) {
             $this->orderItemRepository->remove($order_item);
 
-            if ($order->getStatus() != OrderStatus::WAITING)
-            {
+            if ($order->getStatus() != OrderStatus::WAITING) {
                 $product = $order_item->getProduct();
                 $product->setQuantity($product->getQuantity() + $order_item->getQuantity());
             }
@@ -76,8 +76,7 @@ class DeleteOrderForm extends ABaseForm
 
         $this->orderRepository->remove($order);
         $this->orderRepository->flush();
-        if ($order->getStatus() != OrderStatus::WAITING)
-        {
+        if ($order->getStatus() != OrderStatus::WAITING) {
             $this->productRepository->flush();
         }
         return "Order Deleted";

@@ -12,9 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class DeleteShopAddressForm extends ABaseForm
 {
     public function __construct(
-        private readonly ShopRepository $shopRepository,
+        private readonly ShopRepository    $shopRepository,
         private readonly AddressRepository $addressRepository
-    ) {
+    )
+    {
 
     }
 
@@ -38,7 +39,7 @@ class DeleteShopAddressForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): String
+    public function execute(Request $request): string
     {
         $route = self::getRouteParams($request);
         $shop_id = $route["shop_id"];

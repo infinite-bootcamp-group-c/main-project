@@ -18,11 +18,12 @@ class ConfirmOrderForm extends ABaseForm
     use HasOrderOwnership;
 
     public function __construct(
-        private readonly OrderRepository $orderRepository,
+        private readonly OrderRepository     $orderRepository,
         private readonly OrderItemRepository $orderItemRepository,
-        private readonly AddressRepository $addressRepository,
-        private readonly ProductRepository $productRepository
-    ) {
+        private readonly AddressRepository   $addressRepository,
+        private readonly ProductRepository   $productRepository
+    )
+    {
 
     }
 

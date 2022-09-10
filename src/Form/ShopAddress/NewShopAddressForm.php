@@ -13,9 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class NewShopAddressForm extends ABaseForm
 {
     public function __construct(
-        private readonly ShopRepository $shopRepository,
+        private readonly ShopRepository    $shopRepository,
         private readonly AddressRepository $addressRepository
-    ) {
+    )
+    {
 
     }
 

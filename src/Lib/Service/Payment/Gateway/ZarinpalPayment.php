@@ -57,33 +57,26 @@ class ZarinpalPayment extends APaymentGateway
 
     }
 
-    public function verify($amount, $authority = ''): array
+    private function validateArguments($callbackUrl = '', $description = '', $authority = '', $isRequest = false): void
     {
-        $this->validateArguments(null, null, $authority);
+        $errors = [];
+        if (empty($this->config('merchant_id')))
+            $errors[] = 'The merchant id field is required.';
 
-        $requestType = $this->config('testing') ? 'sandbox' : 'www';
+        if ($isRequest) {
+            if (empty($callbackUrl))
+                $errors[] = 'The callback url field is required.';
 
-        $data = [
-            'MerchantID' => $this->config('merchant_id'),
-            'Amount' => $amount,
-            'Authority' => ltrim($authority)
-        ];
-
-        $url = sprintf('https://%s.zarinpal.com/pg/rest/WebGate/PaymentVerification.json', $requestType);
-        $content = $this->doRequest($data, $url);
-        if (is_null($content['error'])) {
-            return [
-                'result' => 'success',
-                'code' => $content['Status'],
-                'refId' => ltrim($content['RefID'])
-            ];
-
+            if (empty($description) && empty($this->config('description')))
+                $errors[] = 'The description field is required.';
         }
-        return [
-            'result' => 'warning',
-            'code' => $content['Status'],
-            'error' => $content['error']
-        ];
+
+        if (!$isRequest && empty($authority))
+            $errors[] = 'The authority field is required.';
+
+
+        if (!empty($errors))
+            throw new BadRequestHttpException(implode(' ', $errors));
     }
 
     private function doRequest($data, $url): array
@@ -112,28 +105,6 @@ class ZarinpalPayment extends APaymentGateway
         }
     }
 
-    private function validateArguments($callbackUrl = '', $description = '', $authority = '', $isRequest = false): void
-    {
-        $errors = [];
-        if (empty($this->config('merchant_id')))
-            $errors[] = 'The merchant id field is required.';
-
-        if ($isRequest) {
-            if (empty($callbackUrl))
-                $errors[] = 'The callback url field is required.';
-
-            if (empty($description) && empty($this->config('description')))
-                $errors[] = 'The description field is required.';
-        }
-
-        if (!$isRequest && empty($authority))
-            $errors[] = 'The authority field is required.';
-
-
-        if (!empty($errors))
-            throw new BadRequestHttpException(implode(' ', $errors));
-    }
-
     private function getErrorMessage(string|int $id): ?string
     {
         $id = (int)$id;
@@ -154,5 +125,34 @@ class ZarinpalPayment extends APaymentGateway
             -54 => 'درخواست مورد نظر آرشیو شده است.',
             default => null,
         };
+    }
+
+    public function verify($amount, $authority = ''): array
+    {
+        $this->validateArguments(null, null, $authority);
+
+        $requestType = $this->config('testing') ? 'sandbox' : 'www';
+
+        $data = [
+            'MerchantID' => $this->config('merchant_id'),
+            'Amount' => $amount,
+            'Authority' => ltrim($authority)
+        ];
+
+        $url = sprintf('https://%s.zarinpal.com/pg/rest/WebGate/PaymentVerification.json', $requestType);
+        $content = $this->doRequest($data, $url);
+        if (is_null($content['error'])) {
+            return [
+                'result' => 'success',
+                'code' => $content['Status'],
+                'refId' => ltrim($content['RefID'])
+            ];
+
+        }
+        return [
+            'result' => 'warning',
+            'code' => $content['Status'],
+            'error' => $content['error']
+        ];
     }
 }

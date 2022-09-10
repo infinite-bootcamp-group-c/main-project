@@ -3,13 +3,9 @@
 namespace App\Form\Order;
 
 use App\Entity\Address;
-use App\Entity\Enums\OrderStatus;
-use App\Entity\Order;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
-use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
-use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -18,10 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class NewAddressForm extends ABaseForm
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
-        private readonly OrderRepository $orderRepository,
+        private readonly UserRepository    $userRepository,
+        private readonly OrderRepository   $orderRepository,
         private readonly AddressRepository $addressRepository,
-    ) {
+    )
+    {
 
     }
 
@@ -80,6 +77,7 @@ class NewAddressForm extends ABaseForm
             ]
         ];
     }
+
     public function execute(Request $request): void
     {
         $body = self::getBodyParams($request);
@@ -87,8 +85,7 @@ class NewAddressForm extends ABaseForm
 
         $order_id = $body["order_id"];
         $order = $this->orderRepository->find($order_id);
-        if (!$order)
-        {
+        if (!$order) {
             throw new BadRequestHttpException("Order id {$order_id} not found");
         }
 
@@ -104,8 +101,7 @@ class NewAddressForm extends ABaseForm
 
         $this->addressRepository->add($address);
 
-        if ($body["save_address"])
-        {
+        if ($body["save_address"]) {
             $user->addAddress($address);
             $this->userRepository->flush();
         }

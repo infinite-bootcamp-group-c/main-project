@@ -28,7 +28,7 @@ class OrderController extends BaseController
     #[Route("/new-address", name: "Add New Shipment Address", methods: ["POST"])]
     #[RequestBody(content: new JsonContent("{}"))]
     public function new_address(
-        Request $request,
+        Request        $request,
         NewAddressForm $newAddressForm,
     ): JsonResponse
     {
@@ -38,7 +38,7 @@ class OrderController extends BaseController
     #[Route("/select-address/{order_id}/{address_id}", name: "Select Shipment Address", methods: ["POST"])]
     #[RequestBody(content: new JsonContent("{}"))]
     public function select_address(
-        Request $request,
+        Request           $request,
         SelectAddressForm $selectAddressForm,
     ): JsonResponse
     {
@@ -48,7 +48,7 @@ class OrderController extends BaseController
     #[Route("/confirm/{order_id}", name: "Select Shipment Address", methods: ["POST"])]
     #[RequestBody(content: new JsonContent("{}"))]
     public function confirm(
-        Request $request,
+        Request          $request,
         ConfirmOrderForm $confirmOrderForm,
         ConfirmOrderView $confirmOrderView
     ): JsonResponse
@@ -59,7 +59,7 @@ class OrderController extends BaseController
     #[Route("/pay/{order_id}", name: "Pay", methods: ["POST"])]
     #[RequestBody(content: new JsonContent("{}"))]
     public function pay(
-        Request $request,
+        Request      $request,
         PayOrderForm $payOrderForm,
         PayOrderView $payOrderView,
     ): JsonResponse
@@ -69,7 +69,7 @@ class OrderController extends BaseController
 
     #[Route("/delete/{id}", name: "Delete Order", methods: ["DELETE"])]
     public function delete(
-        Request $request,
+        Request         $request,
         DeleteOrderForm $deleteOrderForm,
         DeleteOrderView $deleteOrderView
     ): JsonResponse
@@ -79,7 +79,7 @@ class OrderController extends BaseController
 
     #[Route("/get", name: "Get Orders", methods: ["GET"])]
     public function get(
-        Request $request,
+        Request       $request,
         GetOrdersForm $getOrderForm,
         GetOrdersView $getOrderView
     ): JsonResponse

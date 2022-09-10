@@ -9,7 +9,7 @@ class DeleteShopAddressView extends ABaseView
 {
     protected int $HTTPStatusCode = Response::HTTP_CREATED;
 
-    public function execute(String $message): array
+    public function execute(string $message): array
     {
         return [
             "message" => $message,
