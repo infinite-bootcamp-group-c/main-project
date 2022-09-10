@@ -10,6 +10,7 @@ use App\Repository\OrderRepository;
 use App\Repository\OrderTransactionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class VerifyPaymentForm extends ABaseForm
 {
@@ -26,16 +27,24 @@ class VerifyPaymentForm extends ABaseForm
         return [
             "query" => [
                 "order_id" => [
-
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type("digit")
                 ],
                 "order_transaction_id" => [
-
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                    new Assert\Type("digit")
                 ],
                 "Authority" => [
-
+                    new Assert\NotBlank(),
+                    new Assert\NotNull()
                 ],
                 "Status" => [
-
+                    new Assert\NotBlank(),
+                    new Assert\NotNull()
                 ]
             ]
         ];
@@ -46,6 +55,7 @@ class VerifyPaymentForm extends ABaseForm
         $route = self::getQueryParams($request);
         $transaction_id = $route["order_transaction_id"];
         $order_id = $route["order_id"];
+        $authority = $route["Authority"];
 
         $order = $this->orderRepository->find($order_id);
         if (!$order) {
@@ -65,6 +75,7 @@ class VerifyPaymentForm extends ABaseForm
         if ($verify["result"] == 'success')
         {
             $order->setStatus(OrderStatus::PAID);
+            $transaction->setPaymentVerificationCode($authority);
             $transaction->setStatus(OrderTransactionStatus::SUCCESS);
         }
         else

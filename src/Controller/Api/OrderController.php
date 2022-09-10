@@ -3,9 +3,12 @@
 namespace App\Controller\Api;
 
 use App\Form\Order\ConfirmOrderForm;
+use App\Form\Order\ConfirmWithNewAddressForm;
 use App\Form\Order\DeleteOrderForm;
 use App\Form\Order\GetOrdersForm;
+use App\Form\Order\NewAddressForm;
 use App\Form\Order\PayOrderForm;
+use App\Form\Order\SelectAddressForm;
 use App\Lib\Controller\BaseController;
 use App\View\Order\ConfirmOrderView;
 use App\View\Order\DeleteOrderView;
@@ -22,7 +25,27 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Tag(name: 'Order', description: 'Order operations')]
 class OrderController extends BaseController
 {
-    #[Route('/confirm', name: "Confirm", methods: ["POST"])]
+    #[Route("/new-address", name: "Add New Shipment Address", methods: ["POST"])]
+    #[RequestBody(content: new JsonContent("{}"))]
+    public function new_address(
+        Request $request,
+        NewAddressForm $newAddressForm,
+    ): JsonResponse
+    {
+        return $newAddressForm->makeResponse($request);
+    }
+
+    #[Route("/select-address/{order_id}/{address_id}", name: "Select Shipment Address", methods: ["POST"])]
+    #[RequestBody(content: new JsonContent("{}"))]
+    public function select_address(
+        Request $request,
+        SelectAddressForm $selectAddressForm,
+    ): JsonResponse
+    {
+        return $selectAddressForm->makeResponse($request);
+    }
+
+    #[Route("/confirm/{order_id}", name: "Select Shipment Address", methods: ["POST"])]
     #[RequestBody(content: new JsonContent("{}"))]
     public function confirm(
         Request $request,

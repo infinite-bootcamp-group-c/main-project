@@ -29,14 +29,8 @@ class ConfirmOrderForm extends ABaseForm
     public function constraints(): array
     {
         return [
-            "body" => [
+            "route" => [
                 "order_id" => [
-                    new Assert\NotBlank(),
-                    new Assert\NotNull(),
-                    new Assert\Positive(),
-                    new Assert\Type("digit")
-                ],
-                "address_id" => [
                     new Assert\NotBlank(),
                     new Assert\NotNull(),
                     new Assert\Positive(),
@@ -48,26 +42,17 @@ class ConfirmOrderForm extends ABaseForm
 
     public function execute(Request $request)
     {
-        $body = self::getBodyParams($request);
+        $body = self::getRouteParams($request);
         $order_id = $body["order_id"];
-        $address_id = $body["address_id"];
 
         $user_id = $this->getUser()->getId();
-//        dd($user_id);
         $order = $this->orderRepository
             ->find($order_id);
-
-        $address = $this->addressRepository
-            ->find($address_id);
 
         if (!$order) {
             throw new BadRequestHttpException("Order {$order_id} Not Found");
         }
         $this->validateOwnership($order, $user_id);
-
-        if (!$address) {
-            throw new BadRequestHttpException("Address {$address_id} Not Found");
-        }
 
         $orderItems = $this->orderItemRepository
             ->findBy(["order" => $order_id]);
@@ -87,7 +72,6 @@ class ConfirmOrderForm extends ABaseForm
 
         $order->setTotalPrice($total_price);
         $order->setStatus(OrderStatus::WAITING);
-        $order->setAddress($address);
 
         $this->productRepository->flush();
         $this->orderItemRepository->flush();

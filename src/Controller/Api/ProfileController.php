@@ -67,9 +67,8 @@ class ProfileController extends BaseController
     public function delete_address(
         Request $request,
         DeleteAddressForm $deleteAddressForm,
-        DeleteAddressView $deleteAddressView
     ): JsonResponse {
-        return $deleteAddressForm->makeResponse($request, $deleteAddressView);
+        return $deleteAddressForm->makeResponse($request);
     }
 
     #[Route('/credits', name: 'new_credit', methods: ['POST'])]
@@ -104,9 +103,8 @@ class ProfileController extends BaseController
     public function delete_credit(
         Request $request,
         DeleteCreditForm $deleteCreditForm,
-        DeleteCreditView $deleteCreditView
     ): JsonResponse {
-        return $deleteCreditForm->makeResponse($request, $deleteCreditView);
+        return $deleteCreditForm->makeResponse($request);
     }
 
 }
