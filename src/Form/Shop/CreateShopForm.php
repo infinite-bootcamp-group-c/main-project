@@ -22,7 +22,6 @@ class CreateShopForm extends ABaseForm
         return [
             'body' => [
                 'name' => [
-                    new Assert\NotNull(),
                     new Assert\NotBlank(),
                     new Assert\Length(min: 4, max: 255),
                     new Assert\Regex(pattern: '/^\w+/'
@@ -34,9 +33,7 @@ class CreateShopForm extends ABaseForm
                         message: 'The instagram username {{ value }} is not valid.'),
                 ],
                 'logo_url' => [
-                    new Assert\Regex(['pattern' => '/^\w+\.png/',
-                        'message' => 'The logo {{ value }} is not valid.'
-                    ]),
+                    new Assert\Regex('\w'),
                 ],
                 'description' => [
                     new Assert\Length(['max' => 255]),
@@ -51,9 +48,9 @@ class CreateShopForm extends ABaseForm
 
         $shop = (new Shop())
             ->setName($form["body"]["name"])
-            ->setIgUsername($form["body"]["ig_username"])
-            ->setDescription($form["body"]["description"])
-            ->setLogo($form["body"]["logo_url"])
+            ->setIgUsername($form["body"]["ig_username"] ?? null)
+            ->setDescription($form["body"]["description"] ?? null)
+            ->setLogo($form["body"]["logo_url"] ?? null)
             ->setUser($this->getUser());
 
         $this->shopRepository->add($shop, true);
