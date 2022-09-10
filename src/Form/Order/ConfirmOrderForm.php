@@ -49,7 +49,7 @@ class ConfirmOrderForm extends ABaseForm
     public function execute(Request $request)
     {
         $body = self::getBodyParams($request);
-        $order_id = $body["id"];
+        $order_id = $body["order_id"];
         $address_id = $body["address_id"];
 
         $user_id = $this->getUser()->getId();
@@ -70,7 +70,7 @@ class ConfirmOrderForm extends ABaseForm
         }
 
         $orderItems = $this->orderItemRepository
-            ->findBy(["order_id" => $order_id]);
+            ->findBy(["order" => $order_id]);
 
         $total_price = 0;
         foreach ($orderItems as $orderItem) {
