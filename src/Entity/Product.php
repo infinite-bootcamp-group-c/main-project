@@ -7,6 +7,7 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -43,11 +44,13 @@ class Product
         $this->photos = new ArrayCollection();
     }
 
+    #[Groups(['searchable'])]
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    #[Groups(['searchable'])]
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -60,6 +63,7 @@ class Product
         return $this;
     }
 
+    #[Groups(['searchable'])]
     public function getName(): ?string
     {
         return $this->name;
@@ -96,6 +100,7 @@ class Product
         return $this;
     }
 
+    #[Groups(['searchable'])]
     public function getDescription(): ?string
     {
         return $this->description;
