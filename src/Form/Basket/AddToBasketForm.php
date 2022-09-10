@@ -24,7 +24,6 @@ class AddToBasketForm extends ABaseForm
         private readonly ProductRepository   $productRepository,
         private readonly OrderRepository     $orderRepository,
         private readonly OrderItemRepository $orderItemRepository,
-        private readonly ShopRepository      $shopRepository,
     )
     {
     }
@@ -51,7 +50,7 @@ class AddToBasketForm extends ABaseForm
 
     public function execute(Request $request): array
     // TODO if the order is not open can not do it
-    // TODO if quanti
+    // TODO if quantity of product is less that now
     {
         $form = self::getParams($request);
 
