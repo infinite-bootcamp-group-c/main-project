@@ -6,8 +6,6 @@ use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
 use Algolia\SearchBundle\SearchService;
 use App\Entity\Product;
 use App\Lib\Form\ABaseForm;
-use App\Lib\Repository\Pagination\HasFormPaginator;
-use App\Repository\ProductRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -15,12 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchProductListForm extends ABaseForm
 {
-    use HasFormPaginator;
 
     public function __construct(
-        private readonly ProductRepository $productRepository,
-        private readonly SearchService     $searchService,
-        private readonly ManagerRegistry   $managerRegistry
+        private readonly SearchService   $searchService,
+        private readonly ManagerRegistry $managerRegistry
     )
     {
     }
@@ -29,8 +25,13 @@ class SearchProductListForm extends ABaseForm
     {
         return [
             'query' => [
-                ...$this->paginatorGetQueryParam(),
-                'search' => [
+                'page' => [
+                    new Assert\PositiveOrZero(),
+                ],
+                'limit' => [
+                    new Assert\PositiveOrZero(),
+                ],
+                'query' => [
                     new Assert\NotBlank(),
                 ],
             ],
@@ -42,7 +43,7 @@ class SearchProductListForm extends ABaseForm
         $query = self::getQueryParams($request);
 
         $limit = $query['limit'] ?? 10;
-        $page =  $query['page'] ?? 1;
+        $page = $query['page'] ?? 1;
 
         $em = $this->managerRegistry->getManagerForClass(Product::class);
         try {
@@ -51,12 +52,20 @@ class SearchProductListForm extends ABaseForm
                 Product::class,
                 $query['query'],
                 [
-                    'page' => $page,
+                    'page' => $page - 1,
                     'hitsPerPage' => $limit,
                 ]);
+            $totalItems = $this->searchService->count(Product::class, $query['query']);
         } catch (AlgoliaException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
-        return $products;
+
+        return [
+            'items' => $products,
+            'totalItems' => $totalItems,
+            'itemsPerPage' => $limit,
+            'totalPages' => ceil($totalItems / $limit),
+            'currentPage' => $page,
+        ];
     }
 }
