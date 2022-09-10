@@ -3,9 +3,11 @@
 namespace App\Controller\Api;
 
 use App\Form\Basket\AddToBasketForm;
+use App\Form\Basket\GetCurrentBasketForm;
 use App\Form\Basket\RemoveFromBasketForm;
 use App\Lib\Controller\BaseController;
 use App\View\Basket\AddToBasketView;
+use App\View\Basket\GetCurrentBasketView;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Tag;
@@ -36,5 +38,16 @@ class BasketController extends BaseController
     ): JsonResponse
     {
         return $removeFromBasketForm->makeResponse($request);
+    }
+
+    #[Route('/{shop_id}', name: 'get_current_basket', methods: ['GET'])]
+    #[RequestBody(content: new JsonContent(default: '{}'))]
+    public function getCurrentBasket(
+        Request $request,
+        GetCurrentBasketForm $getCurrentBasketForm,
+        GetCurrentBasketView $currentBasketView
+    ): JsonResponse
+    {
+        return $getCurrentBasketForm->makeResponse($request, $currentBasketView);
     }
 }
