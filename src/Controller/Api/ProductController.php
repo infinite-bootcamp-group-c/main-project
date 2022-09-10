@@ -91,7 +91,7 @@ class ProductController extends BaseController
         Parameter(name: 'page', in: 'query', required: false, example: 1),
         Parameter(name: 'limit', in: 'query', required: false, example: 10),
     ]
-    #[Route('/ajdfakldfj', name: 'search_product', methods: ['GET'])]
+    #[Route('/search', name: 'search_product', methods: ['GET'])]
     public function search(
         Request               $request,
         SearchProductListForm $searchProductListForm,
