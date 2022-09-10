@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RegisterUserForm extends ABaseForm
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserRepository              $userRepository,
         private readonly UserPasswordHasherInterface $passwordHasher
     )
     {
@@ -59,15 +59,15 @@ class RegisterUserForm extends ABaseForm
             ->setPassword($form["body"]["password"])
             ->setRoles(['ROLE_USER']);
 
-        if(isset($form["body"]["first_name"])) {
+        if (isset($form["body"]["first_name"])) {
             $user->setFirstName($form["body"]["first_name"]);
         }
 
-        if(isset($form["body"]["last_name"])) {
+        if (isset($form["body"]["last_name"])) {
             $user->setLastName($form["body"]["last_name"]);
         }
 
-        if(isset($form["body"]["email"])) {
+        if (isset($form["body"]["email"])) {
             $user->setEmail($form["body"]["email"]);
         }
 

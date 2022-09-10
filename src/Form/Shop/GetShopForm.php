@@ -4,10 +4,10 @@ namespace App\Form\Shop;
 
 use App\Entity\Shop;
 use App\Lib\Form\ABaseForm;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\ShopRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 class GetShopForm extends ABaseForm

@@ -39,7 +39,7 @@ class DeleteCategoryForm extends ABaseForm
         $categoryId = self::getParams($request)['route']['id'];
         $category = $this->categoryRepository->find($categoryId);
 
-        if(!$category) {
+        if (!$category) {
             throw new BadRequestHttpException("Category {$categoryId} Not Found");
         }
 

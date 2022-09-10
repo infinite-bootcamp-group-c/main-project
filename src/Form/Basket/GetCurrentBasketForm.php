@@ -44,7 +44,7 @@ class GetCurrentBasketForm extends ABaseForm
             ]
         );
 
-        if(is_null($currentOrder)){
+        if (is_null($currentOrder)) {
             throw new NotFoundHttpException("you have no current basket on this shop. try adding some product");
         }
         //TODO calculate total price

@@ -33,7 +33,7 @@ class BasketController extends BaseController
     #[Route('/item', name: 'delete_item', methods: ['DELETE'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function deleteItem(
-        Request         $request,
+        Request              $request,
         RemoveFromBasketForm $removeFromBasketForm,
     ): JsonResponse
     {
@@ -43,7 +43,7 @@ class BasketController extends BaseController
     #[Route('/{shop_id}', name: 'get_current_basket', methods: ['GET'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function getCurrentBasket(
-        Request $request,
+        Request              $request,
         GetCurrentBasketForm $getCurrentBasketForm,
         GetCurrentBasketView $currentBasketView
     ): JsonResponse

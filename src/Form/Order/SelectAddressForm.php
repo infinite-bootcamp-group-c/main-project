@@ -12,8 +12,9 @@ class SelectAddressForm extends ABaseForm
 {
     public function __construct(
         private readonly AddressRepository $addressRepository,
-        private readonly OrderRepository $orderRepository
-    ) {
+        private readonly OrderRepository   $orderRepository
+    )
+    {
 
     }
 

@@ -18,20 +18,6 @@ abstract class ABaseRepository extends ServiceEntityRepository implements IBaseR
 {
     use HasRepositoryPaginator;
 
-    public function find($id, $lockMode = null, $lockVersion = null){
-        try {
-            return $this->createQueryBuilder('p')
-                ->where('p.id = :id')
-                ->setParameter('id', $id)
-                ->getQuery()
-                ->useQueryCache(true)
-                //->enableResultCache()
-                ->setMaxResults(1)->getOneOrNullResult();
-        } catch (NonUniqueResultException $NonUniqueResultException) {
-            //TODO handleException
-        };
-    }
-
     public function add($entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -56,6 +42,21 @@ abstract class ABaseRepository extends ServiceEntityRepository implements IBaseR
             throw new EntityNotFoundException();
         }
         $this->remove($entity, $flush);
+    }
+
+    public function find($id, $lockMode = null, $lockVersion = null)
+    {
+        try {
+            return $this->createQueryBuilder('p')
+                ->where('p.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->useQueryCache(true)
+                //->enableResultCache()
+                ->setMaxResults(1)->getOneOrNullResult();
+        } catch (NonUniqueResultException $NonUniqueResultException) {
+            //TODO handleException
+        }
     }
 
     public function remove($entity, bool $flush = false): void

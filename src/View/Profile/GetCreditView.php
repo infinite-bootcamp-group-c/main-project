@@ -2,7 +2,6 @@
 
 namespace App\View\Profile;
 
-use App\Entity\Address;
 use App\Entity\CreditInfo;
 use App\Lib\View\ABaseView;
 use Symfony\Component\HttpFoundation\Response;

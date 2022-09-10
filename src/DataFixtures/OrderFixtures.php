@@ -2,13 +2,13 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Enums\OrderStatus;
 use App\Entity\Order;
-use App\Repository\UserRepository;
 use App\Repository\ShopRepository;
+use App\Repository\UserRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\Enums\OrderStatus;
 
 class OrderFixtures extends Fixture implements FixtureGroupInterface
 {
@@ -20,6 +20,11 @@ class OrderFixtures extends Fixture implements FixtureGroupInterface
     {
     }
 
+    public static function getGroups(): array
+    {
+        return ['order'];
+    }
+
     public function load(ObjectManager $manager)
     {
         $configs = include('src/DataFixtures/FixtureConfig.php');
@@ -29,8 +34,8 @@ class OrderFixtures extends Fixture implements FixtureGroupInterface
         for ($i = 1; $i <= $order_cnt; $i++) {
             $order = new Order();
 
-            $shopId = ($i-1)%$shop_cnt+1;
-            $user_id = ($i-1)%$user_cnt+1;
+            $shopId = ($i - 1) % $shop_cnt + 1;
+            $user_id = ($i - 1) % $user_cnt + 1;
             $orderStatus = OrderStatus::from(mt_rand(0, 4));
 
 
@@ -43,11 +48,5 @@ class OrderFixtures extends Fixture implements FixtureGroupInterface
         }
 
         $manager->flush();
-    }
-
-
-    public static function getGroups(): array
-    {
-        return ['order'];
     }
 }

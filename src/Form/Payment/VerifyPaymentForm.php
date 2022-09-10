@@ -15,10 +15,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class VerifyPaymentForm extends ABaseForm
 {
     public function __construct(
-        private readonly PaymentGatewayFactory $paymentGatewayFactory,
-        private readonly OrderRepository $orderRepository,
+        private readonly PaymentGatewayFactory      $paymentGatewayFactory,
+        private readonly OrderRepository            $orderRepository,
         private readonly OrderTransactionRepository $orderTransactionRepository
-    ) {
+    )
+    {
 
     }
 
@@ -72,14 +73,11 @@ class VerifyPaymentForm extends ABaseForm
             authority: $request->get('Authority'),
         );
 
-        if ($verify["result"] == 'success')
-        {
+        if ($verify["result"] == 'success') {
             $order->setStatus(OrderStatus::PAID);
             $transaction->setPaymentVerificationCode($authority);
             $transaction->setStatus(OrderTransactionStatus::SUCCESS);
-        }
-        else
-        {
+        } else {
             $order->setStatus(OrderStatus::WAITING);
             $transaction->setStatus(OrderTransactionStatus::FAILED);
         }

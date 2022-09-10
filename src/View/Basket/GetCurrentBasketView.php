@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class GetCurrentBasketView extends ABaseView
 {
     protected int $HTTPStatusCode = Response::HTTP_OK;
-    
+
     public function execute(Order $order): array
     {
         $finalArray = [
@@ -18,7 +18,7 @@ class GetCurrentBasketView extends ABaseView
             "total_price" => $order->getTotalPrice(),
         ];
         $items = $order->getItems();
-        foreach ($items as $item){
+        foreach ($items as $item) {
             $finalArray["items"][$item->getProduct()->getName()] = $item->getQuantity();
         }
 

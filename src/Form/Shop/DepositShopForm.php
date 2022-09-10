@@ -7,10 +7,12 @@ use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\OrderTransactionRepository;
 use App\Repository\ShopDepositRepository;
+use App\Repository\ShopRepository;
+use DateTimeImmutable;
+use Exception;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Repository\ShopRepository;
-use Symfony\Component\HttpFoundation\Request;
 
 class DepositShopForm extends ABaseForm
 {
@@ -18,9 +20,9 @@ class DepositShopForm extends ABaseForm
     use HasValidateOwnership;
 
     public function __construct(
-        private readonly ShopRepository $shopRepository,
+        private readonly ShopRepository             $shopRepository,
         private readonly OrderTransactionRepository $orderTransactionRepository,
-        private readonly ShopDepositRepository $shopDepositRepository,
+        private readonly ShopDepositRepository      $shopDepositRepository,
     )
     {
     }
@@ -63,14 +65,14 @@ class DepositShopForm extends ABaseForm
         $sumOfDepositToShop = array_sum(array_column($orderTransactionResult, 'amount'));
         $orderTransactionId = array_column($orderTransactionResult, 'id');
 
-        if($sumOfDepositToShop == 0) {
-            throw new \Exception("Withdrawal is not possible for shop ${shopId}");
+        if ($sumOfDepositToShop == 0) {
+            throw new Exception("Withdrawal is not possible for shop ${shopId}");
         }
 
         $shopDeposit = (new ShopDeposit())
             ->setAmount($sumOfDepositToShop)
             ->setShop($shop)
-            ->setPaidAt(new \DateTimeImmutable());
+            ->setPaidAt(new DateTimeImmutable());
 
         $this->shopDepositRepository->add($shopDeposit, true);
 

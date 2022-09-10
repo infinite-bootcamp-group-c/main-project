@@ -3,8 +3,6 @@
 namespace App\View\Basket;
 
 use App\Lib\View\ABaseView;
-use App\Entity\Order;
-use App\Entity\OrderItem;
 use Symfony\Component\HttpFoundation\Response;
 
 class AddToBasketView extends ABaseView
