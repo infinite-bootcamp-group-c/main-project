@@ -33,7 +33,7 @@ class DeleteCreditForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): String
+    public function execute(Request $request): void
     {
         $form = self::getParams($request);
         $credit_id = $form["route"]["id"];
@@ -53,7 +53,5 @@ class DeleteCreditForm extends ABaseForm
 
         $this->creditInfoRepository->flush();
         $this->userRepository->flush();
-
-        return "Credit Card Removed";
     }
 }

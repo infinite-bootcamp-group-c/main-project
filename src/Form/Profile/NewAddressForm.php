@@ -55,12 +55,12 @@ class NewAddressForm extends ABaseForm
                 "latitude" => [
                     new Assert\NotNull(),
                     new Assert\NotBlank(),
-                    new Assert\Type("digit")
+                    new Assert\Type("float")
                 ],
                 "longitude" => [
                     new Assert\NotNull(),
                     new Assert\NotBlank(),
-                    new Assert\Type("digit")
+                    new Assert\Type("float")
                 ]
             ]
         ];
