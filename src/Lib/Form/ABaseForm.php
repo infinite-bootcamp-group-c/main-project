@@ -80,10 +80,12 @@ abstract class ABaseForm implements IBaseForm
             'route' => self::getRouteParams($request),
         ];
 
+        $allowMissingFields = $request->getMethod() === 'PATCH';
+
         $constraints = new Assert\Collection([
-            'body' => new Assert\Collection($this->constraints()['body'] ?? [], allowMissingFields: true),
-            'query' => new Assert\Collection($this->constraints()['query'] ?? [], allowMissingFields: true),
-            'route' => new Assert\Collection($this->constraints()['route'] ?? [], allowMissingFields: true),
+            'body' => new Assert\Collection($this->constraints()['body'] ?? [], allowMissingFields: $allowMissingFields),
+            'query' => new Assert\Collection($this->constraints()['query'] ?? [], allowMissingFields: $allowMissingFields),
+            'route' => new Assert\Collection($this->constraints()['route'] ?? [], allowMissingFields: $allowMissingFields),
         ]);
 
         $errors = $this->validator->validate($input, $constraints);
