@@ -2,9 +2,6 @@
 
 namespace App\Controller\Api;
 
-use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
-use Algolia\SearchBundle\SearchService;
-use App\Entity\Product;
 use App\Form\Product\CreateProductForm;
 use App\Form\Product\DeleteProductForm;
 use App\Form\Product\GetProductForm;
@@ -17,7 +14,6 @@ use App\View\Product\GetProductListView;
 use App\View\Product\GetProductView;
 use App\View\Product\SearchProductListView;
 use App\View\Product\UpdateProductView;
-use Doctrine\Persistence\ManagerRegistry;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\Parameter;
 use OpenApi\Attributes\RequestBody;
@@ -91,13 +87,13 @@ class ProductController extends BaseController
 
 
     #[
-        Parameter(name: 'search', in: 'query', required: true),
+        Parameter(name: 'query', in: 'query', required: true),
         Parameter(name: 'page', in: 'query', required: false, example: 1),
         Parameter(name: 'limit', in: 'query', required: false, example: 10),
     ]
-    #[Route('/search', name: 'search_product', methods: ['GET'])]
+    #[Route('/ajdfakldfj', name: 'search_product', methods: ['GET'])]
     public function search(
-        Request         $request,
+        Request               $request,
         SearchProductListForm $searchProductListForm,
         SearchProductListView $searchProductListView,
     ): JsonResponse
