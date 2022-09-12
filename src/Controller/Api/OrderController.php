@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderController extends BaseController
 {
     #[Route("/new-address", name: "Add New Shipment Address", methods: ["POST"])]
-    #[RequestBody(content: new JsonContent("{}"))]
+    #[RequestBody(content: new JsonContent(default: "{}"))]
     public function new_address(
         Request        $request,
         NewAddressForm $newAddressForm,
@@ -35,29 +35,7 @@ class OrderController extends BaseController
         return $newAddressForm->makeResponse($request);
     }
 
-    #[Route("/select-address/{order_id}/{address_id}", name: "Select Shipment Address", methods: ["POST"])]
-    #[RequestBody(content: new JsonContent("{}"))]
-    public function select_address(
-        Request           $request,
-        SelectAddressForm $selectAddressForm,
-    ): JsonResponse
-    {
-        return $selectAddressForm->makeResponse($request);
-    }
-
-    #[Route("/confirm/{order_id}", name: "Select Shipment Address", methods: ["POST"])]
-    #[RequestBody(content: new JsonContent("{}"))]
-    public function confirm(
-        Request          $request,
-        ConfirmOrderForm $confirmOrderForm,
-        ConfirmOrderView $confirmOrderView
-    ): JsonResponse
-    {
-        return $confirmOrderForm->makeResponse($request, $confirmOrderView);
-    }
-
     #[Route("/pay/{order_id}", name: "Pay", methods: ["POST"])]
-    #[RequestBody(content: new JsonContent("{}"))]
     public function pay(
         Request      $request,
         PayOrderForm $payOrderForm,
@@ -85,5 +63,25 @@ class OrderController extends BaseController
     ): JsonResponse
     {
         return $getOrderForm->makeResponse($request, $getOrderView);
+    }
+
+    #[Route("/select-address", name: "Select Shipment Address", methods: ["POST"])]
+    #[RequestBody(content: new JsonContent(default: "{ order_id: int, address_id: int }"))]
+    public function choose(
+        Request           $request,
+        SelectAddressForm $selectAddressForm,
+    ): JsonResponse
+    {
+        return $selectAddressForm->makeResponse($request);
+    }
+
+    #[Route("/confirm/{order_id}", name: "Confirm Order", methods: ["POST"])]
+    public function confirm(
+        Request          $request,
+        ConfirmOrderForm $confirmOrderForm,
+        ConfirmOrderView $confirmOrderView
+    ): JsonResponse
+    {
+        return $confirmOrderForm->makeResponse($request, $confirmOrderView);
     }
 }

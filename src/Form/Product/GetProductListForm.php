@@ -26,10 +26,10 @@ class GetProductListForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): array
+    public function execute(array $form): array
     {
         return $this->paginatorPaginate(
-            $this->productRepository, self::getQueryParams($request)
+            $this->productRepository, $form
         );
     }
 }

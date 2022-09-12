@@ -14,7 +14,6 @@ class GetUserForm extends ABaseForm
         private readonly UserRepository $userRepository
     )
     {
-
     }
 
     public function constraints(): array
@@ -22,7 +21,7 @@ class GetUserForm extends ABaseForm
         return [];
     }
 
-    public function execute(Request $request): User
+    public function execute(array $form): User
     {
         $auth_user = $this->getUser();
         $user_phone = $auth_user->getUserIdentifier();
