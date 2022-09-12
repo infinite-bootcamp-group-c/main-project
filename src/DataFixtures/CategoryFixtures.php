@@ -5,11 +5,12 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use App\Repository\ShopRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use App\DataFixtures\ShopFixtures;
 
 
-class CategoryFixtures extends Fixture implements FixtureGroupInterface
+class CategoryFixtures extends Fixture implements DependentFixtureInterface
 {
 
     public function __construct(private readonly ShopRepository $shopRepository)
@@ -39,4 +40,12 @@ class CategoryFixtures extends Fixture implements FixtureGroupInterface
 
         $manager->flush();
     }
+
+    public function getDependencies(): array
+    {
+        return [
+            ShopFixtures::class,
+            ];
+    }
+
 }

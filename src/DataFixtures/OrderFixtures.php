@@ -7,10 +7,12 @@ use App\Entity\Order;
 use App\Repository\ShopRepository;
 use App\Repository\UserRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use App\DataFixtures\ShopFixtures;
+use App\DataFixtures\UserFixtures;
 
-class OrderFixtures extends Fixture implements FixtureGroupInterface
+class OrderFixtures extends Fixture implements DependentFixtureInterface
 {
 
     public function __construct(
@@ -29,7 +31,7 @@ class OrderFixtures extends Fixture implements FixtureGroupInterface
     {
         $configs = include('src/DataFixtures/FixtureConfig.php');
         $order_cnt = $configs['order_cnt'];
-        $shop_cnt = $configs['address_cnt'];
+        $shop_cnt = $configs['shop_cnt'];
         $user_cnt = $configs['user_cnt'];
         for ($i = 1; $i <= $order_cnt; $i++) {
             $order = new Order();
@@ -49,4 +51,13 @@ class OrderFixtures extends Fixture implements FixtureGroupInterface
 
         $manager->flush();
     }
+
+    public function getDependencies(): array
+    {
+        return [
+            ShopFixtures::class,
+            UserFixtures::class,
+            ];
+    }
+
 }

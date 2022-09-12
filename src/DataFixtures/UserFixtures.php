@@ -32,7 +32,7 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
             $user->setLastName('lastName' . $i);
             $password = $this->hasher->hashPassword($user, '1234');
             $user->setPassword($password);
-            $user->setPhoneNumber('+9891212345' . $i);
+            $user->setPhoneNumber('+989121234' . mt_rand(100, 999));
             $user->setRoles(['ROLE_USER']);
 
             $manager->persist($user);
