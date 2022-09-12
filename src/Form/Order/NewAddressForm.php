@@ -78,11 +78,10 @@ class NewAddressForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): void
+    public function execute(array $form): void
     {
-        $body = self::getBodyParams($request);
         $user = $this->getUser();
-
+        $body = $form["body"];
         $order_id = $body["order_id"];
         $order = $this->orderRepository->find($order_id);
         if (!$order) {

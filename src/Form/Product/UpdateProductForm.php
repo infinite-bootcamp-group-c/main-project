@@ -56,7 +56,7 @@ class UpdateProductForm extends ABaseForm
                     new Assert\Positive(),
                 ],
                 'description' => [
-                    new Assert\Length(min: 150, max: 1000),
+                    new Assert\Length(max: 1000),
                     new Assert\Regex(pattern: '/^\w+/',
                         message: 'The product description {{ value }} is not valid.'),
                 ],
@@ -64,10 +64,8 @@ class UpdateProductForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Product
+    public function execute(array $form): Product
     {
-        $form = self::getParams($request);
-
         $productId = $form['route']['id'];
         $product = $this->productRepository->find($productId);
 

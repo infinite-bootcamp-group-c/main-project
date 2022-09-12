@@ -30,8 +30,7 @@ class BasketController extends BaseController
         return $addToBasketForm->makeResponse($request, $addToeBasketView);
     }
 
-    #[Route('/item', name: 'delete_item', methods: ['DELETE'])]
-    #[RequestBody(content: new JsonContent(default: '{}'))]
+    #[Route('/item/{order_item_id}', name: 'delete_item', methods: ['DELETE'])]
     public function deleteItem(
         Request              $request,
         RemoveFromBasketForm $removeFromBasketForm,

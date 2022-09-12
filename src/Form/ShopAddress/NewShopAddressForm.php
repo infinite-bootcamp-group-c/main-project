@@ -72,10 +72,9 @@ class NewShopAddressForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Address
+    public function execute(array $form): Address
     {
-        $form = self::getBodyParams($request);
-
+        $form = $form["body"];
         $shop_id = $form["shop_id"];
         $shop = $this->shopRepository
             ->find($shop_id);
