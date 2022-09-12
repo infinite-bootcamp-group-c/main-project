@@ -3,8 +3,8 @@
 namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
 /*
  * Running with php bin/console doctrine:fixtures:load
@@ -27,21 +27,22 @@ use Doctrine\Persistence\ObjectManager;
  *
  * Run the command to add by order:
  * php bin/console doctrine:fixtures:load --group=user --append && php bin/console doctrine:fixtures:load --group=shop --append && php bin/console doctrine:fixtures:load --group=category --append && php bin/console doctrine:fixtures:load --group=product --append && php bin/console doctrine:fixtures:load --group=address --append && php bin/console doctrine:fixtures:load --group=order --append  && php bin/console doctrine:fixtures:load --group=order_transaction --append
+ * php bin/console --env=test doctrine:fixtures:load --group=user --append && php bin/console --env=test doctrine:fixtures:load --group=shop --append && php bin/console --env=test doctrine:fixtures:load --group=category --append && php bin/console --env=test doctrine:fixtures:load --group=product --append && php bin/console --env=test doctrine:fixtures:load --group=address --append && php bin/console --env=test doctrine:fixtures:load --group=order --append  && php bin/console --env=test doctrine:fixtures:load --group=order_transaction --append
  *
 */
 
 class AppFixtures extends Fixture implements FixtureGroupInterface
 {
-    public static function getGroups(): array
-    {
-        return ['app'];
-    }
-
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $manager):void
     {
         // $product = new Product();
         // $manager->persist($product);
 
         $manager->flush();
+    }
+
+    public static function getGroups():array
+    {
+        return ['app'];
     }
 }
