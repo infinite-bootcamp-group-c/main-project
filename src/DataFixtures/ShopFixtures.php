@@ -7,7 +7,6 @@ use App\Repository\UserRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use App\DataFixtures\UserFixtures;
 
 class ShopFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -18,7 +17,7 @@ class ShopFixtures extends Fixture implements DependentFixtureInterface
 
     public static function getGroups(): array
     {
-        return ['shop'];
+        return ['shop', 'order', 'category', 'product'];
     }
 
     public function load(ObjectManager $manager)

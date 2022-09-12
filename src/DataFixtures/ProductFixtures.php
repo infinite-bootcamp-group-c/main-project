@@ -7,7 +7,6 @@ use App\Repository\CategoryRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use App\DataFixtures\CategoryFixtures;
 
 
 class ProductFixtures extends Fixture implements DependentFixtureInterface
@@ -19,7 +18,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
 
     public static function getGroups(): array
     {
-        return ['product'];
+        return ['product', 'order'];
     }
 
     public function load(ObjectManager $manager)
