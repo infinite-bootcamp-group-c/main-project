@@ -1,6 +1,9 @@
 api_refresh_token:
   path: /api/auth/token/refresh
 
+api_token_invalidate:
+  path: /api/auth/token/invalidate
+
 api_login_check:
   path: /api/auth/login
 
