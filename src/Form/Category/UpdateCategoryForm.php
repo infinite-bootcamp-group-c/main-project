@@ -45,10 +45,8 @@ class UpdateCategoryForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(array $form)
     {
-        $form = self::getParams($request);
-
         $categoryId = $form['route']['id'];
         $category = $this->categoryRepository->find($categoryId);
 

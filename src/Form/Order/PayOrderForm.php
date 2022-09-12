@@ -37,9 +37,9 @@ class PayOrderForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(array $form)
     {
-        $route = self::getRouteParams($request);
+        $route = $form["route"];
         $order_id = $route["order_id"];
         $order = $this->orderRepository
             ->find($order_id);

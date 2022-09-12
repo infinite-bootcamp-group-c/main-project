@@ -41,12 +41,10 @@ class AddToBasketForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): array
+    public function execute(array $form): array
         // TODO if the order is not open can not do it
         // TODO if quantity of product is less that now
     {
-        $form = self::getParams($request);
-
         $productId = $form["body"]["product_id"];
         $quantity = $form["body"]["quantity"];
 

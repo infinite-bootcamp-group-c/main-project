@@ -28,6 +28,6 @@ interface IBaseForm
 
     public function constraints();
 
-    public function execute(Request $request);
+    public function execute(array $form);
 
 }

@@ -33,9 +33,8 @@ class DeleteCreditForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): void
+    public function execute(array $form): void
     {
-        $form = self::getParams($request);
         $credit_id = $form["route"]["id"];
 
         $credit = $this->creditInfoRepository

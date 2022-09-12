@@ -5,8 +5,9 @@ namespace App\Form\Order;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use App\Repository\OrderRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class SelectAddressForm extends ABaseForm
 {
@@ -38,9 +39,9 @@ class SelectAddressForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): void
+    public function execute(array $form): void
     {
-        $route = self::getRouteParams($request);
+        $route = $form["route"];
         $order_id = $route["order_id"];
         $address_id = $route["address_id"];
 
