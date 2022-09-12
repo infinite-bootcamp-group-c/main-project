@@ -62,10 +62,8 @@ class CreateProductForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Product
+    public function execute(array $form): Product
     {
-        $form = self::getParams($request);
-
         $categoryId = $form['body']['category_id'];
         $category = $this->categoryRepository->find($categoryId);
 

@@ -34,9 +34,9 @@ class DeleteProductForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): void
+    public function execute(array $form): void
     {
-        $productId = self::getParams($request)['route']['id'];
+        $productId = $form['route']['id'];
         $product = $this->productRepository->find($productId);
 
         if (!$product) {

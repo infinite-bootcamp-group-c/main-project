@@ -32,9 +32,8 @@ class GetCreditDetailsForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): CreditInfo
+    public function execute(array $form): CreditInfo
     {
-        $form = self::getParams($request);
         $credit_id = $form["route"]["id"];
 
         $credit = $this->creditInfoRepository

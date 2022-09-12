@@ -39,9 +39,9 @@ class DeleteShopAddressForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): string
+    public function execute(array $form): string
     {
-        $route = self::getRouteParams($request);
+        $route = $form["route"];
         $shop_id = $route["shop_id"];
         $address_id = $route["address_id"];
         $address = $this->addressRepository

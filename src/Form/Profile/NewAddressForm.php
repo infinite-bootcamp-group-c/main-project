@@ -66,10 +66,8 @@ class NewAddressForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Address
+    public function execute(array $form): Address
     {
-        $form = self::getParams($request);
-
         $user_phone = $this->getUser()->getUserIdentifier();
         $user = $this->userRepository
             ->findOneBy(["phoneNumber" => $user_phone]);
