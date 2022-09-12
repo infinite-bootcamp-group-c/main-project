@@ -8,7 +8,6 @@ use App\Repository\OrderRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use App\DataFixtures\OrderFixtures;
 
 class OrderTransactionFixtures extends Fixture implements DependentFixtureInterface
 {

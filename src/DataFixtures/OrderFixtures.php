@@ -9,8 +9,6 @@ use App\Repository\UserRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use App\DataFixtures\ShopFixtures;
-use App\DataFixtures\UserFixtures;
 
 class OrderFixtures extends Fixture implements DependentFixtureInterface
 {

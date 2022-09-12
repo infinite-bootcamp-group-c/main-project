@@ -14,8 +14,13 @@
 
 - ### php bin/console doctrine:schema:drop --force && php bin/console doctrine:schema:update --force
 
-## 4. --help
+## 4. --group
 
-## 5. recommended command
+- ### If you want to load only some of your fixtures, you can use the --group option.
+
+## 5. --help
+
+## 6. recommended command
 
 - ### php bin/console doctrine:schema:drop --force && php bin/console doctrine:schema:update --force && php bin/console doctrine:fixtures:load
+  - #### which is drop and update and load the data
