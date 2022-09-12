@@ -59,10 +59,8 @@ class RegisterUserForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): User
+    public function execute(array $form): User
     {
-        $form = self::getParams($request);
-
         $user = (new User($this->passwordHasher))
             ->setPhoneNumber(self::IranPhoneNumberNormalize($form["body"]["phone_number"]))
             ->setPassword($form["body"]["password"])

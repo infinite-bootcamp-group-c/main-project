@@ -41,9 +41,8 @@ class DepositShopForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): void
+    public function execute(array $form): void
     {
-        $form = self::getParams($request);
         $shopId = $form['body']['shop_id'];
         $shop = $this->shopRepository->find($shopId);
 

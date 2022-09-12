@@ -42,10 +42,8 @@ class CreateShopForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Shop
+    public function execute(array $form): Shop
     {
-        $form = self::getParams($request);
-
         $shop = (new Shop())
             ->setName($form["body"]["name"])
             ->setIgUsername($form["body"]["ig_username"] ?? null)

@@ -33,9 +33,8 @@ class RemoveFromBasketForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(array $form)
     {
-        $form = self::getParams($request);
         $orderItemId = $form["body"]["order_item_id"];
 
         try {
