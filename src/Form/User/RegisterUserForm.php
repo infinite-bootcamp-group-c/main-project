@@ -18,6 +18,14 @@ class RegisterUserForm extends ABaseForm
     {
     }
 
+    public static function IranPhoneNumberNormalize(string $phoneNumber): string
+    {
+        if (str_starts_with($phoneNumber, "0098") || str_starts_with($phoneNumber, "+98")) {
+            $phoneNumber = '0' . substr($phoneNumber, -10);
+        }
+        return $phoneNumber;
+    }
+
     public function constraints(): array
     {
         return [
@@ -37,8 +45,7 @@ class RegisterUserForm extends ABaseForm
                 'phone_number' => [
                     new Assert\NotNull(),
                     new Assert\NotBlank(),
-                    new Assert\Length(min: 11, max: 15),
-                    new Assert\Regex(pattern: '/^[\+|09]\d{1,15}$/',
+                    new Assert\Regex(pattern: '/^(0098|\+98|0)9[0-3,9][0-9]{8}$/',
                         message: 'The phone number {{ value }} is not valid phone number'),
                 ],
                 'password' => [
@@ -55,7 +62,7 @@ class RegisterUserForm extends ABaseForm
         $form = self::getParams($request);
 
         $user = (new User($this->passwordHasher))
-            ->setPhoneNumber($form["body"]["phone_number"])
+            ->setPhoneNumber(self::IranPhoneNumberNormalize($form["body"]["phone_number"]))
             ->setPassword($form["body"]["password"])
             ->setRoles(['ROLE_USER']);
 
