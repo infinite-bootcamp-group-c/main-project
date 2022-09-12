@@ -5,7 +5,9 @@ namespace App\Form\User;
 use App\Entity\User;
 use App\Lib\Form\ABaseForm;
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -77,8 +79,13 @@ class RegisterUserForm extends ABaseForm
         if (isset($form["body"]["email"])) {
             $user->setEmail($form["body"]["email"]);
         }
+        try{
+            $this->userRepository->add($user, flush: true);
+        }
+        catch (UniqueConstraintViolationException){
+            throw new BadRequestHttpException("Phone number already exists!");
+        }
 
-        $this->userRepository->add($user, flush: true);
         return $user;
     }
 }
