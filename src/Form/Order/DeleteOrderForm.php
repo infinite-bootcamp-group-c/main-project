@@ -39,14 +39,13 @@ class DeleteOrderForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): string
+    public function execute(array $form): string
     {
         // check if order is open
         // delete order items
         // add the quantity to products
         // delete order
-
-        $route = self::getRouteParams($request);
+        $route = $form["route"];
         $order_id = $route["id"];
         $user_id = $this->getUser()->getId();
         $order = $this->orderRepository
