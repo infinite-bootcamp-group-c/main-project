@@ -5,11 +5,11 @@ namespace App\DataFixtures;
 use App\Entity\Shop;
 use App\Repository\UserRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use App\DataFixtures\UserFixtures;
 
-
-class ShopFixtures extends Fixture implements FixtureGroupInterface
+class ShopFixtures extends Fixture implements DependentFixtureInterface
 {
 
     public function __construct(private readonly UserRepository $userRepository)
@@ -24,13 +24,13 @@ class ShopFixtures extends Fixture implements FixtureGroupInterface
     public function load(ObjectManager $manager)
     {
         $configs = include('src/DataFixtures/FixtureConfig.php');
-        $shop_cnt = $configs['address_cnt'];
-        $shop_unique = $configs['shop_unique'];
+        $shop_cnt = $configs['shop_cnt'];
+        $user_cnt = $configs['user_cnt'];
         for ($i = 1; $i <= $shop_cnt; $i++) {
             $shop = new Shop();
 
             $shop->setName('user' . $i);
-            $shop->setUser($this->userRepository->find(mt_rand(1, $shop_unique)));
+            $shop->setUser($this->userRepository->find(mt_rand(1, $user_cnt)));
             $shop->setDescription('Test description for shop' . $i);
             $shop->setIgUsername('ig' . $i);
 
@@ -39,4 +39,12 @@ class ShopFixtures extends Fixture implements FixtureGroupInterface
 
         $manager->flush();
     }
+
+    public function getDependencies(): array
+    {
+        return [
+            UserFixtures::class,
+            ];
+    }
+
 }

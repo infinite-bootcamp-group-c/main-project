@@ -6,11 +6,11 @@ use App\Entity\Enums\OrderTransactionStatus;
 use App\Entity\OrderTransaction;
 use App\Repository\OrderRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use App\DataFixtures\OrderFixtures;
 
-
-class OrderTransactionFixtures extends Fixture implements FixtureGroupInterface
+class OrderTransactionFixtures extends Fixture implements DependentFixtureInterface
 {
 
     public function __construct(
@@ -28,8 +28,6 @@ class OrderTransactionFixtures extends Fixture implements FixtureGroupInterface
     {
         $configs = include('src/DataFixtures/FixtureConfig.php');
         $order_transaction_cnt = $configs['order_transaction_cnt'];
-        $shop_cnt = $configs['address_cnt'];
-        $user_cnt = $configs['user_cnt'];
         for ($i = 1; $i <= $order_transaction_cnt; $i++) {
             $order_transaction = new OrderTransaction();
             $order_transactionStatus = OrderTransactionStatus::from(mt_rand(0, 2));
@@ -43,4 +41,12 @@ class OrderTransactionFixtures extends Fixture implements FixtureGroupInterface
 
         $manager->flush();
     }
+
+    public function getDependencies(): array
+    {
+        return [
+            OrderFixtures::class,
+        ];
+    }
+
 }
