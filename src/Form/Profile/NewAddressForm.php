@@ -6,7 +6,6 @@ use App\Entity\Address;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,9 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class NewAddressForm extends ABaseForm
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserRepository    $userRepository,
         private readonly AddressRepository $addressRepository,
-    ) {
+    )
+    {
 
     }
 
@@ -55,12 +55,12 @@ class NewAddressForm extends ABaseForm
                 "latitude" => [
                     new Assert\NotNull(),
                     new Assert\NotBlank(),
-                    new Assert\Type("digit")
+                    new Assert\Type("float")
                 ],
                 "longitude" => [
                     new Assert\NotNull(),
                     new Assert\NotBlank(),
-                    new Assert\Type("digit")
+                    new Assert\Type("float")
                 ]
             ]
         ];

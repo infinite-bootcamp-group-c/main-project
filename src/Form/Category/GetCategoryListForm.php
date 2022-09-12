@@ -21,7 +21,7 @@ class GetCategoryListForm extends ABaseForm
     public function constraints(): array
     {
         return [
-            'query' =>[
+            'query' => [
                 ...$this->paginatorGetQueryParam(),
             ]
         ];

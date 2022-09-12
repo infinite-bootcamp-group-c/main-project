@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\OrderTransaction;
 use App\Lib\Repository\ABaseRepository;
 use App\Lib\Repository\IBaseRepository;
-use App\Lib\Repository\Pagination\HasRepositoryPaginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 class OrderTransactionRepository extends ABaseRepository implements IBaseRepository

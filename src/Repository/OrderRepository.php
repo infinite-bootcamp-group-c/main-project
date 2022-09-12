@@ -8,7 +8,6 @@ use App\Entity\Shop;
 use App\Entity\User;
 use App\Lib\Repository\ABaseRepository;
 use App\Lib\Repository\IBaseRepository;
-use App\Lib\Repository\Pagination\HasRepositoryPaginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 class OrderRepository extends ABaseRepository implements IBaseRepository
@@ -18,7 +17,7 @@ class OrderRepository extends ABaseRepository implements IBaseRepository
         parent::__construct($registry, Order::class);
     }
 
-    public function createOrder(User $user, Shop $shop, ): Order
+    public function createOrder(User $user, Shop $shop,): Order
     {
         $order = new Order();
         $order->setShop($shop);

@@ -38,7 +38,7 @@ class DeleteShopForm extends ABaseForm
         $shopId = self::getParams($request)['route']['id'];
         $shop = $this->shopRepository->find($shopId);
 
-        if(!$shop) {
+        if (!$shop) {
             throw new BadRequestHttpException("Shop {$shopId} Not Found");
         }
 

@@ -7,14 +7,13 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class APaymentGateway implements IPaymentGateway
 {
 
     public function __construct(
         public ContainerBagInterface $params,
-        public HttpClientInterface $httpClient
+        public HttpClientInterface   $httpClient
     )
     {
     }

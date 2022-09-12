@@ -15,6 +15,11 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
     {
     }
 
+    public static function getGroups(): array
+    {
+        return ['user'];
+    }
+
     public function load(ObjectManager $manager)
     {
         $configs = include('src/DataFixtures/FixtureConfig.php');
@@ -22,23 +27,17 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
         for ($i = 1; $i <= $user_cnt; $i++) {
             $user = new User($this->hasher);
 
-            $user->setEmail('email'.$i.'@test.com');
-            $user->setFirstName('firstName'.$i);
-            $user->setLastName('lastName'.$i);
+            $user->setEmail('email' . $i . '@test.com');
+            $user->setFirstName('firstName' . $i);
+            $user->setLastName('lastName' . $i);
             $password = $this->hasher->hashPassword($user, '1234');
             $user->setPassword($password);
-            $user->setPhoneNumber('+9891212345'.$i);
+            $user->setPhoneNumber('+9891212345' . $i);
             $user->setRoles(['ROLE_USER']);
 
             $manager->persist($user);
         }
 
         $manager->flush();
-    }
-
-
-    public static function getGroups(): array
-    {
-        return ['user'];
     }
 }

@@ -6,14 +6,14 @@ use App\Lib\Form\ABaseForm;
 use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class GetOrdersForm extends ABaseForm
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserRepository  $userRepository,
         private readonly OrderRepository $orderRepository
-    ) {
+    )
+    {
 
     }
 

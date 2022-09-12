@@ -6,11 +6,13 @@ use App\Form\Product\CreateProductForm;
 use App\Form\Product\DeleteProductForm;
 use App\Form\Product\GetProductForm;
 use App\Form\Product\GetProductListForm;
+use App\Form\Product\SearchProductListForm;
 use App\Form\Product\UpdateProductForm;
 use App\Lib\Controller\BaseController;
 use App\View\Product\CreateProductView;
 use App\View\Product\GetProductListView;
 use App\View\Product\GetProductView;
+use App\View\Product\SearchProductListView;
 use App\View\Product\UpdateProductView;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\Parameter;
@@ -25,6 +27,20 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Tag(name: 'Product', description: 'Product operations')]
 class ProductController extends BaseController
 {
+    #[
+        Parameter(name: 'query', in: 'query', required: true),
+        Parameter(name: 'page', in: 'query', required: false, example: 1),
+        Parameter(name: 'limit', in: 'query', required: false, example: 10),
+    ]
+    #[Route('/search', name: 'search_product', methods: ['GET'])]
+    public function search(
+        Request               $request,
+        SearchProductListForm $searchProductListForm,
+        SearchProductListView $searchProductListView,
+    ): JsonResponse
+    {
+        return $searchProductListForm->makeResponse($request, $searchProductListView);
+    }
 
     #[Route('/{id}', name: 'get_product', methods: ['GET'])]
     public function get(
@@ -82,5 +98,4 @@ class ProductController extends BaseController
     {
         return $deleteProductForm->makeResponse($request);
     }
-
 }

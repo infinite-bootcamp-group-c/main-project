@@ -16,6 +16,11 @@ class ProductFixtures extends Fixture implements FixtureGroupInterface
     {
     }
 
+    public static function getGroups(): array
+    {
+        return ['product'];
+    }
+
     public function load(ObjectManager $manager)
     {
         $configs = include('src/DataFixtures/FixtureConfig.php');
@@ -23,23 +28,17 @@ class ProductFixtures extends Fixture implements FixtureGroupInterface
         $product_unique = $configs['product_unique'];
         for ($i = 1; $i <= $product_cnt; $i++) {
             $product = new Product();
-            $categoryId = ($i-1)%$product_unique + 1;
+            $categoryId = ($i - 1) % $product_unique + 1;
 
             $product->setName('Product ' . $i);
             $product->setCategory($this->categoryRepository->find($categoryId));
-            $product->setDescription('description'.$i);
-            $product->setQuantity($i%3);
-            $product->setPrice(($i%4+1)*10000);
+            $product->setDescription('description' . $i);
+            $product->setQuantity($i % 3);
+            $product->setPrice(($i % 4 + 1) * 10000);
 
             $manager->persist($product);
         }
 
         $manager->flush();
-    }
-
-
-    public static function getGroups(): array
-    {
-        return ['product'];
     }
 }

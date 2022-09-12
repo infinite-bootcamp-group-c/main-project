@@ -56,7 +56,7 @@ class UpdateProductForm extends ABaseForm
                     new Assert\Positive(),
                 ],
                 'description' => [
-                    new Assert\Length(min: 150, max: 1000),
+                    new Assert\Length(max: 1000),
                     new Assert\Regex(pattern: '/^\w+/',
                         message: 'The product description {{ value }} is not valid.'),
                 ],
@@ -98,11 +98,11 @@ class UpdateProductForm extends ABaseForm
             $product->setCategory($category);
         }
 
-        if(isset($form['body']['shop_id'])){
+        if (isset($form['body']['shop_id'])) {
             $shopId = $form['body']['shop_id'];
             $shop = $this->shopRepository->find($shopId);
 
-            if(!$shop)
+            if (!$shop)
                 throw new BadRequestHttpException("Shop ${shopId} not found");
 
             $this->validateOwnership($shop, $this->getUser()->getId());

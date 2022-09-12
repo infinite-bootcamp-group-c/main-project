@@ -12,7 +12,8 @@ class GetUserForm extends ABaseForm
 {
     public function __construct(
         private readonly UserRepository $userRepository
-    ){
+    )
+    {
 
     }
 

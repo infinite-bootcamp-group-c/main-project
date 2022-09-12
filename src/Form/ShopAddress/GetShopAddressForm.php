@@ -13,7 +13,8 @@ class GetShopAddressForm extends ABaseForm
 {
     public function __construct(
         private readonly AddressRepository $addressRepository
-    ) {
+    )
+    {
 
     }
 

@@ -3,8 +3,8 @@
 namespace App\Controller\Api;
 
 use App\Form\Shop\CreateShopForm;
-use App\Form\Shop\DepositShopForm;
 use App\Form\Shop\DeleteShopForm;
+use App\Form\Shop\DepositShopForm;
 use App\Form\Shop\GetShopForm;
 use App\Form\Shop\GetShopListForm;
 use App\Form\Shop\UpdateShopForm;
@@ -76,7 +76,7 @@ class ShopController extends AbstractController
 
     #[Route('/{id}', name: 'delete_shop', methods: ['DELETE'])]
     public function delete(
-        Request           $request,
+        Request        $request,
         DeleteShopForm $deleteShopForm,
     ): JsonResponse
     {
@@ -87,7 +87,7 @@ class ShopController extends AbstractController
     #[Route('/withdraw', name: 'withdraw_shop', methods: ['POST'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function withdraw(
-        Request        $request,
+        Request         $request,
         DepositShopForm $depositShopForm,
     ): JsonResponse
     {

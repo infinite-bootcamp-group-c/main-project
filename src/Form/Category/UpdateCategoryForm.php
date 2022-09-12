@@ -17,7 +17,7 @@ class UpdateCategoryForm extends ABaseForm
 
     public function __construct(
         private readonly CategoryRepository $categoryRepository,
-        private readonly ShopRepository $shopRepository
+        private readonly ShopRepository     $shopRepository
     )
     {
     }
@@ -52,22 +52,22 @@ class UpdateCategoryForm extends ABaseForm
         $categoryId = $form['route']['id'];
         $category = $this->categoryRepository->find($categoryId);
 
-        if(!$category) {
+        if (!$category) {
             throw new BadRequestHttpException("Category ${categoryId} not found");
         }
 
         $this->validateOwnership($category->getShop(), $this->getUser()->getId());
 
-        if(isset($form['body']['title'])) {
+        if (isset($form['body']['title'])) {
             $category->setTitle($form['body']['title']);
         }
 
-        if(isset($form["body"]["shop_id"])) {
+        if (isset($form["body"]["shop_id"])) {
 
             $shopId = $form['body']['shop_id'];
             $shop = $this->shopRepository->find($shopId);
 
-            if(!$shop) {
+            if (!$shop) {
                 throw new BadRequestHttpException("Shop ${shopId} not found");
             }
 

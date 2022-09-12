@@ -3,7 +3,6 @@
 namespace App\Form\Traits;
 
 use App\Entity\Order;
-use App\Entity\Shop;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 trait HasOrderOwnership

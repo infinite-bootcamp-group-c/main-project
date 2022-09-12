@@ -21,7 +21,7 @@ class UserController extends BaseController
     #[Route('/register', name: 'register_user', methods: ['POST'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function new(
-        Request           $request,
+        Request          $request,
         RegisterUserForm $registerUserForm,
         RegisterUserView $registerUserView
     ): JsonResponse

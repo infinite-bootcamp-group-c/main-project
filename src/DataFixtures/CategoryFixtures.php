@@ -16,6 +16,11 @@ class CategoryFixtures extends Fixture implements FixtureGroupInterface
     {
     }
 
+    public static function getGroups(): array
+    {
+        return ['category'];
+    }
+
     public function load(ObjectManager $manager)
     {
         $configs = include('src/DataFixtures/FixtureConfig.php');
@@ -24,20 +29,14 @@ class CategoryFixtures extends Fixture implements FixtureGroupInterface
         // create 3 categories for each 3 shops
         for ($i = 1; $i <= $category_cnt; $i++) {
             $category = new Category();
-            $shopId = ($i-1)%$category_unique + 1;
+            $shopId = ($i - 1) % $category_unique + 1;
 
             $category->setShop($this->shopRepository->find($shopId));
-            $category->setTitle('category'.$i);
+            $category->setTitle('category' . $i);
 
             $manager->persist($category);
         }
 
         $manager->flush();
-    }
-
-
-    public static function getGroups(): array
-    {
-        return ['category'];
     }
 }

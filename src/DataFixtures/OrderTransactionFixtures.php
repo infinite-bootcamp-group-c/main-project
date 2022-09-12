@@ -2,13 +2,12 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Enums\OrderStatus;
+use App\Entity\Enums\OrderTransactionStatus;
 use App\Entity\OrderTransaction;
 use App\Repository\OrderRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\Enums\OrderTransactionStatus;
 
 
 class OrderTransactionFixtures extends Fixture implements FixtureGroupInterface
@@ -18,6 +17,11 @@ class OrderTransactionFixtures extends Fixture implements FixtureGroupInterface
         private readonly OrderRepository $orderRepository,
     )
     {
+    }
+
+    public static function getGroups(): array
+    {
+        return ['order_transaction'];
     }
 
     public function load(ObjectManager $manager)
@@ -38,11 +42,5 @@ class OrderTransactionFixtures extends Fixture implements FixtureGroupInterface
         }
 
         $manager->flush();
-    }
-
-
-    public static function getGroups(): array
-    {
-        return ['order_transaction'];
     }
 }

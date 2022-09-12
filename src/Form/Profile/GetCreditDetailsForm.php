@@ -5,7 +5,6 @@ namespace App\Form\Profile;
 use App\Entity\CreditInfo;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CreditInfoRepository;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,7 +13,8 @@ class GetCreditDetailsForm extends ABaseForm
 {
     public function __construct(
         private readonly CreditInfoRepository $creditInfoRepository
-    ) {
+    )
+    {
 
     }
 

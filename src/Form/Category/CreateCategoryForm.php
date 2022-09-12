@@ -17,7 +17,7 @@ class CreateCategoryForm extends ABaseForm
 
     public function __construct(
         private readonly CategoryRepository $categoryRepository,
-        private readonly ShopRepository $shopRepository,
+        private readonly ShopRepository     $shopRepository,
     )
     {
     }
@@ -50,7 +50,7 @@ class CreateCategoryForm extends ABaseForm
         $shopId = $form['body']['shop_id'];
         $shop = $this->shopRepository->find($shopId);
 
-        if(!$shop) {
+        if (!$shop) {
             throw new BadRequestHttpException("Shop {$shopId} not found");
         }
 
