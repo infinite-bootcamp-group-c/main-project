@@ -22,44 +22,17 @@ abstract class ABaseForm implements IBaseForm
     #[Required]
     public TokenStorageInterface $tokenStorage;
 
-    #[ArrayShape(['body' => "array", 'query' => "array", 'route' => "array"])]
-    public static function getParams(Request $request): array
-    {
-        return [
-            'body' => self::getBodyParams($request),
-            'query' => self::getQueryParams($request),
-            'route' => self::getRouteParams($request)
-        ];
-    }
-
-    public static function getBodyParams(Request $request): array
-    {
-        return json_decode($request->getContent(), true) ?? [];
-    }
-
-    public static function getQueryParams(Request $request): array
-    {
-        return $request->query->all() ?? [];
-    }
-
-    public static function getRouteParams(Request $request): array
-    {
-        return $request->attributes->get('_route_params') ?? [];
-    }
-
-    public function getUser(): ?UserInterface
-    {
-        return $this->tokenStorage->getToken()->getUser();
-    }
+    private Request $request;
 
     public function makeResponse(Request $request, ABaseView $view = null): JsonResponse
     {
-        $validation = $this->validate($request);
+        $this->request = $request;
+        $validation = $this->validate();
 
         if (count($validation))
             return $this->json(['errors' => $validation], Response::HTTP_BAD_REQUEST);
 
-        $form = self::getParams($request);
+        $form = $this->getParams();
         $formExecution = $this->execute($form);
 
         if (!$view)
@@ -73,15 +46,59 @@ abstract class ABaseForm implements IBaseForm
         );
     }
 
-    public function validate(Request $request): array
+    #[ArrayShape(['body' => "array", 'query' => "array", 'route' => "array", 'requestDetail' => "array"])]
+    protected function getParams(): array
+    {
+        return [
+            'body' => $this->getBodyParams(),
+            'query' => $this->getQueryParams(),
+            'route' => $this->getRouteParams(),
+        ];
+    }
+
+
+    protected function getBodyParams(): array
+    {
+        return json_decode($this->request->getContent(), true) ?? [];
+    }
+
+    protected function getQueryParams(): array
+    {
+        return $this->request->query->all() ?? [];
+    }
+
+    protected function getRouteParams(): array
+    {
+        return $this->request->attributes->get('_route_params') ?? [];
+    }
+
+    #[ArrayShape(["cookies" => "array", "sessions" => "array", 'headers' => "mixed", "host" => "string", "ip" => "null|string", "contentType" => "null|string"])]
+    protected function getRequestDetails(): array
+    {
+        return [
+            "cookies" => $this->request->cookies->all(),
+            "sessions" => $this->request->getSession()->all(),
+            'headers' => $this->request->headers->all(),
+            "host" => $this->request->getHost(),
+            "ip" => $this->request->getClientIp(),
+            "contentType" => $this->request->getContentType(),
+        ];
+    }
+
+    protected function getUser(): ?UserInterface
+    {
+        return $this->tokenStorage->getToken()->getUser();
+    }
+
+    protected function validate(): array
     {
         $input = [
-            'body' => self::getBodyParams($request),
-            'query' => self::getQueryParams($request),
-            'route' => self::getRouteParams($request),
+            'body' => $this->getBodyParams(),
+            'query' => $this->getQueryParams(),
+            'route' => $this->getRouteParams(),
         ];
 
-        $allowMissingFields = $request->getMethod() === 'PATCH';
+        $allowMissingFields = $this->request->getMethod() === 'PATCH';
 
         $constraints = new Assert\Collection([
             'body' => new Assert\Collection($this->constraints()['body'] ?? [], allowMissingFields: $allowMissingFields),
@@ -103,10 +120,10 @@ abstract class ABaseForm implements IBaseForm
 
     public abstract function constraints(): array;
 
-    public function json(mixed $data, int $status = Response::HTTP_OK): JsonResponse
+    protected function json(mixed $data, int $status = Response::HTTP_OK): JsonResponse
     {
         return new JsonResponse($data, $status);
     }
 
-    public abstract function execute(array $form);
+    protected abstract function execute(array $form);
 }
