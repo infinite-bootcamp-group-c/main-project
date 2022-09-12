@@ -41,9 +41,9 @@ class ConfirmOrderForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(array $form)
     {
-        $body = self::getRouteParams($request);
+        $body = $form["body"];
         $order_id = $body["order_id"];
 
         $user_id = $this->getUser()->getId();

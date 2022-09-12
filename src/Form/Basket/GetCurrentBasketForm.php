@@ -31,10 +31,9 @@ class GetCurrentBasketForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Order
+    public function execute(array $form): Order
     {
         $user = $this->getUser();
-        $form = self::getParams($request);
         $shopId = $form["route"]["shop_id"];
         $currentOrder = $this->orderRepository->findOneBy(
             [

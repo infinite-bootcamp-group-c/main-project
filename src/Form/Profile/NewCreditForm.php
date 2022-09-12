@@ -49,10 +49,8 @@ class NewCreditForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): CreditInfo
+    public function execute(array $form): CreditInfo
     {
-        $form = self::getParams($request);
-
         $user_phone = $this->getUser()->getUserIdentifier();
         $user = $this->userRepository
             ->findOneBy(["phoneNumber" => $user_phone]);

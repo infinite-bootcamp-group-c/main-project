@@ -59,7 +59,8 @@ abstract class ABaseForm implements IBaseForm
         if (count($validation))
             return $this->json(['errors' => $validation], Response::HTTP_BAD_REQUEST);
 
-        $formExecution = $this->execute($request);
+        $form = self::getParams($request);
+        $formExecution = $this->execute($form);
 
         if (!$view)
             return $this->json(
@@ -107,5 +108,5 @@ abstract class ABaseForm implements IBaseForm
         return new JsonResponse($data, $status);
     }
 
-    public abstract function execute(Request $request);
+    public abstract function execute(array $form);
 }

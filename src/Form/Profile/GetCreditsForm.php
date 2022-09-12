@@ -21,7 +21,7 @@ class GetCreditsForm extends ABaseForm
         return [];
     }
 
-    public function execute(Request $request): array
+    public function execute(array $form): array
     {
         $user_phone = $this->getUser()->getUserIdentifier();
         $user = $this->userRepository

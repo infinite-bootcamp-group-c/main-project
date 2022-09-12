@@ -33,9 +33,9 @@ class DeleteShopForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): void
+    public function execute(array $form): void
     {
-        $shopId = self::getParams($request)['route']['id'];
+        $shopId = $form['route']['id'];
         $shop = $this->shopRepository->find($shopId);
 
         if (!$shop) {

@@ -34,9 +34,9 @@ class DeleteCategoryForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(array $form)
     {
-        $categoryId = self::getParams($request)['route']['id'];
+        $categoryId = $form['route']['id'];
         $category = $this->categoryRepository->find($categoryId);
 
         if (!$category) {

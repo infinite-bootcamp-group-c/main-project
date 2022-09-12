@@ -32,9 +32,9 @@ class GetShopAddressForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Address
+    public function execute(array $form): Address
     {
-        $route = self::getRouteParams($request);
+        $route = $form["route"];
         $address_id = $route["address_id"];
         $address = $this->addressRepository
             ->find($address_id);
