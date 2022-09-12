@@ -17,35 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Tag(name: 'Payment', description: 'Payment operations')]
 class PaymentController extends BaseController
 {
-//    /**
-//     * @throws Exception
-//     */
-//    #[Route('/request', name: 'request_payment', methods: ['GET'])]
-//    #[RequestBody(content: new JsonContent(default: '{}'))]
-//    public function request(
-//        Request               $request,
-//        PaymentGatewayFactory $paymentGatewayFactory,
-//    ): JsonResponse
-//    {
-//        $payment = $paymentGatewayFactory->get('zarinpal')->request(
-//            amount: 5000, // TODO:: we should get this from the database
-//            params: [
-//                'user_id' => 1,
-//            ],
-//        );
-//
-//        if ($payment['result'] == 'warning')
-//            throw new BadRequestHttpException($payment['error']);
-//
-//        return $this->json([
-//            'redirect_url' => $payment['url'],
-//        ]);
-//
-//    }
-
-    /**
-     * @throws Exception
-     */
     #[Route('/verify', name: 'verify_payment', methods: ['GET'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function verify(
@@ -55,17 +26,5 @@ class PaymentController extends BaseController
     ): JsonResponse
     {
         return $verifyPaymentForm->makeResponse($request, $verifyPaymentView);
-//        if ($verify['result'] == 'success') {
-//            return $this->json([
-//                'result' => 'success',
-//                ...$verify,
-//            ]);
-//        } else {
-//            return $this->json([
-//                'result' => 'error',
-//                ...$verify,
-//            ]);
-//        }
     }
-
 }
