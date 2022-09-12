@@ -27,6 +27,7 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
  *
  * Run the command to add by order:
  * php bin/console doctrine:fixtures:load --group=user --append && php bin/console doctrine:fixtures:load --group=shop --append && php bin/console doctrine:fixtures:load --group=category --append && php bin/console doctrine:fixtures:load --group=product --append && php bin/console doctrine:fixtures:load --group=address --append && php bin/console doctrine:fixtures:load --group=order --append  && php bin/console doctrine:fixtures:load --group=order_transaction --append
+ * php bin/console --env=test doctrine:fixtures:load --group=user --append && php bin/console --env=test doctrine:fixtures:load --group=shop --append && php bin/console --env=test doctrine:fixtures:load --group=category --append && php bin/console --env=test doctrine:fixtures:load --group=product --append && php bin/console --env=test doctrine:fixtures:load --group=address --append && php bin/console --env=test doctrine:fixtures:load --group=order --append  && php bin/console --env=test doctrine:fixtures:load --group=order_transaction --append
  *
 */
 
