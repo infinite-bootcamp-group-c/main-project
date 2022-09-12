@@ -102,7 +102,7 @@ abstract class ABaseForm implements IBaseForm
 
         $constraints = new Assert\Collection([
             'body' => new Assert\Collection($this->constraints()['body'] ?? [], allowMissingFields: $allowMissingFields),
-            'query' => new Assert\Collection($this->constraints()['query'] ?? [], allowMissingFields: $allowMissingFields),
+            'query' => new Assert\Collection($this->constraints()['query'] ?? [], allowMissingFields: true),
             'route' => new Assert\Collection($this->constraints()['route'] ?? [], allowMissingFields: $allowMissingFields),
         ]);
 
