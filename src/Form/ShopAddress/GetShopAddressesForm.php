@@ -31,9 +31,9 @@ class GetShopAddressesForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): array
+    public function execute(array $form): array
     {
-        $route = self::getRouteParams($request);
+        $route = $form["route"];
         $shop_id = $route["shop_id"];
         $shop = $this->shopRepository
             ->find($shop_id);

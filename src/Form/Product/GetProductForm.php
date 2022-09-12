@@ -32,10 +32,8 @@ class GetProductForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Product
+    public function execute(array $form): Product
     {
-        $form = self::getParams($request);
-
         $productId = $form['route']['id'];
         $product = $this->productRepository->find($productId);
 

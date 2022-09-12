@@ -43,10 +43,8 @@ class CreateCategoryForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Category
+    public function execute(array $form): Category
     {
-        $form = self::getParams($request);
-
         $shopId = $form['body']['shop_id'];
         $shop = $this->shopRepository->find($shopId);
 

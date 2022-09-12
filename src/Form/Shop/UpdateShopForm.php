@@ -51,10 +51,8 @@ class UpdateShopForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Shop
+    public function execute(array $form): Shop
     {
-        $form = self::getParams($request);
-
         $shopId = $form['route']['id'];
         $shop = $this->shopRepository->find($shopId);
 

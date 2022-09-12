@@ -27,10 +27,10 @@ class GetCategoryListForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): array
+    public function execute(array $form): array
     {
         return $this->paginatorPaginate(
-            $this->categoryRepository, self::getQueryParams($request)
+            $this->categoryRepository, $form
         );
     }
 }

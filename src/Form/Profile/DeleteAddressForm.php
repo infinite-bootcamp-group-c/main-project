@@ -36,9 +36,8 @@ class DeleteAddressForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): void
+    public function execute(array $form): void
     {
-        $form = self::getParams($request);
         $user_phone = $this->getUser()->getUserIdentifier();
         $addressId = $form["route"]["id"];
         $address = $this->addressRepository->find($addressId);

@@ -39,9 +39,9 @@ class SelectAddressForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): void
+    public function execute(array $form): void
     {
-        $body = self::getBodyParams($request);
+        $body = $form["body"];
         $order_id = $body["order_id"];
         $address_id = $body["address_id"];
 
