@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetShopView extends ABaseView
 {
-    protected int $HTTPStatusCode = Response::HTTP_CREATED;
+    protected int $HTTPStatusCode = Response::HTTP_OK;
 
     public function execute(Shop $shop): array
     {

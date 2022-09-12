@@ -5,17 +5,27 @@ namespace App\Form\User;
 use App\Entity\User;
 use App\Lib\Form\ABaseForm;
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class RegisterUserForm extends ABaseForm
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserRepository              $userRepository,
         private readonly UserPasswordHasherInterface $passwordHasher
     )
     {
+    }
+
+    public static function IranPhoneNumberNormalize(string $phoneNumber): string
+    {
+        if (str_starts_with($phoneNumber, "0098") || str_starts_with($phoneNumber, "+98")) {
+            $phoneNumber = '0' . substr($phoneNumber, -10);
+        }
+        return $phoneNumber;
     }
 
     public function constraints(): array
@@ -37,8 +47,7 @@ class RegisterUserForm extends ABaseForm
                 'phone_number' => [
                     new Assert\NotNull(),
                     new Assert\NotBlank(),
-                    new Assert\Length(min: 11, max: 15),
-                    new Assert\Regex(pattern: '/^[\+|09]\d{1,15}$/',
+                    new Assert\Regex(pattern: '/^(0098|\+98|0)9[0-3,9][0-9]{8}$/',
                         message: 'The phone number {{ value }} is not valid phone number'),
                 ],
                 'password' => [
@@ -55,23 +64,28 @@ class RegisterUserForm extends ABaseForm
         $form = self::getParams($request);
 
         $user = (new User($this->passwordHasher))
-            ->setPhoneNumber($form["body"]["phone_number"])
+            ->setPhoneNumber(self::IranPhoneNumberNormalize($form["body"]["phone_number"]))
             ->setPassword($form["body"]["password"])
             ->setRoles(['ROLE_USER']);
 
-        if(isset($form["body"]["first_name"])) {
+        if (isset($form["body"]["first_name"])) {
             $user->setFirstName($form["body"]["first_name"]);
         }
 
-        if(isset($form["body"]["last_name"])) {
+        if (isset($form["body"]["last_name"])) {
             $user->setLastName($form["body"]["last_name"]);
         }
 
-        if(isset($form["body"]["email"])) {
+        if (isset($form["body"]["email"])) {
             $user->setEmail($form["body"]["email"]);
         }
+        try{
+            $this->userRepository->add($user, flush: true);
+        }
+        catch (UniqueConstraintViolationException){
+            throw new BadRequestHttpException("Phone number already exists!");
+        }
 
-        $this->userRepository->add($user, flush: true);
         return $user;
     }
 }

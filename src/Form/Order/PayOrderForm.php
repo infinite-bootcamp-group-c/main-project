@@ -15,10 +15,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PayOrderForm extends ABaseForm
 {
     public function __construct(
-        private readonly OrderRepository $orderRepository,
-        private readonly PaymentGatewayFactory $paymentGatewayFactory,
+        private readonly OrderRepository            $orderRepository,
+        private readonly PaymentGatewayFactory      $paymentGatewayFactory,
         private readonly OrderTransactionRepository $orderTransactionRepository
-    ) {
+    )
+    {
 
     }
 

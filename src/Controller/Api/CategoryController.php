@@ -19,7 +19,6 @@ use OpenApi\Attributes\Tag;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/categories')]
@@ -35,7 +34,7 @@ class CategoryController extends AbstractController
         Parameter(name: 'sort_by', in: 'query', required: false, schema: new Schema(type: 'string', enum: ['id', 'createdAt', 'updatedAt']), example: 'createdAt'),
     ]
     public function getList(
-        Request            $request,
+        Request             $request,
         GetCategoryListForm $getCategoryListForm,
         GetCategoryListView $getCategoryListView
     ): JsonResponse
@@ -45,7 +44,7 @@ class CategoryController extends AbstractController
 
     #[Route('/{id}', name: 'get_category', methods: ['GET'])]
     public function get(
-        Request $request,
+        Request         $request,
         GetCategoryForm $getCategoryForm,
         GetCategoryView $getCategoryView
     ): JsonResponse
@@ -56,7 +55,7 @@ class CategoryController extends AbstractController
     #[Route('/', name: 'create_category', methods: ['POST'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function new(
-        Request $request,
+        Request            $request,
         CreateCategoryForm $createCategoryForm,
         CreateCategoryView $createCategoryView
     ): JsonResponse
@@ -67,7 +66,7 @@ class CategoryController extends AbstractController
     #[Route('/{id}', name: 'update_category', methods: ['PATCH'])]
     #[RequestBody(content: new JsonContent(default: '{}'))]
     public function update(
-        Request $request,
+        Request            $request,
         UpdateCategoryForm $updateCategoryForm,
         UpdateCategoryView $updateCategoryView
     ): JsonResponse
@@ -77,7 +76,7 @@ class CategoryController extends AbstractController
 
     #[Route('/{id}', name: 'delete_category', methods: ['DELETE'])]
     public function delete(
-        Request $request,
+        Request            $request,
         DeleteCategoryForm $deleteCategoryForm
     ): JsonResponse
     {

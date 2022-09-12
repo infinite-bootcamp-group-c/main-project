@@ -2,19 +2,13 @@
 
 namespace App\Form\Basket;
 
-use App\Entity\OrderItem;
-use App\Entity\Product;
-use App\Entity\Category;
-use App\Entity\Shop;
-use App\Entity\Order;
+use App\Lib\Form\ABaseForm;
 use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
-use App\Repository\ShopRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Lib\Form\ABaseForm;
-use Symfony\Component\HttpFoundation\Request;
 
 class AddToBasketForm extends ABaseForm
 {
@@ -23,7 +17,6 @@ class AddToBasketForm extends ABaseForm
         private readonly ProductRepository   $productRepository,
         private readonly OrderRepository     $orderRepository,
         private readonly OrderItemRepository $orderItemRepository,
-        private readonly ShopRepository      $shopRepository,
     )
     {
     }
@@ -49,6 +42,8 @@ class AddToBasketForm extends ABaseForm
     }
 
     public function execute(Request $request): array
+        // TODO if the order is not open can not do it
+        // TODO if quantity of product is less that now
     {
         $form = self::getParams($request);
 
@@ -68,14 +63,28 @@ class AddToBasketForm extends ABaseForm
 
         //check if any order had exist with this product and shop before
         $order = $this->orderRepository->findOneBy(["shop" => $shopId, "user" => $userId, "status" => "open"]);
-
-        if (!$order) {
-            $newOrder = $this->orderRepository->createOrder($user, $shop);
-            $this->orderRepository->add($newOrder, flush:true);
+        if (is_null($order)) {
+            $order = $this->orderRepository->createOrder($user, $shop);
+            $this->orderRepository->add($order, flush: true);
         }
 
         $existing_item = $this->orderItemRepository->findOneBy(["order" => $order->getId(), "product" => $productId]);
-        return [];
+        if (!is_null($existing_item)) {
+            $existing_item->setQuantity($quantity);
+            $this->orderItemRepository->flush();
+        } else {
+            $newItem = $this->orderItemRepository->createOrderItem($product, $quantity, $order);
+            $this->orderItemRepository->add($newItem, true);
+        }
+
+        $item = !is_null($existing_item) ? $existing_item : $newItem;
+        return [
+            "order" => $order,
+            "orderItem" => $item
+        ];
+
 
     }
+
+
 }

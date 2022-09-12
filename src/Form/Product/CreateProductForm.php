@@ -20,7 +20,7 @@ class CreateProductForm extends ABaseForm
     public function __construct(
         private readonly ProductRepository  $productRepository,
         private readonly CategoryRepository $categoryRepository,
-        private readonly ShopRepository $shopRepository,
+        private readonly ShopRepository     $shopRepository,
     )
     {
     }
@@ -69,7 +69,7 @@ class CreateProductForm extends ABaseForm
         $categoryId = $form['body']['category_id'];
         $category = $this->categoryRepository->find($categoryId);
 
-        if(!$category)
+        if (!$category)
             throw new BadRequestHttpException("Category {$categoryId} not found");
 
         $this->validateOwnership($category->getShop(), $this->getUser()->getId());

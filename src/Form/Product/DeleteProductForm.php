@@ -39,7 +39,7 @@ class DeleteProductForm extends ABaseForm
         $productId = self::getParams($request)['route']['id'];
         $product = $this->productRepository->find($productId);
 
-        if(!$product) {
+        if (!$product) {
             throw new BadRequestHttpException("Product {$productId} Not Found");
         }
 

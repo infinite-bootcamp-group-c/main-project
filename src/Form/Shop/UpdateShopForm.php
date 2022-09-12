@@ -45,7 +45,7 @@ class UpdateShopForm extends ABaseForm
                         message: "The logo url {{ value }} is not valid."),
                 ],
                 'description' => [
-                    new Assert\Length(max:255)
+                    new Assert\Length(max: 255)
                 ],
             ],
         ];
@@ -64,13 +64,13 @@ class UpdateShopForm extends ABaseForm
 
         $this->validateOwnership($shop, $this->getUser()->getId());
 
-        if(isset($form['body']["name"]))
+        if (isset($form['body']["name"]))
             $shop->setName($form['body']['name']);
-        if(isset($form['body']['description']))
+        if (isset($form['body']['description']))
             $shop->setDescription($form['body']['description']);
-        if(isset($form['body']['logo_url']))
+        if (isset($form['body']['logo_url']))
             $shop->setLogo($form['body']['logo_url']);
-        if(isset($form['body']['ig_username']))
+        if (isset($form['body']['ig_username']))
             $shop->setIgUsername($form['body']['ig_username']);
 
         $this->shopRepository->flush();

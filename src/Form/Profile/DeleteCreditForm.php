@@ -5,7 +5,6 @@ namespace App\Form\Profile;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CreditInfoRepository;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,8 +13,9 @@ class DeleteCreditForm extends ABaseForm
 {
     public function __construct(
         private readonly CreditInfoRepository $creditInfoRepository,
-        private readonly UserRepository $userRepository
-    ) {
+        private readonly UserRepository       $userRepository
+    )
+    {
 
     }
 
@@ -33,7 +33,7 @@ class DeleteCreditForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): String
+    public function execute(Request $request): void
     {
         $form = self::getParams($request);
         $credit_id = $form["route"]["id"];
@@ -41,7 +41,7 @@ class DeleteCreditForm extends ABaseForm
         $credit = $this->creditInfoRepository
             ->find($credit_id);
 
-        if (!$credit_id){
+        if (!$credit_id) {
             throw new BadRequestHttpException("CreditInfo {$credit_id} Not Found");
         }
 
@@ -53,7 +53,5 @@ class DeleteCreditForm extends ABaseForm
 
         $this->creditInfoRepository->flush();
         $this->userRepository->flush();
-
-        return "Credit Card Removed";
     }
 }

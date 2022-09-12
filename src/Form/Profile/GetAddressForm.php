@@ -3,10 +3,7 @@
 namespace App\Form\Profile;
 
 use App\Lib\Form\ABaseForm;
-use App\Repository\AddressRepository;
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\Collection;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -14,7 +11,8 @@ class GetAddressForm extends ABaseForm
 {
     public function __construct(
         private readonly UserRepository $userRepository
-    ) {
+    )
+    {
 
     }
 
@@ -29,7 +27,7 @@ class GetAddressForm extends ABaseForm
         $user = $this->userRepository
             ->findOneBy(["phoneNumber" => $user_phone]);
 
-        iF (!$user) {
+        if (!$user) {
             throw new BadRequestHttpException("JWT Token Expired");
         }
 
