@@ -1,18 +1,18 @@
 <?php
 
 namespace App\Form\Basket;
-
+use App\Entity\OrderItem;
 use App\Lib\Form\ABaseForm;
 use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class AddToBasketForm extends ABaseForm
 {
-
     public function __construct(
         private readonly ProductRepository   $productRepository,
         private readonly OrderRepository     $orderRepository,
@@ -42,8 +42,6 @@ class AddToBasketForm extends ABaseForm
     }
 
     public function execute(array $form): array
-        // TODO if the order is not open can not do it
-        // TODO if quantity of product is less that now
     {
         $productId = $form["body"]["product_id"];
         $quantity = $form["body"]["quantity"];
@@ -68,9 +66,11 @@ class AddToBasketForm extends ABaseForm
 
         $existing_item = $this->orderItemRepository->findOneBy(["order" => $order->getId(), "product" => $productId]);
         if (!is_null($existing_item)) {
+            $this->productRepository::checkQuantity($product, $quantity - $existing_item->getQuantity());
             $existing_item->setQuantity($quantity);
             $this->orderItemRepository->flush();
         } else {
+            $this->productRepository::checkQuantity($product, $quantity);
             $newItem = $this->orderItemRepository->createOrderItem($product, $quantity, $order);
             $this->orderItemRepository->add($newItem, true);
         }
