@@ -41,7 +41,7 @@ class ConfirmOrderForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(Request $request): Order
     {
         $body = self::getRouteParams($request);
         $order_id = $body["order_id"];
@@ -54,6 +54,10 @@ class ConfirmOrderForm extends ABaseForm
             throw new BadRequestHttpException("Order {$order_id} Not Found");
         }
         $this->validateOwnership($order, $user_id);
+
+        if (!$order->getAddress()) {
+            throw new BadRequestHttpException("You haven't specified any address for order");
+        }
 
         $orderItems = $this->orderItemRepository
             ->findBy(["order" => $order_id]);
