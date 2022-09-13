@@ -4,7 +4,6 @@ namespace App\Form\ShopAddress;
 
 use App\Lib\Form\ABaseForm;
 use App\Repository\ShopRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -39,7 +38,7 @@ class GetShopAddressesForm extends ABaseForm
             ->find($shop_id);
 
         if (!$shop) {
-            throw new BadRequestHttpException("Shop {$shop_id} Not Found");
+            throw new BadRequestHttpException("Shop $shop_id Not Found");
         }
 
         return $shop->getAddresses()->getValues();

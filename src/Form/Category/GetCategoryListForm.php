@@ -5,7 +5,6 @@ namespace App\Form\Category;
 use App\Lib\Form\ABaseForm;
 use App\Lib\Repository\Pagination\HasFormPaginator;
 use App\Repository\CategoryRepository;
-use Symfony\Component\HttpFoundation\Request;
 
 class GetCategoryListForm extends ABaseForm
 {

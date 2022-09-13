@@ -138,7 +138,7 @@ class Order
     }
 
     /**
-     * @return Collection<int, Address>
+     * @return Address|Collection|null
      */
 //    public function getAddresses(): Collection
 //    {
@@ -160,7 +160,7 @@ class Order
 //
 //        return $this;
 //    }
-    public function getAddress()
+    public function getAddress(): Address|Collection|null
     {
         return $this->address;
     }

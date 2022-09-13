@@ -5,7 +5,6 @@ namespace App\Form\Profile;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CreditInfoRepository;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -41,7 +40,7 @@ class DeleteCreditForm extends ABaseForm
             ->find($credit_id);
 
         if (!$credit_id) {
-            throw new BadRequestHttpException("CreditInfo {$credit_id} Not Found");
+            throw new BadRequestHttpException("CreditInfo $credit_id Not Found");
         }
 
         $user = $credit->getUser();

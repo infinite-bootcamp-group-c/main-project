@@ -5,7 +5,6 @@ namespace App\Form\Shop;
 use App\Lib\Form\ABaseForm;
 use App\Lib\Repository\Pagination\HasFormPaginator;
 use App\Repository\ShopRepository;
-use Symfony\Component\HttpFoundation\Request;
 
 class GetShopListForm extends ABaseForm
 {

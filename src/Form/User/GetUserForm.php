@@ -5,7 +5,6 @@ namespace App\Form\User;
 use App\Entity\User;
 use App\Lib\Form\ABaseForm;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class GetUserForm extends ABaseForm

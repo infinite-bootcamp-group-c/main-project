@@ -5,7 +5,6 @@ namespace App\Form\Shop;
 use App\Entity\Shop;
 use App\Lib\Form\ABaseForm;
 use App\Repository\ShopRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateShopForm extends ABaseForm

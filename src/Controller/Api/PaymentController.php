@@ -5,7 +5,6 @@ namespace App\Controller\Api;
 use App\Form\Payment\VerifyPaymentForm;
 use App\Lib\Controller\BaseController;
 use App\View\Payment\VerifyPaymentView;
-use Exception;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Tag;

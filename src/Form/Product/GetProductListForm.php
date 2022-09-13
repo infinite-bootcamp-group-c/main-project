@@ -5,7 +5,6 @@ namespace App\Form\Product;
 use App\Lib\Form\ABaseForm;
 use App\Lib\Repository\Pagination\HasFormPaginator;
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Request;
 
 class GetProductListForm extends ABaseForm
 {

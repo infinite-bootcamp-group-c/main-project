@@ -8,7 +8,6 @@ use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ShopRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -70,7 +69,7 @@ class UpdateProductForm extends ABaseForm
         $product = $this->productRepository->find($productId);
 
         if (!$product)
-            throw new BadRequestHttpException("Product ${productId} not found");
+            throw new BadRequestHttpException("Product $productId not found");
 
         $productCategory = $product->getCategory();
         $shop = $productCategory->getShop();
@@ -88,7 +87,7 @@ class UpdateProductForm extends ABaseForm
             $category = $this->categoryRepository->find($categoryId);
 
             if (!$category)
-                throw new BadRequestHttpException("Category ${categoryId} not found");
+                throw new BadRequestHttpException("Category $categoryId not found");
 
             $this->validateOwnership($this->shopRepository->find($category->getShop()->getId()),
                 $this->getUser()->getId());
@@ -101,7 +100,7 @@ class UpdateProductForm extends ABaseForm
             $shop = $this->shopRepository->find($shopId);
 
             if (!$shop)
-                throw new BadRequestHttpException("Shop ${shopId} not found");
+                throw new BadRequestHttpException("Shop $shopId not found");
 
             $this->validateOwnership($shop, $this->getUser()->getId());
 

@@ -4,7 +4,6 @@ namespace App\Form\Profile;
 
 use App\Lib\Form\ABaseForm;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class GetAddressForm extends ABaseForm

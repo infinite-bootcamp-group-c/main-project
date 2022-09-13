@@ -74,6 +74,7 @@ class Category
 
     /**
      * @param Shop|null $shop
+     * @return Category
      */
     public function setShop(?Shop $shop): self
     {

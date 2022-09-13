@@ -8,7 +8,6 @@ use App\Lib\Form\ABaseForm;
 use App\Lib\Service\Payment\PaymentGatewayFactory;
 use App\Repository\OrderRepository;
 use App\Repository\OrderTransactionRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -65,9 +64,9 @@ class VerifyPaymentForm extends ABaseForm
         }
 
         $transaction = $this->orderTransactionRepository->find($transaction_id);
-        if (!$transaction) {
+
+        if (!$transaction)
             throw new BadRequestHttpException("Transaction {$transaction_id} Not Found");
-        }
 
         $verify = $this->paymentGatewayFactory->get('zarinpal')->verify(
             amount: $order->getTotalPrice(),

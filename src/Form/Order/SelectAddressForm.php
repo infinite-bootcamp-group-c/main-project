@@ -5,7 +5,6 @@ namespace App\Form\Order;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use App\Repository\OrderRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -48,13 +47,13 @@ class SelectAddressForm extends ABaseForm
         $order = $this->orderRepository
             ->find($order_id);
         if (!$order) {
-            throw new BadRequestHttpException("Order id {$order_id} not found");
+            throw new BadRequestHttpException("Order id $order_id not found");
         }
 
         $address = $this->addressRepository
             ->find($address_id);
         if (!$address) {
-            throw new BadRequestHttpException("Address id {$address_id} not found");
+            throw new BadRequestHttpException("Address id $address_id not found");
         }
 
         $order->setAddress($address);

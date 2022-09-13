@@ -10,7 +10,6 @@ use App\Repository\ShopDepositRepository;
 use App\Repository\ShopRepository;
 use DateTimeImmutable;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -47,7 +46,7 @@ class DepositShopForm extends ABaseForm
         $shop = $this->shopRepository->find($shopId);
 
         if (!$shop) {
-            throw new NotFoundHttpException("Shop ${shopId} not found");
+            throw new NotFoundHttpException("Shop $shopId not found");
         }
 
         $this->validateOwnership($shop, $this->getUser()->getId());
@@ -65,7 +64,7 @@ class DepositShopForm extends ABaseForm
         $orderTransactionId = array_column($orderTransactionResult, 'id');
 
         if ($sumOfDepositToShop == 0) {
-            throw new Exception("Withdrawal is not possible for shop ${shopId}");
+            throw new Exception("Withdrawal is not possible for shop $shopId");
         }
 
         $shopDeposit = (new ShopDeposit())

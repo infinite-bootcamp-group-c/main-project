@@ -17,7 +17,7 @@ class ProductRepository extends ABaseRepository implements IBaseRepository
 
     public static function checkQuantity(Product $product, int $count)
     {
-        if ($product->getQuantity() < $count){
+        if ($product->getQuantity() < $count) {
             throw new BadRequestHttpException("Product stock is not enough for this quantity");
         }
     }

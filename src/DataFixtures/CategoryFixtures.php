@@ -44,7 +44,7 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             ShopFixtures::class,
-            ];
+        ];
     }
 
 }

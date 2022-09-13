@@ -23,4 +23,4 @@
 ## 6. recommended command
 
 - ### php bin/console doctrine:schema:drop --force && php bin/console doctrine:schema:update --force && php bin/console doctrine:fixtures:load
-  - #### which is drop and update and load the data
+    - #### which is drop and update and load the data

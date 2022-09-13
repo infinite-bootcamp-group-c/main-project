@@ -8,7 +8,6 @@ use App\Lib\Form\ABaseForm;
 use App\Lib\Service\Payment\PaymentGatewayFactory;
 use App\Repository\OrderRepository;
 use App\Repository\OrderTransactionRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -45,7 +44,7 @@ class PayOrderForm extends ABaseForm
             ->find($order_id);
 
         if (!$order) {
-            throw new BadRequestHttpException("Order {$order_id} Not Found");
+            throw new BadRequestHttpException("Order $order_id Not Found");
         }
 
         $payment_method = "zarinpal";

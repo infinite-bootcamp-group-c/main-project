@@ -6,7 +6,6 @@ use App\Form\Traits\HasAddressOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -45,7 +44,7 @@ class DeleteAddressForm extends ABaseForm
             ->findOneBy(["phoneNumber" => $user_phone]);
 
         if (!$address) {
-            throw new BadRequestHttpException("Address {$addressId} Not Found");
+            throw new BadRequestHttpException("Address $addressId Not Found");
         }
 
         if (!$user) {

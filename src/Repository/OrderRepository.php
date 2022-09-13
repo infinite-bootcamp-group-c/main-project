@@ -17,7 +17,7 @@ class OrderRepository extends ABaseRepository implements IBaseRepository
         parent::__construct($registry, Order::class);
     }
 
-    public function createOrder(User $user, Shop $shop,): Order
+    public function createOrder(User $user, Shop $shop): Order
     {
         $order = new Order();
         $order->setShop($shop);

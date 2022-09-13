@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Lib\Form\ABaseForm;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,14 +17,6 @@ class RegisterUserForm extends ABaseForm
         private readonly UserPasswordHasherInterface $passwordHasher
     )
     {
-    }
-
-    public static function IranPhoneNumberNormalize(string $phoneNumber): string
-    {
-        if (str_starts_with($phoneNumber, "0098") || str_starts_with($phoneNumber, "+98")) {
-            $phoneNumber = '0' . substr($phoneNumber, -10);
-        }
-        return $phoneNumber;
     }
 
     public function constraints(): array
@@ -77,13 +68,20 @@ class RegisterUserForm extends ABaseForm
         if (isset($form["body"]["email"])) {
             $user->setEmail($form["body"]["email"]);
         }
-        try{
+        try {
             $this->userRepository->add($user, flush: true);
-        }
-        catch (UniqueConstraintViolationException){
+        } catch (UniqueConstraintViolationException) {
             throw new BadRequestHttpException("Phone number already exists!");
         }
 
         return $user;
+    }
+
+    public static function IranPhoneNumberNormalize(string $phoneNumber): string
+    {
+        if (str_starts_with($phoneNumber, "0098") || str_starts_with($phoneNumber, "+98")) {
+            $phoneNumber = '0' . substr($phoneNumber, -10);
+        }
+        return $phoneNumber;
     }
 }

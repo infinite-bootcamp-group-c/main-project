@@ -4,8 +4,6 @@ namespace App\Form\Order;
 
 use App\Lib\Form\ABaseForm;
 use App\Repository\OrderRepository;
-use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 
 class GetOrdersForm extends ABaseForm
 {

@@ -44,19 +44,19 @@ abstract class ABaseRepository extends ServiceEntityRepository implements IBaseR
         $this->remove($entity, $flush);
     }
 
+    /**
+     * @throws NonUniqueResultException
+     */
     public function find($id, $lockMode = null, $lockVersion = null)
     {
-        try {
-            return $this->createQueryBuilder('p')
-                ->where('p.id = :id')
-                ->setParameter('id', $id)
-                ->getQuery()
-                ->useQueryCache(true)
-                //->enableResultCache()
-                ->setMaxResults(1)->getOneOrNullResult();
-        } catch (NonUniqueResultException $NonUniqueResultException) {
-            //TODO handleException
-        }
+        return $this
+            ->createQueryBuilder('p')
+            ->where('p.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->useQueryCache(true)
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
     }
 
     public function remove($entity, bool $flush = false): void
@@ -68,7 +68,7 @@ abstract class ABaseRepository extends ServiceEntityRepository implements IBaseR
         }
     }
 }
-    //    /**
+//    /**
 //     * @return Address[] Returns an array of Address objects
 //     */
 //    public function findByExampleField($value): array

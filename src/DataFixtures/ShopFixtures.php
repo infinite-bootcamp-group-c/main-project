@@ -43,7 +43,7 @@ class ShopFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             UserFixtures::class,
-            ];
+        ];
     }
 
 }

@@ -6,7 +6,6 @@ use App\Entity\Address;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use App\Repository\ShopRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -80,7 +79,7 @@ class NewShopAddressForm extends ABaseForm
             ->find($shop_id);
 
         if (!$shop) {
-            throw new BadRequestHttpException("Shop {$shop_id} Not Found");
+            throw new BadRequestHttpException("Shop $shop_id Not Found");
         }
 
         $address = (new Address())

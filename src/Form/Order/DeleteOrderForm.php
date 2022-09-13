@@ -8,7 +8,6 @@ use App\Lib\Form\ABaseForm;
 use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -52,7 +51,7 @@ class DeleteOrderForm extends ABaseForm
             ->find($order_id);
 
         if (!$order) {
-            throw new BadRequestHttpException("Order {$order_id} Not Found");
+            throw new BadRequestHttpException("Order $order_id Not Found");
         }
         $this->validateOwnership($order, $user_id);
 

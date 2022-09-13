@@ -5,7 +5,6 @@ namespace App\Form\Shop;
 use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\ShopRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -39,7 +38,7 @@ class DeleteShopForm extends ABaseForm
         $shop = $this->shopRepository->find($shopId);
 
         if (!$shop) {
-            throw new BadRequestHttpException("Shop {$shopId} Not Found");
+            throw new BadRequestHttpException("Shop $shopId Not Found");
         }
 
         $this->validateOwnership($shop, $this->getUser()->getId());

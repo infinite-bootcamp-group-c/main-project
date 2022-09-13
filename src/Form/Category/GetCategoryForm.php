@@ -5,7 +5,6 @@ namespace App\Form\Category;
 use App\Entity\Category;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -38,7 +37,7 @@ class GetCategoryForm extends ABaseForm
         $category = $this->categoryRepository->find($categoryId);
 
         if (!$category) {
-            throw new NotFoundHttpException("Category ${categoryId} not found");
+            throw new NotFoundHttpException("Category $categoryId not found");
         }
 
         return $category;

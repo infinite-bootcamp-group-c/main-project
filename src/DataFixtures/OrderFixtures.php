@@ -55,7 +55,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
         return [
             ShopFixtures::class,
             UserFixtures::class,
-            ];
+        ];
     }
 
 }

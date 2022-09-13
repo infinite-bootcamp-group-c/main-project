@@ -5,7 +5,6 @@ namespace App\Form\Category;
 use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -40,7 +39,7 @@ class DeleteCategoryForm extends ABaseForm
         $category = $this->categoryRepository->find($categoryId);
 
         if (!$category) {
-            throw new BadRequestHttpException("Category {$categoryId} Not Found");
+            throw new BadRequestHttpException("Category $categoryId Not Found");
         }
 
         $shop = $category->getShop();

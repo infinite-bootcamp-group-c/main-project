@@ -46,50 +46,6 @@ abstract class ABaseForm implements IBaseForm
         );
     }
 
-    #[ArrayShape(['body' => "array", 'query' => "array", 'route' => "array", 'requestDetail' => "array"])]
-    protected function getParams(): array
-    {
-        return [
-            'body' => $this->getBodyParams(),
-            'query' => $this->getQueryParams(),
-            'route' => $this->getRouteParams(),
-        ];
-    }
-
-
-    protected function getBodyParams(): array
-    {
-        return json_decode($this->request->getContent(), true) ?? [];
-    }
-
-    protected function getQueryParams(): array
-    {
-        return $this->request->query->all() ?? [];
-    }
-
-    protected function getRouteParams(): array
-    {
-        return $this->request->attributes->get('_route_params') ?? [];
-    }
-
-    #[ArrayShape(["cookies" => "array", "sessions" => "array", 'headers' => "mixed", "host" => "string", "ip" => "null|string", "contentType" => "null|string"])]
-    protected function getRequestDetails(): array
-    {
-        return [
-            "cookies" => $this->request->cookies->all(),
-            "sessions" => $this->request->getSession()->all(),
-            'headers' => $this->request->headers->all(),
-            "host" => $this->request->getHost(),
-            "ip" => $this->request->getClientIp(),
-            "contentType" => $this->request->getContentType(),
-        ];
-    }
-
-    protected function getUser(): ?UserInterface
-    {
-        return $this->tokenStorage->getToken()->getUser();
-    }
-
     protected function validate(): array
     {
         $input = [
@@ -118,6 +74,21 @@ abstract class ABaseForm implements IBaseForm
 
     }
 
+    protected function getBodyParams(): array
+    {
+        return json_decode($this->request->getContent(), true) ?? [];
+    }
+
+    protected function getQueryParams(): array
+    {
+        return $this->request->query->all() ?? [];
+    }
+
+    protected function getRouteParams(): array
+    {
+        return $this->request->attributes->get('_route_params') ?? [];
+    }
+
     public abstract function constraints(): array;
 
     protected function json(mixed $data, int $status = Response::HTTP_OK): JsonResponse
@@ -125,5 +96,33 @@ abstract class ABaseForm implements IBaseForm
         return new JsonResponse($data, $status);
     }
 
+    #[ArrayShape(['body' => "array", 'query' => "array", 'route' => "array", 'requestDetail' => "array"])]
+    protected function getParams(): array
+    {
+        return [
+            'body' => $this->getBodyParams(),
+            'query' => $this->getQueryParams(),
+            'route' => $this->getRouteParams(),
+        ];
+    }
+
     protected abstract function execute(array $form);
+
+    #[ArrayShape(["cookies" => "array", "sessions" => "array", 'headers' => "mixed", "host" => "string", "ip" => "null|string", "contentType" => "null|string"])]
+    protected function getRequestDetails(): array
+    {
+        return [
+            "cookies" => $this->request->cookies->all(),
+            "sessions" => $this->request->getSession()->all(),
+            'headers' => $this->request->headers->all(),
+            "host" => $this->request->getHost(),
+            "ip" => $this->request->getClientIp(),
+            "contentType" => $this->request->getContentType(),
+        ];
+    }
+
+    protected function getUser(): ?UserInterface
+    {
+        return $this->tokenStorage->getToken()->getUser();
+    }
 }

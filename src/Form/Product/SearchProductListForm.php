@@ -7,7 +7,6 @@ use Algolia\SearchBundle\SearchService;
 use App\Entity\Product;
 use App\Lib\Form\ABaseForm;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
