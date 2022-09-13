@@ -33,7 +33,6 @@ class CreateShopForm extends ABaseForm
                         message: 'The instagram username {{ value }} is not valid.'),
                 ],
                 'logo_url' => [
-                    new Assert\Regex('\w'),
                 ],
                 'description' => [
                     new Assert\Length(['max' => 255]),
