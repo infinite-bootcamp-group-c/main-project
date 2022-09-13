@@ -5,7 +5,6 @@ namespace App\Form\User;
 use App\Entity\User;
 use App\Lib\Form\ABaseForm;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class GetUserForm extends ABaseForm
@@ -14,7 +13,6 @@ class GetUserForm extends ABaseForm
         private readonly UserRepository $userRepository
     )
     {
-
     }
 
     public function constraints(): array
@@ -22,7 +20,7 @@ class GetUserForm extends ABaseForm
         return [];
     }
 
-    public function execute(Request $request): User
+    public function execute(array $form): User
     {
         $auth_user = $this->getUser();
         $user_phone = $auth_user->getUserIdentifier();

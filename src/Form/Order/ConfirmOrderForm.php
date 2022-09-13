@@ -3,13 +3,13 @@
 namespace App\Form\Order;
 
 use App\Entity\Enums\OrderStatus;
+use App\Entity\Order;
 use App\Form\Traits\HasOrderOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -41,9 +41,9 @@ class ConfirmOrderForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(array $form): Order
     {
-        $body = self::getRouteParams($request);
+        $body = $form["body"];
         $order_id = $body["order_id"];
 
         $user_id = $this->getUser()->getId();
@@ -51,9 +51,13 @@ class ConfirmOrderForm extends ABaseForm
             ->find($order_id);
 
         if (!$order) {
-            throw new BadRequestHttpException("Order {$order_id} Not Found");
+            throw new BadRequestHttpException("Order $order_id Not Found");
         }
         $this->validateOwnership($order, $user_id);
+
+        if (!$order->getAddress()) {
+            throw new BadRequestHttpException("You haven't specified any address for order");
+        }
 
         $orderItems = $this->orderItemRepository
             ->findBy(["order" => $order_id]);

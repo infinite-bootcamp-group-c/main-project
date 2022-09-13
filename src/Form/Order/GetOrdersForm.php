@@ -4,13 +4,10 @@ namespace App\Form\Order;
 
 use App\Lib\Form\ABaseForm;
 use App\Repository\OrderRepository;
-use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 
 class GetOrdersForm extends ABaseForm
 {
     public function __construct(
-        private readonly UserRepository  $userRepository,
         private readonly OrderRepository $orderRepository
     )
     {
@@ -22,7 +19,7 @@ class GetOrdersForm extends ABaseForm
         return [];
     }
 
-    public function execute(Request $request): array
+    public function execute(array $form): array
     {
         $user = $this->getUser();
 ////        $user = $this->userRepository

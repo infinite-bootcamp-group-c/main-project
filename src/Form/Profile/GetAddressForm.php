@@ -4,7 +4,6 @@ namespace App\Form\Profile;
 
 use App\Lib\Form\ABaseForm;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class GetAddressForm extends ABaseForm
@@ -21,7 +20,7 @@ class GetAddressForm extends ABaseForm
         return [];
     }
 
-    public function execute(Request $request): array
+    public function execute(array $form): array
     {
         $user_phone = $this->getUser()->getUserIdentifier();
         $user = $this->userRepository

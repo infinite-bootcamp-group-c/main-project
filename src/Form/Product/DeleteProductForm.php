@@ -5,7 +5,6 @@ namespace App\Form\Product;
 use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -34,13 +33,13 @@ class DeleteProductForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): void
+    public function execute(array $form): void
     {
-        $productId = self::getParams($request)['route']['id'];
+        $productId = $form['route']['id'];
         $product = $this->productRepository->find($productId);
 
         if (!$product) {
-            throw new BadRequestHttpException("Product {$productId} Not Found");
+            throw new BadRequestHttpException("Product $productId Not Found");
         }
 
         $shop = $product->getCategory()->getShop();

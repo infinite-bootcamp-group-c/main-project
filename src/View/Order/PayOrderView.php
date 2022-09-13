@@ -9,10 +9,10 @@ class PayOrderView extends ABaseView
 {
     protected int $HTTPStatusCode = Response::HTTP_ACCEPTED;
 
-    public function execute($reditect_url): array
+    public function execute($redirect_url): array
     {
         return [
-            "redirect_url" => $reditect_url,
+            "redirect_url" => $redirect_url,
         ];
     }
 }

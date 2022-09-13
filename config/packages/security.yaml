@@ -22,6 +22,8 @@ security:
       jwt: ~
       refresh_jwt:
         check_path: /api/auth/token/refresh # or, you may use the `api_refresh_token` route name
+      logout:
+        path: api_token_invalidate
 
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -40,8 +42,9 @@ security:
   # Note: Only the *first* access control that matches will be used
   access_control:
     - { path: ^/api/doc, roles: PUBLIC_ACCESS }
-    - { path: ^/api/product, roles: PUBLIC_ACCESS }
-    - { path: ^/api/payment, roles: PUBLIC_ACCESS }
+    - { path: ^/api/(shops|categories), roles: PUBLIC_ACCESS, methods: [GET] }
+    - { path: ^/api/product(|/search|), roles: PUBLIC_ACCESS, methods: [GET] }
+    - { path: ^/api/payment/verify, roles: PUBLIC_ACCESS }
     - { path: ^/api/users/register, roles: PUBLIC_ACCESS }
     - { path: ^/api/auth/(login|token/refresh), roles: PUBLIC_ACCESS }
     - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }

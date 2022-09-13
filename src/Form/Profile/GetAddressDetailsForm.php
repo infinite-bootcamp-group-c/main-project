@@ -5,7 +5,6 @@ namespace App\Form\Profile;
 use App\Entity\Address;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,16 +31,14 @@ class GetAddressDetailsForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Address
+    public function execute(array $form): Address
     {
-        $form = self::getParams($request);
-
         $addressId = $form["route"]["id"];
         $address = $this->addressRepository
             ->find($addressId);
 
         if (!$address) {
-            throw new BadRequestHttpException("Address {$addressId} Not Found");
+            throw new BadRequestHttpException("Address $addressId Not Found");
         }
 
         return $address;

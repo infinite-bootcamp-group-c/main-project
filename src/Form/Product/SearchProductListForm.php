@@ -7,7 +7,6 @@ use Algolia\SearchBundle\SearchService;
 use App\Entity\Product;
 use App\Lib\Form\ABaseForm;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -38,10 +37,9 @@ class SearchProductListForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): array
+    public function execute(array $form): array
     {
-        $query = self::getQueryParams($request);
-
+        $query = $form["query"];
         $limit = $query['limit'] ?? 10;
         $page = $query['page'] ?? 1;
 

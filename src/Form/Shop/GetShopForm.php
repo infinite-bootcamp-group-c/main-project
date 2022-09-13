@@ -5,7 +5,6 @@ namespace App\Form\Shop;
 use App\Entity\Shop;
 use App\Lib\Form\ABaseForm;
 use App\Repository\ShopRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,14 +31,13 @@ class GetShopForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Shop
+    public function execute(array $form): Shop
     {
-        $form = self::getParams($request);
         $shopId = $form['route']['id'];
         $shop = $this->shopRepository->find($shopId);
 
         if (!$shop) {
-            throw new NotFoundHttpException("Shop ${shopId} not found");
+            throw new NotFoundHttpException("Shop $shopId not found");
         }
 
         return $shop;

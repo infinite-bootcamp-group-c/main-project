@@ -6,7 +6,6 @@ use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ShopRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -45,15 +44,13 @@ class UpdateCategoryForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request)
+    public function execute(array $form)
     {
-        $form = self::getParams($request);
-
         $categoryId = $form['route']['id'];
         $category = $this->categoryRepository->find($categoryId);
 
         if (!$category) {
-            throw new BadRequestHttpException("Category ${categoryId} not found");
+            throw new BadRequestHttpException("Category $categoryId not found");
         }
 
         $this->validateOwnership($category->getShop(), $this->getUser()->getId());
@@ -68,7 +65,7 @@ class UpdateCategoryForm extends ABaseForm
             $shop = $this->shopRepository->find($shopId);
 
             if (!$shop) {
-                throw new BadRequestHttpException("Shop ${shopId} not found");
+                throw new BadRequestHttpException("Shop $shopId not found");
             }
 
             $this->validateOwnership($shop, $this->getUser()->getId());

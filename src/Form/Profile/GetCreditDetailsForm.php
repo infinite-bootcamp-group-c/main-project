@@ -5,7 +5,6 @@ namespace App\Form\Profile;
 use App\Entity\CreditInfo;
 use App\Lib\Form\ABaseForm;
 use App\Repository\CreditInfoRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,16 +31,15 @@ class GetCreditDetailsForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): CreditInfo
+    public function execute(array $form): CreditInfo
     {
-        $form = self::getParams($request);
         $credit_id = $form["route"]["id"];
 
         $credit = $this->creditInfoRepository
             ->find($credit_id);
 
         if (!$credit) {
-            throw new BadRequestHttpException("CreditInfo {$credit_id} Not Found");
+            throw new BadRequestHttpException("CreditInfo $credit_id Not Found");
         }
 
         return $credit;

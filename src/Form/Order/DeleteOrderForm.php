@@ -8,7 +8,6 @@ use App\Lib\Form\ABaseForm;
 use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -39,21 +38,20 @@ class DeleteOrderForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): string
+    public function execute(array $form): string
     {
         // check if order is open
         // delete order items
         // add the quantity to products
         // delete order
-
-        $route = self::getRouteParams($request);
+        $route = $form["route"];
         $order_id = $route["id"];
         $user_id = $this->getUser()->getId();
         $order = $this->orderRepository
             ->find($order_id);
 
         if (!$order) {
-            throw new BadRequestHttpException("Order {$order_id} Not Found");
+            throw new BadRequestHttpException("Order $order_id Not Found");
         }
         $this->validateOwnership($order, $user_id);
 

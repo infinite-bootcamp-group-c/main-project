@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Lib\Repository\ABaseRepository;
 use App\Lib\Repository\IBaseRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ProductRepository extends ABaseRepository implements IBaseRepository
 {
@@ -14,28 +15,10 @@ class ProductRepository extends ABaseRepository implements IBaseRepository
         parent::__construct($registry, Product::class);
     }
 
-//    /**
-//     * @return Product[] Returns an array of Product objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Product
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public static function checkQuantity(Product $product, int $count)
+    {
+        if ($product->getQuantity() < $count) {
+            throw new BadRequestHttpException("Product stock is not enough for this quantity");
+        }
+    }
 }

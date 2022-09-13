@@ -6,7 +6,6 @@ use App\Entity\Enums\OrderStatus;
 use App\Entity\Order;
 use App\Lib\Form\ABaseForm;
 use App\Repository\OrderRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -31,10 +30,9 @@ class GetCurrentBasketForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Order
+    public function execute(array $form): Order
     {
         $user = $this->getUser();
-        $form = self::getParams($request);
         $shopId = $form["route"]["shop_id"];
         $currentOrder = $this->orderRepository->findOneBy(
             [

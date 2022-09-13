@@ -7,7 +7,6 @@ use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -78,15 +77,14 @@ class NewAddressForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): void
+    public function execute(array $form): void
     {
-        $body = self::getBodyParams($request);
         $user = $this->getUser();
-
+        $body = $form["body"];
         $order_id = $body["order_id"];
         $order = $this->orderRepository->find($order_id);
         if (!$order) {
-            throw new BadRequestHttpException("Order id {$order_id} not found");
+            throw new BadRequestHttpException("Order id $order_id not found");
         }
 
         $address = (new Address())

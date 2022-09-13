@@ -8,7 +8,6 @@ use App\Lib\Form\ABaseForm;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ShopRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -62,15 +61,13 @@ class CreateProductForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Product
+    public function execute(array $form): Product
     {
-        $form = self::getParams($request);
-
         $categoryId = $form['body']['category_id'];
         $category = $this->categoryRepository->find($categoryId);
 
         if (!$category)
-            throw new BadRequestHttpException("Category {$categoryId} not found");
+            throw new BadRequestHttpException("Category $categoryId not found");
 
         $this->validateOwnership($category->getShop(), $this->getUser()->getId());
 

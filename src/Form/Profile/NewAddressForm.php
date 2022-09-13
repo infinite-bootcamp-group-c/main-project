@@ -6,7 +6,6 @@ use App\Entity\Address;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -66,10 +65,8 @@ class NewAddressForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Address
+    public function execute(array $form): Address
     {
-        $form = self::getParams($request);
-
         $user_phone = $this->getUser()->getUserIdentifier();
         $user = $this->userRepository
             ->findOneBy(["phoneNumber" => $user_phone]);

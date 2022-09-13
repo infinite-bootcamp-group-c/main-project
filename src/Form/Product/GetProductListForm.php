@@ -5,7 +5,6 @@ namespace App\Form\Product;
 use App\Lib\Form\ABaseForm;
 use App\Lib\Repository\Pagination\HasFormPaginator;
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Request;
 
 class GetProductListForm extends ABaseForm
 {
@@ -26,10 +25,10 @@ class GetProductListForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): array
+    public function execute(array $form): array
     {
         return $this->paginatorPaginate(
-            $this->productRepository, self::getQueryParams($request)
+            $this->productRepository, $form
         );
     }
 }

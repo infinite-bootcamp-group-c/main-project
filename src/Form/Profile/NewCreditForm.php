@@ -8,7 +8,6 @@ use App\Repository\CreditInfoRepository;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -49,10 +48,11 @@ class NewCreditForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): CreditInfo
+    /**
+     * @throws Exception
+     */
+    public function execute(array $form): CreditInfo
     {
-        $form = self::getParams($request);
-
         $user_phone = $this->getUser()->getUserIdentifier();
         $user = $this->userRepository
             ->findOneBy(["phoneNumber" => $user_phone]);
@@ -61,12 +61,7 @@ class NewCreditForm extends ABaseForm
             throw new BadRequestHttpException("JWT Token Expired");
         }
 
-        $expires_at = null;
-        try {
-            $expires_at = new DateTimeImmutable($form["body"]["expires_at"]);
-        } catch (Exception $exception) {
-            throw $exception;
-        }
+        $expires_at = new DateTimeImmutable($form["body"]["expires_at"]);
 
         $creditInfo = (new CreditInfo())
             ->setCard($form["body"]["card"])

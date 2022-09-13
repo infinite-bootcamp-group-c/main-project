@@ -5,7 +5,6 @@ namespace App\Form\ShopAddress;
 use App\Entity\Address;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,15 +31,15 @@ class GetShopAddressForm extends ABaseForm
         ];
     }
 
-    public function execute(Request $request): Address
+    public function execute(array $form): Address
     {
-        $route = self::getRouteParams($request);
+        $route = $form["route"];
         $address_id = $route["address_id"];
         $address = $this->addressRepository
             ->find($address_id);
 
         if (!$address) {
-            throw new BadRequestHttpException("Address {$address_id} Not Found");
+            throw new BadRequestHttpException("Address $address_id Not Found");
         }
 
         return $address;

@@ -88,12 +88,12 @@ class Token
         return $this;
     }
 
-    public function getType(): string
+    public function getType(): TokenType
     {
         return $this->type;
     }
 
-    public function setType(object $type): self
+    public function setType(?TokenType $type): self
     {
         $this->type = $type;
 
