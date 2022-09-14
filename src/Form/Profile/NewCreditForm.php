@@ -63,6 +63,12 @@ class NewCreditForm extends ABaseForm
 
         $expires_at = new DateTimeImmutable($form["body"]["expires_at"]);
 
+        $dateDiff = $expires_at->diff(new DateTimeImmutable());
+
+        if($dateDiff->format("%R%a") > 0) {
+            throw new BadRequestHttpException("Credit card is expired");
+        }
+
         $creditInfo = (new CreditInfo())
             ->setCard($form["body"]["card"])
             ->setIBAN($form["body"]["IBAN"])

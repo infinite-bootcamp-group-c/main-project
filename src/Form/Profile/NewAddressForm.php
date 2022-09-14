@@ -40,8 +40,6 @@ class NewAddressForm extends ABaseForm
                     new Assert\NotBlank()
                 ],
                 "address_details" => [
-                    new Assert\NotNull(),
-                    new Assert\NotBlank()
                 ],
                 "country" => [
                     new Assert\NotNull(),
@@ -54,12 +52,10 @@ class NewAddressForm extends ABaseForm
                 "latitude" => [
                     new Assert\NotNull(),
                     new Assert\NotBlank(),
-                    new Assert\Type("float")
                 ],
                 "longitude" => [
                     new Assert\NotNull(),
                     new Assert\NotBlank(),
-                    new Assert\Type("float")
                 ]
             ]
         ];

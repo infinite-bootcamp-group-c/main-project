@@ -3,6 +3,7 @@
 namespace App\Form\Order;
 
 use App\Entity\Address;
+use App\Form\Traits\HasOrderOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use App\Repository\OrderRepository;
@@ -12,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class NewAddressForm extends ABaseForm
 {
+    use HasOrderOwnership;
+
     public function __construct(
         private readonly UserRepository    $userRepository,
         private readonly OrderRepository   $orderRepository,
@@ -48,8 +51,6 @@ class NewAddressForm extends ABaseForm
                     new Assert\NotBlank()
                 ],
                 "address_details" => [
-                    new Assert\NotNull(),
-                    new Assert\NotBlank()
                 ],
                 "country" => [
                     new Assert\NotNull(),
@@ -86,6 +87,8 @@ class NewAddressForm extends ABaseForm
         if (!$order) {
             throw new BadRequestHttpException("Order id $order_id not found");
         }
+
+        $this->validateOwnership($order, $this->getUser()->getId());
 
         $address = (new Address())
             ->setTitle($body["title"])

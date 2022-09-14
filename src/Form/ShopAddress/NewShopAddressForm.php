@@ -3,6 +3,7 @@
 namespace App\Form\ShopAddress;
 
 use App\Entity\Address;
+use App\Form\Traits\HasValidateOwnership;
 use App\Lib\Form\ABaseForm;
 use App\Repository\AddressRepository;
 use App\Repository\ShopRepository;
@@ -11,6 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class NewShopAddressForm extends ABaseForm
 {
+    use HasValidateOwnership;
+
     public function __construct(
         private readonly ShopRepository    $shopRepository,
         private readonly AddressRepository $addressRepository
@@ -46,8 +49,6 @@ class NewShopAddressForm extends ABaseForm
                     new Assert\NotBlank()
                 ],
                 "address_details" => [
-                    new Assert\NotNull(),
-                    new Assert\NotBlank()
                 ],
                 "country" => [
                     new Assert\NotNull(),
@@ -60,12 +61,10 @@ class NewShopAddressForm extends ABaseForm
                 "latitude" => [
                     new Assert\NotNull(),
                     new Assert\NotBlank(),
-                    new Assert\Type("digit")
                 ],
                 "longitude" => [
                     new Assert\NotNull(),
                     new Assert\NotBlank(),
-                    new Assert\Type("digit")
                 ]
             ]
         ];
@@ -75,12 +74,13 @@ class NewShopAddressForm extends ABaseForm
     {
         $form = $form["body"];
         $shop_id = $form["shop_id"];
-        $shop = $this->shopRepository
-            ->find($shop_id);
+        $shop = $this->shopRepository->find($shop_id);
 
         if (!$shop) {
             throw new BadRequestHttpException("Shop $shop_id Not Found");
         }
+
+        $this->validateOwnership($shop, $this->getUser()->getId());
 
         $address = (new Address())
             ->setTitle($form["title"])
